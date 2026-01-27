@@ -6,9 +6,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class transportSubsystem extends SubsystemBase {
+public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
-  public transportSubsystem() {}
+  public TransportSubsystem() {}
 
   private void transportIn() {
 
