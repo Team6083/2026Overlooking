@@ -5,20 +5,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+
 
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
+  VictorSP mot1 = new VictorSP();
+  
   public TransportSubsystem() {}
 
   private void transportIn() {
-
+    mot1.set(0.5);
   }
 
   private void transportOut() {
-
+    mot1.set(-0.5);
   }
 
   private void stopTransport() {
+    mot1.stopMotor();
 
   }
 
