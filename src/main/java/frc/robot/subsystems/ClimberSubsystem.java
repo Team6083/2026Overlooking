@@ -13,42 +13,43 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
-  private final SparkMax climberMotor = new SparkMax(5, MotorType.kBrushless);
+  private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
   private final SparkClosedLoopController closedLoopController = climberMotor.getClosedLoopController();
-  private static final double L1_POSITION = 0.0;
-  private static final double L2_POSITION = 0.0;
-  private static final double MANUAL_SPEED = 0.5;
+  private static final double L1position = ClimberConstants.L1position;
+  private static final double L2position = ClimberConstants.L2position;
+  private static final double speed = ClimberConstants.speed;
 
   public ClimberSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
     config.closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(0.0)
-        .i(0.0)
-        .d(0.0)
-        .outputRange(-1.0, 1.0);
+        .p(ClimberConstants.kP)
+        .i(ClimberConstants.kI)
+        .d(ClimberConstants.kD)
+        .outputRange(ClimberConstants.minOutput, ClimberConstants.maxOutput);
     config
         .idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake)
-        .smartCurrentLimit(0);
+        .smartCurrentLimit(ClimberConstants.currentLimit);
   }
 
   private void toLowRung() {
-    closedLoopController.setSetpoint(L1_POSITION, ControlType.kPosition);
+    closedLoopController.setSetpoint(ClimberConstants.L1position, ControlType.kPosition);
   }
 
   private void toMidRung() {
-    closedLoopController.setSetpoint(L2_POSITION, ControlType.kPosition);
+    closedLoopController.setSetpoint(ClimberConstants.L2position, ControlType.kPosition);
   }
 
   private void climbUp() {
-    climberMotor.set(MANUAL_SPEED);
+    climberMotor.set(ClimberConstants.speed);
   }
 
   private void climbDown() {
-    climberMotor.set(-MANUAL_SPEED);
+    climberMotor.set(-ClimberConstants.speed);
   }
 
   private void stopClimb() {
