@@ -6,9 +6,9 @@ package frc.robot;
 
 /** Add your docs here. */
 public class Constants {
-    public static final class buildConstants {
-        public static final String BUILD_DATE = "${buildDate}";
-        public static final String GIT_COMMIT = "${gitCommit}";
-        public static final String GIT_BRANCH = "${gitBranch}";
-    }
+  public static final class buildConstants {
+    public static final String BUILD_DATE = "${buildDate}";
+    public static final String GIT_COMMIT = "${gitCommit}";
+    public static final String GIT_BRANCH = "${gitBranch}";
+  }
 }
