@@ -4,21 +4,27 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {}
 
-  private void shoot() {
+  private final PWMSparkMax shooter = new PWMSparkMax(0);
 
+  private void shoot() {
+    shooter.set(0.6);
   }
+  
+
 
   private void feed() {
 
   }
   
   private void stopShooter() {
+    shooter.set(0);
 
   }
 
