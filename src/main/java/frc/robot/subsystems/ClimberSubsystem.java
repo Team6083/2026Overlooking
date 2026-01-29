@@ -19,9 +19,9 @@ public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
   private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
   private final SparkClosedLoopController closedLoopController = climberMotor.getClosedLoopController();
-  private static final double L1position = ClimberConstants.L1position;
-  private static final double L2position = ClimberConstants.L2position;
-  private static final double speed = ClimberConstants.speed;
+  private static final double L1position = 25;
+  private static final double L2position = 50;
+  private static final double motorSpeed = 0.5;
 
   public ClimberSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
@@ -37,19 +37,19 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   private void toLowRung() {
-    closedLoopController.setSetpoint(ClimberConstants.L1position, ControlType.kPosition);
+    closedLoopController.setSetpoint(L1position, ControlType.kPosition);
   }
 
   private void toMidRung() {
-    closedLoopController.setSetpoint(ClimberConstants.L2position, ControlType.kPosition);
+    closedLoopController.setSetpoint(L2position, ControlType.kPosition);
   }
 
   private void climbUp() {
-    climberMotor.set(ClimberConstants.speed);
+    climberMotor.set(motorSpeed);
   }
 
   private void climbDown() {
-    climberMotor.set(-ClimberConstants.speed);
+    climberMotor.set(-motorSpeed);
   }
 
   private void stopClimb() {
