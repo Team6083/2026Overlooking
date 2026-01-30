@@ -15,44 +15,46 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
+  private final SparkMax pivotLeft = new SparkMax(11, MotorType.kBrushless);
+  private final SparkMax pivotRight = new SparkMax(12, MotorType.kBrushless);
+
   private final SparkMaxConfig config = new SparkMaxConfig();
 
-  
   public IntakeSubsystem() {
     config.inverted(false)
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
     intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotLeft.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotRight.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  
   public void intake() {
     intakeMotor.set(0.5);
   }
 
-  
   public void reverseIntake() {
     intakeMotor.set(-0.5);
   }
 
-  
   public void stopIntake() {
     intakeMotor.set(0);
   }
 
   public void rotateUp() {
-    intakeMotor.set(0.2);
+    pivotLeft.set(0.2);
+    pivotRight.set(-0.2);
   }
 
-  
   public void rotateDown() {
-    intakeMotor.set(-0.2);
+    pivotLeft.set(-0.2);
+    pivotRight.set(0.2);
   }
 
-  
   public void stopRotate() {
-    intakeMotor.set(0);
+    pivotLeft.set(0);
+    pivotRight.set(0);
   }
 
   @Override
