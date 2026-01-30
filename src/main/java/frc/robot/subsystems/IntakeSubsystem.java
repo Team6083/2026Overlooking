@@ -9,7 +9,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
   private final SparkMax pivotLeft = new SparkMax(11, MotorType.kBrushless);
   private final SparkMax pivotRight = new SparkMax(12, MotorType.kBrushless);
-  private final Encoder pivotEncoder = new Encoder(4, 5);
+  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(4);
   private final SparkMaxConfig config = new SparkMaxConfig();
 
   public IntakeSubsystem() {
@@ -26,6 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
+        
     intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
     pivotLeft.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
     pivotRight.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -58,8 +59,21 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(0);
   }
 
+  public void deployIntake() {
+    rotateDown();
+  }
+
+  public void retractIntake() {
+    rotateUp();
+  }
+
+  public double getPivotAbsolutePosition() {
+    return pivotEncoder.get();
+  }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Pivot Position", pivotEncoder.getDistance());
+    SmartDashboard.putNumber("Pivot Absolute Pos", getPivotAbsolutePosition());
+    SmartDashboard.putBoolean("Pivot Encoder Connected", pivotEncoder.isConnected());
   }
 }
