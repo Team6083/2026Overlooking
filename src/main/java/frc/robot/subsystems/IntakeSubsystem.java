@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
@@ -16,10 +16,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     config.inverted(false)
-          .smartCurrentLimit(30)
-          .idleMode(IdleMode.kBrake);
+        .smartCurrentLimit(30)
+        .idleMode(IdleMode.kBrake);
 
-    
     intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
   }
 
@@ -27,12 +26,24 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(0.5);
   }
 
-  public void reverseIntake() {
+ private void reverseIntake() {
     intakeMotor.set(-0.5);
   }
 
-  public void stopIntake() {
+  private void stopIntake() {
     intakeMotor.set(0);
+  }
+
+  private void rotateUp() {
+    // Placeholder for rotate up logic
+  }
+
+  private void rotateDown() {
+    // Placeholder for rotate down logic
+  }
+
+  private void stopRotate() {
+    // Placeholder for stop rotate logic
   }
 
   @Override
