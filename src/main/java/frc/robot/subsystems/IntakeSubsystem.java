@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -15,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
   private final SparkMax pivotLeft = new SparkMax(11, MotorType.kBrushless);
   private final SparkMax pivotRight = new SparkMax(12, MotorType.kBrushless);
-
+  private final Encoder pivotEncoder = new Encoder(4, 5);
   private final SparkMaxConfig config = new SparkMaxConfig();
 
   public IntakeSubsystem() {
@@ -23,9 +26,10 @@ public class IntakeSubsystem extends SubsystemBase {
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
-    intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotLeft.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotRight.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // 使用簡化後的 configure 方法，移除過時的參數
+    intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
+    pivotLeft.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
+    pivotRight.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
   }
 
   public void intake() {
@@ -57,6 +61,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+    SmartDashboard.putNumber("Pivot Position", pivotEncoder.getDistance());
   }
 }
