@@ -5,73 +5,38 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 
 public class IntakeSubsystem extends SubsystemBase {
-    SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
-    SparkMaxConfig config = new SparkMaxConfig();
-    Joystick driverJoystick = new Joystick(0);
+  private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
+  private final SparkMaxConfig config = new SparkMaxConfig();
 
   public IntakeSubsystem() {
     config.inverted(false)
           .smartCurrentLimit(30)
           .idleMode(IdleMode.kBrake);
-    intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    
+    intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
   }
 
-  private void intake() {
-  
+  public void intake() {
+    intakeMotor.set(0.5);
   }
 
-  private void reverseIntake() {
+  public void reverseIntake() {
     intakeMotor.set(-0.5);
   }
 
-  private void stopIntake() {
-    intakeMotor.set(0);
-  }
-
-  private void rotateUp() {
-   intakeMotor.set(0.5);
-  }
-
-  private void rotateDown() {
-   intakeMotor.set(-0.5);
-  }
-
-  private void stopRotate() {
+  public void stopIntake() {
     intakeMotor.set(0);
   }
 
   @Override
   public void periodic() {
-    
-    if (driverJoystick.getRawButton(2)) {
-            rotateUp();
-        } 
-        else if (driverJoystick.getRawButton(3)) {
-            rotateDown();
-        } 
-        else {
-            stopRotate();
-
-       //
-    if (driverJoystick.getRawButton(4)) {
-            intake();
-        } 
-        else if (driverJoystick.getRawButton(5)) {
-            reverseIntake();
-        } 
-        else {
-            stopIntake();
-        }     
-    }
-
+    // 這裡維持空白，或僅放 Sensor 數據更新
   }
 }
