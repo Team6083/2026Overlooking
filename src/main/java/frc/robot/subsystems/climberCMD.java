@@ -13,8 +13,10 @@ public class climberCMD extends Command {
   public enum ClimberAction {
     L1, L2, UP, DOWN
   }
-   ClimberSubsystem climberSubsystem;
-   ClimberAction action;
+
+  ClimberSubsystem climberSubsystem;
+  ClimberAction action;
+
   public climberCMD(ClimberSubsystem climberSubsystem, ClimberAction action) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climberSubsystem=climberSubsystem;
@@ -30,20 +32,21 @@ public class climberCMD extends Command {
         climberSubsystem.toLowRung();
         break;
       case L2:
-         climberSubsystem.toMidRung();
+        climberSubsystem.toMidRung();
         break;
       case UP:
         climberSubsystem.climbUp();
         break;
       case DOWN:
-         climberSubsystem.climbDown();
+        climberSubsystem.climbDown();
         break;
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
