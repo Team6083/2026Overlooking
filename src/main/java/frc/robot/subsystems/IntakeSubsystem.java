@@ -4,50 +4,59 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(10, MotorType.kBrushless);
   private final SparkMaxConfig config = new SparkMaxConfig();
 
+  
   public IntakeSubsystem() {
     config.inverted(false)
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
-    intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
+    intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
+  
   public void intake() {
     intakeMotor.set(0.5);
   }
 
- private void reverseIntake() {
+  
+  public void reverseIntake() {
     intakeMotor.set(-0.5);
   }
 
-  private void stopIntake() {
+  
+  public void stopIntake() {
     intakeMotor.set(0);
   }
 
-  private void rotateUp() {
-    // Placeholder for rotate up logic
+  public void rotateUp() {
+    intakeMotor.set(0.2);
   }
 
-  private void rotateDown() {
-    // Placeholder for rotate down logic
+  
+  public void rotateDown() {
+    intakeMotor.set(-0.2);
   }
 
-  private void stopRotate() {
-    // Placeholder for stop rotate logic
+  
+  public void stopRotate() {
+    intakeMotor.set(0);
   }
 
   @Override
   public void periodic() {
-    // 這裡維持空白，或僅放 Sensor 數據更新
+    
   }
 }
