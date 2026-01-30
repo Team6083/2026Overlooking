@@ -12,7 +12,15 @@ public class RobotContainer {
     configureBindings();
   }
   
-    double testABCD;
+    	public String toUri() {
+		return protocol + "://" + host + "/" + path;
+	}
+
+	// ...
+
+	public String toURI() {
+		return toUri();
+	}
 
   private void configureBindings() {}
 
