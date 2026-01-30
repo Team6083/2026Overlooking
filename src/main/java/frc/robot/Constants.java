@@ -14,7 +14,7 @@ public class Constants {
     public static final double kD = 0.0;
     public static final double minOutput = -1.0;
     public static final double maxOutput = 1.0;
-    public static final int currentLimit = 40;
+    public static final int currentLimit = 30;
 
   }
 }
