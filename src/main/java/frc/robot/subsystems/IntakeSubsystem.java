@@ -51,7 +51,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
     if (driverJoystick.getRawButton(2)) {
             rotateUp();
         } 
@@ -60,7 +60,17 @@ public class IntakeSubsystem extends SubsystemBase {
         } 
         else {
             stopRotate();
-            
+
+       //
+    if (driverJoystick.getRawButton(4)) {
+            intake();
+        } 
+        else if (driverJoystick.getRawButton(5)) {
+            reverseIntake();
+        } 
+        else {
+            stopIntake();
+        }     
     }
 
   }
