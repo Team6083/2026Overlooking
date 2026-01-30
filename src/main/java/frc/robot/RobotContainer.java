@@ -11,6 +11,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
   }
+  
+  double testAbcd;
 
   private void configureBindings() {}
 
