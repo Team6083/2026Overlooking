@@ -26,7 +26,6 @@ public class IntakeSubsystem extends SubsystemBase {
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
-    // 使用簡化後的 configure 方法，移除過時的參數
     intakeMotor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
     pivotLeft.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
     pivotRight.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
