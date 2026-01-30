@@ -36,23 +36,23 @@ public class ClimberSubsystem extends SubsystemBase {
         .smartCurrentLimit(ClimberConstants.currentLimit);
   }
 
-  private void toLowRung() {
+  public void toLowRung() {
     closedLoopController.setSetpoint(L1position, ControlType.kPosition);
   }
 
-  private void toMidRung() {
+  public void toMidRung() {
     closedLoopController.setSetpoint(L2position, ControlType.kPosition);
   }
 
-  private void climbUp() {
+  public void climbUp() {
     climberMotor.set(motorSpeed);
   }
 
-  private void climbDown() {
+  public void climbDown() {
     climberMotor.set(-motorSpeed);
   }
 
-  private void stopClimb() {
+  public void stopClimb() {
     climberMotor.set(0);
 
   }
