@@ -12,7 +12,7 @@ public class RobotContainer {
     configureBindings();
   }
   
-  double testAbcd;
+  double testABCD;
 
   private void configureBindings() {}
 
