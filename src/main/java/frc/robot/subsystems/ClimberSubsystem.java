@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
-
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -19,7 +18,10 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
-  public enum ClimberAction{UP,DOWN,L1,L2}
+  public enum ClimberAction {
+    UP, DOWN, L1, L2
+  }
+
   private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
   private final SparkClosedLoopController closedLoopController = climberMotor.getClosedLoopController();
   private static final double L1position = 25;
