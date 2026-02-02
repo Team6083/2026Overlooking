@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
   public RobotContainer() {
-    
     configureBindings();
   }
 

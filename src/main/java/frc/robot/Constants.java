@@ -9,11 +9,11 @@ public class Constants {
 
   public static class ClimberConstants {
     public static final int motorId = 0;
-    public static final double kP = 0.0;
+    public static final double kP = 0.01;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
-    public static final double minOutput = -1.0;
-    public static final double maxOutput = 1.0;
+    public static final double minOutput = -0.3;
+    public static final double maxOutput = 0.3;
     public static final int currentLimit = 30;
 
   }
