@@ -6,9 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.lib.TagTracking;
 
 public class RobotContainer {
+  private final TagTracking m_shooterTracker = new TagTracking("limelight-shooter");
+
   public RobotContainer() {
+    
+
     configureBindings();
   }
 

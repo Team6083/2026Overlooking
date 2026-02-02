@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-/** Add your docs here. */
-public class Constants {
-
+public final class Constants {
+    public static final class VisionConstants {
+        public static final String limelightName = "limelight";
+    }
 }

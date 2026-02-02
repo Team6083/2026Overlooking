@@ -4,22 +4,48 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.lib.TagTracking;
+import frc.robot.lib.VisionTelemetry;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private final RobotContainer m_robotContainer;
+
+  private TagTracking shooterTracker;
+  private VisionTelemetry visionTelemetry;
+
+  private final Alert m_visionAlert = new Alert("Limelight 視覺系統關閉", AlertType.kWarning);
+
+  private Timer gcTimer = new Timer();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    shooterTracker = new TagTracking();
+    visionTelemetry = new VisionTelemetry(shooterTracker);
+    gcTimer.start();
+  }
+
+  @Override
+  public void robotInit() {
+    SmartDashboard.setDefaultBoolean("disableLimelight", false);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("matchTime", DriverStation.getMatchTime());
+    boolean isDisabled = SmartDashboard.getBoolean("disableLimelight", false);
+    shooterTracker.setDisabled(isDisabled); 
+    m_visionAlert.set(isDisabled);
+    visionTelemetry.update();
   }
 
   @Override
@@ -32,7 +58,7 @@ public class Robot extends TimedRobot {
   public void disabledExit() {}
 
   @Override
-  public void autonomousInit() {
+  public void autonomousInit() {    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
