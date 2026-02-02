@@ -20,6 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax pivotRight = new SparkMax(12, MotorType.kBrushless);
   private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(4);
 
+  
   @SuppressWarnings("removal")
   public IntakeSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
