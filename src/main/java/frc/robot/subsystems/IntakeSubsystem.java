@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -19,18 +19,16 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax pivotLeft = new SparkMax(11, MotorType.kBrushless);
   private final SparkMax pivotRight = new SparkMax(12, MotorType.kBrushless);
   private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(4);
-
   
-  @SuppressWarnings("removal")
   public IntakeSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(false)
         .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
-    intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    pivotLeft.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    pivotRight.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    intakeMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    pivotLeft.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    pivotRight.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public void intake() {
@@ -74,8 +72,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     SmartDashboard.putNumber("intakemotorspeed", intakeMotor.get());
-    SmartDashboard.putNumber("Pivot Absolute Pos", getPivotAbsolutePosition());
-    SmartDashboard.putBoolean("Pivot Encoder Connected", pivotEncoder.isConnected());
+    SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
+    SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
   }
 }
