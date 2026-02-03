@@ -6,12 +6,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
@@ -23,74 +24,92 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
-  private final SparkClosedLoopController closedLoopController = climberMotor.getClosedLoopController();
+  private final PIDController climberPID = new PIDController(
+      ClimberConstants.kP, ClimberConstants.kI, ClimberConstants.kD);
+  private final DutyCycleEncoder climberEncoder = new DutyCycleEncoder(1, 360, 0);
   private static final double L1position = 25;
   private static final double L2position = 50;
-  private static final double motorSpeed = 0.5;
 
   public ClimberSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
-
-    config.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(ClimberConstants.kP)
-        .i(ClimberConstants.kI)
-        .d(ClimberConstants.kD)
-        .outputRange(ClimberConstants.minOutput, ClimberConstants.maxOutput);
     config
         .idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake)
         .smartCurrentLimit(ClimberConstants.currentLimit);
 
     climberMotor.configure(
         config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    climberMotor.getEncoder().setPosition(0);
   }
 
   public void toLowRung() {
-    closedLoopController.setSetpoint(L1position, ControlType.kPosition);
+    climberPID.setSetpoint(L1position);
   }
 
   public void toMidRung() {
-    closedLoopController.setSetpoint(L2position, ControlType.kPosition);
+    climberPID.setSetpoint(L2position);
   }
 
   public void climbUp() {
-    climberMotor.set(motorSpeed);
+    climberPID.setSetpoint(climberEncoder.get() + 5);
   }
 
   public void climbDown() {
-    climberMotor.set(-motorSpeed);
+    climberPID.setSetpoint(climberEncoder.get() + 10);
   }
 
-  public void stopClimb() {
-    climberMotor.set(0);
+  public void toHome() {
+    climberPID.setSetpoint(0);
+  }
+
+  public void resetEncoder() {
+    climberMotor.getEncoder().setPosition(0);
+    climberPID.reset();
+    climberPID.setSetpoint(0);
   }
 
   public Command toLowRungCmd() {
-    Command cmd = this.runEnd(() -> toLowRung(), () -> stopClimb());
+    Command cmd = this.runEnd(() -> toLowRung(), () -> toHome());
     cmd.setName("toLowRungCmd");
     return cmd;
   }
 
   public Command toMidRungCmd() {
-    Command cmd = this.runEnd(() -> toMidRung(), () -> stopClimb());
+    Command cmd = this.runEnd(() -> toMidRung(), () -> toHome());
     cmd.setName("toMidRungCmd");
     return cmd;
   }
 
   public Command climbUpCmd() {
-    Command cmd = this.runEnd(() -> climbUp(), () -> stopClimb());
+    Command cmd = this.runEnd(() -> climbUp(), () -> toHome());
     cmd.setName("climbUpCmd");
     return cmd;
   }
 
   public Command climbDownCmd() {
-    Command cmd = this.runEnd(() -> climbDown(), () -> stopClimb());
+    Command cmd = this.runEnd(() -> climbDown(), () -> toHome());
     cmd.setName("climbDownCmd");
+    return cmd;
+  }
+
+  public Command stopClimbCmd() {
+    Command cmd = this.runOnce(() -> this.toHome());
+    cmd.setName("toHomeCmd");
+    return cmd;
+  }
+
+  public Command resetEncoderCmd() {
+    Command cmd = this.runOnce(() -> this.resetEncoder());
+    cmd.setName("resetEncoderCmd");
     return cmd;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    double measurement = MathUtil.clamp(climberEncoder.get(), -0.3, 0.3);
+    climberMotor.set(climberPID.calculate(measurement));
+    SmartDashboard.putNumber("Climber/Position", climberEncoder.get());
+    SmartDashboard.putNumber("Climber/Target", climberPID.getSetpoint());
   }
 }
