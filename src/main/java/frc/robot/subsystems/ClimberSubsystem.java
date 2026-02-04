@@ -19,16 +19,11 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
-  public enum ClimberAction {
-    UP, DOWN, L1, L2
-  }
 
   private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
   private final PIDController climberPID = new PIDController(
       ClimberConstants.kP, ClimberConstants.kI, ClimberConstants.kD);
   private final DutyCycleEncoder climberEncoder = new DutyCycleEncoder(1, 360, 0);
-  private static final double L1position = 25;
-  private static final double L2position = 50;
 
   public ClimberSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
@@ -42,19 +37,19 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void toLowRung() {
-    climberPID.setSetpoint(L1position);
+    climberPID.setSetpoint(ClimberConstants.L1position);
   }
 
   public void toMidRung() {
-    climberPID.setSetpoint(L2position);
+    climberPID.setSetpoint(ClimberConstants.L2position);
   }
 
   public void climbUp() {
-    climberPID.setSetpoint(climberEncoder.get() + 5);
+    climberPID.setSetpoint(climberEncoder.get() + 10);
   }
 
   public void climbDown() {
-    climberPID.setSetpoint(climberEncoder.get() + 10);
+    climberPID.setSetpoint(climberEncoder.get() - 10);
   }
 
   public void toHome() {
@@ -68,31 +63,31 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public Command toLowRungCmd() {
-    Command cmd = this.runEnd(() -> toLowRung(), () -> toHome());
+    Command cmd = this.runEnd(() -> toLowRung(), () -> climberMotor.set(0));
     cmd.setName("toLowRungCmd");
     return cmd;
   }
 
   public Command toMidRungCmd() {
-    Command cmd = this.runEnd(() -> toMidRung(), () -> toHome());
+    Command cmd = this.runEnd(() -> toMidRung(), () -> climberMotor.set(0));
     cmd.setName("toMidRungCmd");
     return cmd;
   }
 
   public Command climbUpCmd() {
-    Command cmd = this.runEnd(() -> climbUp(), () -> toHome());
+    Command cmd = this.runEnd(() -> climbUp(), () -> climberMotor.set(0));
     cmd.setName("climbUpCmd");
     return cmd;
   }
 
   public Command climbDownCmd() {
-    Command cmd = this.runEnd(() -> climbDown(), () -> toHome());
+    Command cmd = this.runEnd(() -> climbDown(), () -> climberMotor.set(0));
     cmd.setName("climbDownCmd");
     return cmd;
   }
 
   public Command stopClimbCmd() {
-    Command cmd = this.runOnce(() -> this.toHome());
+    Command cmd = this.runOnce(() -> this.climberMotor.set(0));
     cmd.setName("toHomeCmd");
     return cmd;
   }
@@ -107,7 +102,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    double measurement = MathUtil.clamp(climberEncoder.get(), -0.3, 0.3);
+    double measurement = MathUtil.clamp(climberEncoder.get(), -1.0, 1.0);
     climberMotor.set(climberPID.calculate(measurement));
     SmartDashboard.putNumber("Climber/Position", climberEncoder.get());
     SmartDashboard.putNumber("Climber/Target", climberPID.getSetpoint());

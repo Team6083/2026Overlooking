@@ -12,9 +12,9 @@ public class Constants {
     public static final double kP = 0.01;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
-    public static final double minOutput = -0.3;
-    public static final double maxOutput = 0.3;
-    public static final int currentLimit = 30;
+    public static final int currentLimit = 80;
+    public static final double L1position = 25;
+    public static final double L2position = 50;
 
   }
 }
