@@ -33,7 +33,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
     climberMotor.configure(
         config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    climberMotor.getEncoder().setPosition(0);
   }
 
   public void toLowRung() {
@@ -93,7 +92,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public Command resetEncoderCmd() {
-    Command cmd = this.runOnce(() -> this.resetEncoder());
+    Command cmd = this.runOnce(() -> resetEncoder());
     cmd.setName("resetEncoderCmd");
     return cmd;
   }
@@ -102,9 +101,11 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    double measurement = MathUtil.clamp(climberEncoder.get(), -1.0, 1.0);
-    climberMotor.set(climberPID.calculate(measurement));
-    SmartDashboard.putNumber("Climber/Position", climberEncoder.get());
-    SmartDashboard.putNumber("Climber/Target", climberPID.getSetpoint());
+    double currentPosition = climberEncoder.get();
+    double pidOutput = climberPID.calculate(currentPosition);
+    double limitedOutput = MathUtil.clamp(pidOutput, -0.5, 0.5);
+    climberMotor.set(limitedOutput);
+    SmartDashboard.putNumber("climberPosition", climberEncoder.get());
+    SmartDashboard.putNumber("climberTarget", climberPID.getSetpoint());
   }
 }
