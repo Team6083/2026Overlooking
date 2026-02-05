@@ -83,8 +83,11 @@ jobs:
       uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
   checkstyle:
-    name: runner / checkstyle
+
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
     - uses: actions/checkout@v4
     - uses: dbelyaev/action-checkstyle@master
