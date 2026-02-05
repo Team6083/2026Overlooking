@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
   VictorSP motorspeed = new VictorSP(0);
-  
+
   public TransportSubsystem() {}
 
   private void transportIn() {
