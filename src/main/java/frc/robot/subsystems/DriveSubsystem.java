@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleSupplier;
+
+import com.studica.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -24,6 +27,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new SwerveDrive. */
   private final SwerveDrive swerveDrive;
+  private final AHRS gyro;
 
   StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("MyPose", Pose2d.struct).publish();
@@ -53,6 +57,9 @@ public class DriveSubsystem extends SubsystemBase {
     swerveDrive.setModuleEncoderAutoSynchronize(true, 1);
     swerveDrive.setChassisDiscretization(false, 0.02);
     swerveDrive.setMotorIdleMode(true);
+
+    gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+    gyro.reset();
   }
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
@@ -91,9 +98,9 @@ public class DriveSubsystem extends SubsystemBase {
     return cmd;
   }
 
-  public Command zeroGyroCmd() {
-    Command cmd = runOnce(() -> swerveDrive.zeroGyro());
-    cmd.setName("resetOdomestry");
+  public Command resetGyroCmd() {
+    Command cmd = runOnce(() -> resetOdometry(new Pose2d(getPose2d().getTranslation(), new Rotation2d(0))));
+    cmd.setName("resetGyroCmd");
     return cmd;
   }
 
@@ -112,7 +119,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("gyroHeading", getHeading().getDegrees());
+    SmartDashboard.putNumber("gyroHeading", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putBoolean("GyroIsConnected", gyro.isConnected());
     Pose2d currentPose = getPose2d();
     poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
