@@ -15,6 +15,8 @@ public class Constants {
     public static final int currentLimit = 80;
     public static final double L1position = 25;
     public static final double L2position = 50;
+    public static final int encoderChannel = 1;
+    public static final int manualSwitchChannel = 2;
 
   }
 }

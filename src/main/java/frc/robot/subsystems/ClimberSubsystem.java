@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +24,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax climberMotor = new SparkMax(ClimberConstants.motorId, MotorType.kBrushless);
   private final PIDController climberPID = new PIDController(
       ClimberConstants.kP, ClimberConstants.kI, ClimberConstants.kD);
-  private final DutyCycleEncoder climberEncoder = new DutyCycleEncoder(1, 360, 0);
+  private final DutyCycleEncoder climberEncoder = new DutyCycleEncoder(ClimberConstants.encoderChannel, 360, 0);
+  private final DigitalInput manualSwitch = new DigitalInput(ClimberConstants.manualSwitchChannel);
 
   public ClimberSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
@@ -36,19 +38,33 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void toLowRung() {
+    if (manualSwitch.get())
+      return;
     climberPID.setSetpoint(ClimberConstants.L1position);
   }
 
   public void toMidRung() {
+    if (manualSwitch.get())
+      return;
     climberPID.setSetpoint(ClimberConstants.L2position);
   }
 
   public void climbUp() {
-    climberPID.setSetpoint(climberEncoder.get() + 10);
+    if (manualSwitch.get()) {
+      climberMotor.set(0.3);
+    } else {
+      climberPID.setSetpoint(climberEncoder.get() + 10);
+    }
+
   }
 
   public void climbDown() {
-    climberPID.setSetpoint(climberEncoder.get() - 10);
+    if (manualSwitch.get()) {
+      climberMotor.set(-0.3);
+    } else {
+      climberPID.setSetpoint(climberEncoder.get() - 10);
+    }
+
   }
 
   public void toHome() {
@@ -59,6 +75,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotor.getEncoder().setPosition(0);
     climberPID.reset();
     climberPID.setSetpoint(0);
+
   }
 
   public Command toLowRungCmd() {
@@ -86,7 +103,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public Command stopClimbCmd() {
-    Command cmd = this.runOnce(() -> this.climberMotor.set(0));
+    Command cmd = this.runOnce(() -> climberMotor.set(0));
     cmd.setName("toHomeCmd");
     return cmd;
   }
@@ -100,11 +117,21 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    boolean isManualMode = manualSwitch.get();
+    if (isManualMode) {
+      SmartDashboard.putString("climberStatus", "manualMode");
+    } else {
+      double currentPosition = climberEncoder.get();
+      double pidOutput = climberPID.calculate(currentPosition);
+      double limitedOutput = MathUtil.clamp(pidOutput, -0.5, 0.5);
+      if (climberPID.atSetpoint()) {
+        climberMotor.set(0);
+      } else {
+        climberMotor.set(limitedOutput);
+      }
 
-    double currentPosition = climberEncoder.get();
-    double pidOutput = climberPID.calculate(currentPosition);
-    double limitedOutput = MathUtil.clamp(pidOutput, -0.5, 0.5);
-    climberMotor.set(limitedOutput);
+    }
+
     SmartDashboard.putNumber("climberPosition", climberEncoder.get());
     SmartDashboard.putNumber("climberTarget", climberPID.getSetpoint());
   }
