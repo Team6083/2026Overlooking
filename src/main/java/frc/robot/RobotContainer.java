@@ -8,6 +8,7 @@ import java.io.File;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -23,15 +24,17 @@ public class RobotContainer {
     driveSubsystem = new DriveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
     configureBindings();
+    magnification = 0.4;
   }
 
   private void configureBindings() {
-    magnification = mainController.leftBumper().getAsBoolean() ? 0.5 : 0.25;
     driveSubsystem.setDefaultCommand(
         driveSubsystem.driveCommand(
             () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * magnification,
             () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * magnification,
             () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * magnification));
+    mainController.button(8).whileTrue(driveSubsystem.centerModulesCmd());
+    mainController.button(7).whileTrue(driveSubsystem.resetGyroCmd());
   }
 
   public Command getAutonomousCommand() {
