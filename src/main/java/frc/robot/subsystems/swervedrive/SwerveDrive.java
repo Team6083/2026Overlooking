@@ -11,15 +11,16 @@ import java.util.function.Supplier;
 
 /** Add your docs here. */
 public interface SwerveDrive extends Subsystem {
-    void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
+  void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
-    void zeroGyro();
+  void zeroGyro();
 
-    Command driveCommand(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
+  Command driveCommand(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
-    Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY, Supplier<Double> angularRotationX, boolean fieldRelative);
+  Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
+      Supplier<Double> angularRotationX, boolean fieldRelative);
 
-    Command zeroGyroCommand();
+  Command zeroGyroCommand();
 
-    Pose2d getPose();
+  Pose2d getPose();
 }
