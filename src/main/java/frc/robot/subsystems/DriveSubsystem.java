@@ -100,7 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Command centerModulesCmd() {
-    Command cmd = run(() -> Arrays.asList(swerveDrive.getModules())
+    Command cmd = runOnce(() -> Arrays.asList(swerveDrive.getModules())
         .forEach(it -> it.setAngle(0.0)));
     cmd.setName("centerModulesCmd");
     return cmd;
