@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleSupplier;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -31,6 +32,10 @@ public class DriveSubsystem extends SubsystemBase {
       .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish();
 
   private final List<Pose2d> poseHistory = new ArrayList<>();
+
+  private final SlewRateLimiter xLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter yLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
   public DriveSubsystem(File directory) {
     var alliance = DriverStation.getAlliance();
@@ -60,9 +65,10 @@ public class DriveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
       DoubleSupplier angularRotationX) {
     Command cmd = run(() -> swerveDrive.drive(new Translation2d(
-        translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-        translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
-        Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity(),
+        xLimiter.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
+        yLimiter.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
+        rotLimiter
+            .calculate(Math.pow(angularRotationX.getAsDouble(), 3)) * swerveDrive.getMaximumChassisAngularVelocity(),
         true, false));
     return cmd;
   }
@@ -89,7 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command resetOdometryCmd(Pose2d initialHolonomicPose) {
     Command cmd = runOnce(() -> swerveDrive.resetOdometry(initialHolonomicPose));
-    cmd.setName("resetOdomestry");
+    cmd.setName("resetOdometry");
     return cmd;
   }
 
