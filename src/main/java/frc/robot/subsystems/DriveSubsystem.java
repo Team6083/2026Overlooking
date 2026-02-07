@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleSupplier;
-
-import com.studica.frc.AHRS;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -119,8 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     var gyro = swerveDrive.getGyro().getIMU();
     boolean gyroIsConnected = false;
- if (gyro instanceof com.studica.frc.AHRS) {
-        gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
+    if (gyro instanceof com.studica.frc.AHRS) {
+      gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
     }
 
     SmartDashboard.putNumber("gyroHeading", getGyroHeading());
