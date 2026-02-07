@@ -4,13 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,9 +26,10 @@ public class ClimberSubsystem extends SubsystemBase {
   private final PIDController climberPID = new PIDController(
       ClimberConstants.kP, ClimberConstants.kI, ClimberConstants.kD);
   private final DutyCycleEncoder climberEncoder = new DutyCycleEncoder(ClimberConstants.encoderChannel, 360, 0);
-  private final DigitalInput manualSwitch = new DigitalInput(ClimberConstants.manualSwitchChannel);
+  private final BooleanSupplier manualModeSupplier;
 
-  public ClimberSubsystem() {
+  public ClimberSubsystem(BooleanSupplier manualModeSupplier) {
+    this.manualModeSupplier = manualModeSupplier;
     SparkMaxConfig config = new SparkMaxConfig();
     config
         .idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake)
@@ -38,19 +40,19 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void toLowRung() {
-    if (manualSwitch.get())
+    if (manualModeSupplier.getAsBoolean())
       return;
     climberPID.setSetpoint(ClimberConstants.L1position);
   }
 
   public void toMidRung() {
-    if (manualSwitch.get())
+    if (manualModeSupplier.getAsBoolean())
       return;
     climberPID.setSetpoint(ClimberConstants.L2position);
   }
 
   public void climbUp() {
-    if (manualSwitch.get()) {
+    if (manualModeSupplier.getAsBoolean()) {
       climberMotor.set(0.3);
     } else {
       climberPID.setSetpoint(climberEncoder.get() + 10);
@@ -59,7 +61,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climbDown() {
-    if (manualSwitch.get()) {
+    if (manualModeSupplier.getAsBoolean()) {
       climberMotor.set(-0.3);
     } else {
       climberPID.setSetpoint(climberEncoder.get() - 10);
@@ -79,25 +81,25 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public Command toLowRungCmd() {
-    Command cmd = this.runEnd(() -> toLowRung(), () -> climberMotor.set(0));
+    Command cmd = this.runOnce(() -> toLowRung());
     cmd.setName("toLowRungCmd");
     return cmd;
   }
 
   public Command toMidRungCmd() {
-    Command cmd = this.runEnd(() -> toMidRung(), () -> climberMotor.set(0));
+    Command cmd = this.runOnce(() -> toMidRung());
     cmd.setName("toMidRungCmd");
     return cmd;
   }
 
   public Command climbUpCmd() {
-    Command cmd = this.runEnd(() -> climbUp(), () -> climberMotor.set(0));
+    Command cmd = this.run(() -> climbUp()).finallyDo(() -> climberMotor.set(0));
     cmd.setName("climbUpCmd");
     return cmd;
   }
 
   public Command climbDownCmd() {
-    Command cmd = this.runEnd(() -> climbDown(), () -> climberMotor.set(0));
+    Command cmd = this.run(() -> climbDown()).finallyDo(() -> climberMotor.set(0));
     cmd.setName("climbDownCmd");
     return cmd;
   }
@@ -117,7 +119,7 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    boolean isManualMode = manualSwitch.get();
+    boolean isManualMode = manualModeSupplier.getAsBoolean();
     if (isManualMode) {
       SmartDashboard.putString("climberStatus", "manualMode");
     } else {
