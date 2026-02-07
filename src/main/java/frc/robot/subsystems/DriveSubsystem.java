@@ -122,9 +122,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("gyroHeading", getGyroHeading());
     SmartDashboard.putBoolean("GyroIsConnected", gyroIsConnected);
+
     Pose2d currentPose = getPose2d();
     poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
+    if (poseHistory.size() > 50) {
+      poseHistory.remove(0);
+    }
     arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
     SwerveDriveTelemetry.updateData();
   }
