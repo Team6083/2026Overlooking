@@ -27,7 +27,6 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new SwerveDrive. */
   private final SwerveDrive swerveDrive;
-  private final AHRS gyro;
 
   StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("MyPose", Pose2d.struct).publish();
@@ -58,8 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
     swerveDrive.setChassisDiscretization(false, 0.02);
     swerveDrive.setMotorIdleMode(true);
 
-    gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    gyro.reset();
+    swerveDrive.zeroGyro();
   }
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
@@ -72,16 +70,16 @@ public class DriveSubsystem extends SubsystemBase {
     return cmd;
   }
 
-  public void resetOdometry(Pose2d initialHolonomicPose) {
-    swerveDrive.resetOdometry(initialHolonomicPose);
-  }
-
   public Pose2d getPose2d() {
     return swerveDrive.getPose();
   }
 
-  public Rotation2d getHeading() {
-    return getPose2d().getRotation();
+  public double getGyroHeading() {
+    double gyroHeading = swerveDrive.getYaw().getDegrees() % 360;
+    if (gyroHeading < 0) {
+      gyroHeading += 360;
+    }
+    return gyroHeading;
   }
 
   public ChassisSpeeds getFieldVelocity() {
@@ -93,13 +91,13 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Command resetOdomestryCmd(Pose2d initialHolonomicPose) {
-    Command cmd = runOnce(() -> resetOdometry(initialHolonomicPose));
+    Command cmd = runOnce(() -> swerveDrive.resetOdometry(initialHolonomicPose));
     cmd.setName("resetOdomestry");
     return cmd;
   }
 
   public Command resetGyroCmd() {
-    Command cmd = runOnce(() -> resetOdometry(new Pose2d(getPose2d().getTranslation(), new Rotation2d(0))));
+    Command cmd = runOnce(() -> swerveDrive.zeroGyro());
     cmd.setName("resetGyroCmd");
     return cmd;
   }
@@ -119,8 +117,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("gyroHeading", gyro.getRotation2d().getDegrees());
-    SmartDashboard.putBoolean("GyroIsConnected", gyro.isConnected());
+    var gyro = swerveDrive.getGyro().getIMU();
+    boolean gyroIsConnected = false;
+ if (gyro instanceof com.studica.frc.AHRS) {
+        gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
+    }
+
+    SmartDashboard.putNumber("gyroHeading", getGyroHeading());
+    SmartDashboard.putBoolean("GyroIsConnected", gyroIsConnected);
     Pose2d currentPose = getPose2d();
     poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
