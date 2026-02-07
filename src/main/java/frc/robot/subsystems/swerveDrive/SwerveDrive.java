@@ -4,7 +4,23 @@
 
 package frc.robot.subsystems.swerveDrive;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+
 /** Add your docs here. */
-public interface SwerveDrive {
-    void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative);   
+public interface SwerveDrive extends Subsystem {
+    void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative);
+
+    void zeroGyro();
+
+    Command driveCommand(double xSpeed, double ySpeed, double rot, boolean fieldRelative);
+
+    Command driveCommand(Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rot, boolean fieldRelative);
+
+    Command zeroGyroCommand();
+
+    Pose2d getPose();
 }
