@@ -24,15 +24,20 @@ public class RobotContainer {
     driveSubsystem = new DriveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
     configureBindings();
-    magnification = 0.4;
+  }
+
+  private double getMagnification() {
+    magnification = mainController.leftBumper().getAsBoolean() ? 0.5 : 0.3;
+    return magnification;
   }
 
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(
+
         driveSubsystem.driveCommand(
-            () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * magnification,
-            () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * magnification,
-            () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * magnification));
+            () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * getMagnification(),
+            () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * getMagnification(),
+            () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * getMagnification()));
     mainController.button(8).whileTrue(driveSubsystem.centerModulesCmd());
     mainController.button(7).whileTrue(driveSubsystem.resetGyroCmd());
   }
