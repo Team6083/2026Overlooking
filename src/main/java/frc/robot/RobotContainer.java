@@ -32,7 +32,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(
-
         driveSubsystem.driveCommand(
             () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * getMagnification(),
             () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * getMagnification(),

@@ -87,7 +87,7 @@ public class DriveSubsystem extends SubsystemBase {
     return swerveDrive.getRobotVelocity();
   }
 
-  public Command resetOdomestryCmd(Pose2d initialHolonomicPose) {
+  public Command resetOdometryCmd(Pose2d initialHolonomicPose) {
     Command cmd = runOnce(() -> swerveDrive.resetOdometry(initialHolonomicPose));
     cmd.setName("resetOdomestry");
     return cmd;
