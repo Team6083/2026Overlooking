@@ -9,11 +9,11 @@ import frc.robot.lib.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class VisionSwerveAutoCmd extends Command {
-  private Vision Vision;
+  private Vision vision;
 
   /** Creates a new VisionSwerveAutoCmd. */
   public VisionSwerveAutoCmd(Vision vision) {
-    this.Vision = vision;
+    this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
