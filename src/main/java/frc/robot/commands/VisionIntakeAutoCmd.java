@@ -12,12 +12,12 @@ import frc.robot.lib.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class VisionIntakeAutoCmd extends Command {
-  private IntakeSubsystem IntakeSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private Vision Vision;
 
   /** Creates a new VisionIntakeAutoCmd. */
   public VisionIntakeAutoCmd(IntakeSubsystem intakeSubsystem, Vision vision) {
-    this.IntakeSubsystem = intakeSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
     this.Vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakeSubsystem);
@@ -32,9 +32,9 @@ public class VisionIntakeAutoCmd extends Command {
   @Override
   public void execute() {
     if (Vision.getYVisionSet() > 0.5) {
-      // IntakeSubsystem.intake(); // Move right
+      intakeSubsystem.intake(); // Move right
     } else if (Vision.getYVisionSet() < -0.5) {
-      // IntakeSubsystem.stopIntake(); // stop
+      intakeSubsystem.stopIntake(); // stop
     }
   }
 
