@@ -4,17 +4,20 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class VisionSwerveAutoCmd extends Command {
   private Vision vision;
-
+  private SwerveDrive swerveDrive;
   /** Creates a new VisionSwerveAutoCmd. */
-  public VisionSwerveAutoCmd(Vision vision) {
+  public VisionSwerveAutoCmd(SwerveDrive swerveDrive, Vision vision) {
+    this.swerveDrive = swerveDrive;
     this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -26,9 +29,9 @@ public class VisionSwerveAutoCmd extends Command {
   @Override
   public void execute() {
     if (vision.getVisionX() > 0.2) {
-      // Move right
+      swerveDrive.drive(0.5, 0, 0, true); // Move right
     } else if (vision.getVisionX() < -0.2) {
-      // Move left
+      swerveDrive.drive(-0.5, 0, 0, true); // Move left
     }
 
   }
