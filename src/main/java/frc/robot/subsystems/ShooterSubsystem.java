@@ -6,38 +6,43 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {
-  }
-
   private final VictorSPX shooterMotor = new VictorSPX(ShooterConstants.shooterMotorID);
   private final Encoder shooterEncoder = new Encoder(ShooterConstants.encoderChannelA,
       ShooterConstants.encoderChannelB);
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
       ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
+  public ShooterSubsystem() {
+    shooterEncoder.setDistancePerPulse((double) 1 / 2048);
+  }
+
   private void setShooterVoltage(double voltage) {
     shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
-
   }
 
   private void shoot() {
     double targetVelocity = ShooterConstants.targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
-    shooterMotor.set(ControlMode.PercentOutput, feedforwardVoltage);
+    setShooterVoltage(feedforwardVoltage);
   }
 
   private void stopShooter() {
-    shooterMotor.set(0);
+    shooterMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  private double getShooterVelocity() {
+    return shooterEncoder.getRate();
+  }
+
+  private boolean isShooterAtSpeed() {
+    return getShooterVelocity() >= ShooterConstants.targetVelocity;
   }
 
   @Override
