@@ -4,26 +4,27 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TransportConstants;
 
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
-  PWMVictorSPX transportMotor = new PWMVictorSPX(TransportConstants.transportMotorID);
+  VictorSPX transportMotor = new VictorSPX(TransportConstants.transportMotorID);
 
   public TransportSubsystem() {}
 
   private void transportIn() {
-    transportMotor.set(TransportConstants.transportMotorIn);
+    transportMotor.set(ControlMode.PercentOutput,TransportConstants.transportMotorIn);;
   }
 
   private void transportOut() {
-    transportMotor.set(TransportConstants.transportMotorOut);
+    transportMotor.set(ControlMode.PercentOutput,TransportConstants.transportMotorOut);
   }
 
   private void stopTransport() {
-    transportMotor.stopMotor();
+    transportMotor.set(ControlMode.PercentOutput,0);
   }
 
   @Override
