@@ -40,11 +40,10 @@ public class AutoAlignCmd extends Command {
     }
 
     lostTargetFrames = 0;
-    double yawOutput = yawPID.calculate(vision.getTx(), 0);
+    double yawOutput = yawPID.calculate(vision.get3dYaw(), 0);
     yawOutput = MathUtil.clamp(yawOutput, -0.5, 0.5);
     double distOutput = distPID.calculate(vision.get3dTz(), VisionConstants.idealDistance);
     distOutput = MathUtil.clamp(distOutput, -VisionConstants.maxForwardSpeed, VisionConstants.maxForwardSpeed);
-
     m_drive.drive(distOutput, 0, yawOutput, false);
   }
 
