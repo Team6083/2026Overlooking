@@ -6,13 +6,13 @@ package frc.robot;
 
 /** Add your docs here. */
 public class Constants {
-    public static final class DriveBaseConstant {
-        //turningMotor ID
-        public static final int leftFrontTurningMotorId = 23;
+  public static final class DriveBaseConstant {
+    //turningMotor ID
+    public static final int leftFrontTurningMotorId = 23;
 
-        //driveMotor ID
-        public static final int leftFrontDriveMotorId = 24;
-    }
+    //driveMotor ID
+    public static final int leftFrontDriveMotorId = 24;
+  }
 
 
 
