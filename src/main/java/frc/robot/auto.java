@@ -4,18 +4,47 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
+
 
 /** Add your docs here. */
 public class auto {
+
+    RobotConfig config ;
+    
     public static void configureAutoBuilder(SwerveDrive drivetrain) {
-        try {
-            // 1. 讀取 GUI 設定 (這行一定要包在 try-catch 裡)
+
+          try {
+
             RobotConfig config = RobotConfig.fromGUISettings();
+
+            AutoBuilder.configure(
+                drivetrain::getPose,                // 現在位置
+                drivetrain::resetPose,              // 重設位置
+                drivetrain::getRobotRelativeSpeeds, // 現在速度
+                
+                (speeds, feedforwards) -> drivetrain.driveRobotRelative(speeds), 
+                
+                new PPHolonomicDriveController(
+                    new PIDConstants(0.0, 0.0, 0.0), 
+                    new PIDConstants(0.0, 0.0, 0.0)
+                ),
+                config,
+                () -> {
+                    var alliance = DriverStation.getAlliance();
+                    return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+                },
+                drivetrain // 這裡雖然傳入介面，但執行時會是真正的 Subsystem
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-            catch (Exception e) {
-            // 2. 處理讀取設定時可能發生的例外
-            e.printStackTrace();        
-            }
-        }
+    }
 }
