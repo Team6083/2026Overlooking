@@ -16,23 +16,23 @@ import frc.robot.drivebase.SwerveModule;
 
 public class RobotContainer {
   private final SwerveDrive swerveDrive = new SwerveDrive();
-  private final SwerveModule m_testModule = swerveDrive.m_testModule;
-  private final CommandXboxController m_driverController = new CommandXboxController(0);
+  private final SwerveModule testModule = swerveDrive.testModule;
+  private final CommandXboxController driverController = new CommandXboxController(0);
 
   public RobotContainer() {
     configureBindings();
 
-    m_testModule.setDefaultCommand(
+    testModule.setDefaultCommand(
         new RunCommand(() -> {
-          double speed = -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.1) * 2.0;
+          double speed = -MathUtil.applyDeadband(driverController.getLeftY(), 0.1) * 2.0;
 
           Rotation2d angle = Rotation2d.fromDegrees(
-                MathUtil.applyDeadband(m_driverController.getRightX(), 0.1) * 180
+                MathUtil.applyDeadband(driverController.getRightX(), 0.1) * 180
             );
 
           SwerveModuleState desiredState = new SwerveModuleState(speed, angle);
-          m_testModule.setDesiredState(desiredState);
-        }, m_testModule) 
+          testModule.setDesiredState(desiredState);
+        }, testModule) 
     );
   }
 
