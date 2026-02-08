@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule extends SubsystemBase {
     SparkMax turningMotor;
@@ -27,12 +28,12 @@ public class SwerveModule extends SubsystemBase {
         driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
         canCoder = new CANcoder(canCoderId);
 
-        pid = new PIDController(4.5, 0, 0.1);
+        pid = new PIDController(0.5, 0, 0);
         pid.enableContinuousInput(-Math.PI, Math.PI);
 
         offset = canCoderOffset;
     }
-    private double getAngleRadians() {
+    public double getAngleRadians() {
         double angle = canCoder.getAbsolutePosition()
                        .getValue()
                        .in(Units.Radians)
@@ -44,6 +45,8 @@ public class SwerveModule extends SubsystemBase {
 
         desiredState.optimize(currentAngle);
         SwerveModuleState optimized = desiredState;
+
+        SmartDashboard.putNumber("optimize", desiredState.angle.getRadians());
 
         double turnOutput = pid.calculate(
             currentAngle.getRadians(),
