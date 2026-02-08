@@ -65,7 +65,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     SmartDashboard.putNumber("intakeMotorSpeed", intakeMotor.get());
     SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
