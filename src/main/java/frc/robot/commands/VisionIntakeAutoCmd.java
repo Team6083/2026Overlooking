@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.lib.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.lib.Vision;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -30,9 +30,9 @@ public class VisionIntakeAutoCmd extends Command {
   @Override
   public void execute() {
     if (vision.getVisionY() > 0.5) {
-      //intakeSubsystem.intake(); // intake 
+      // intakeSubsystem.intake(); // intake
     } else if (vision.getVisionY() < -0.5) {
-      //intakeSubsystem.stopIntake(); // stop
+      // intakeSubsystem.stopIntake(); // stop
     }
   }
 
