@@ -73,6 +73,12 @@ public class DriveSubsystem extends SubsystemBase {
     return cmd;
   }
 
+  public Command driveCommand(double xSpeed, double ySpeed,
+      double rotSpeed, boolean fieldRelative) {
+    Command cmd = run(() -> swerveDrive.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, fieldRelative, false));
+    return cmd;
+  }
+
   public Pose2d getPose2d() {
     return swerveDrive.getPose();
   }
