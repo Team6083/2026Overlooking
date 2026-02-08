@@ -15,9 +15,7 @@ public final class Constants {
     // ---------------------------------- Intake Motor Speeds ----------------------------------
     public static final double intakeSpeed = 0.5;
     public static final double reverseIntakeSpeed = -0.5;
-    public static final double stopIntakeSpeed = 0.0;
     public static final double pivotSpeed = 0.2;
     public static final double reversePivotSpeed = -0.2;
-    public static final double stopPivotSpeed = 0.0;
   }
 }

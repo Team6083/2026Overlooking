@@ -42,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void stopIntake() {
-    intakeMotor.set(IntakeConstants.stopIntakeSpeed);
+    intakeMotor.set(0);
   }
 
   public void rotateUp() {
@@ -56,8 +56,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void stopRotate() {
-    pivotLeft.set(IntakeConstants.stopPivotSpeed);
-    pivotRight.set(IntakeConstants.stopPivotSpeed);
+    pivotLeft.set(0);
+    pivotRight.set(0);
   }
 
   public void deployIntake() {
