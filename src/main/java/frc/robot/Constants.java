@@ -5,5 +5,4 @@
 package frc.robot;
 
 /** Add your docs here. */
-public class Constants {
-}
+public class Constants {}
