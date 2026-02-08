@@ -2,8 +2,8 @@ package frc.robot.drivebase;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import edu.wpi.first.math.MathUtil;
 import com.ctre.phoenix6.hardware.CANcoder;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
