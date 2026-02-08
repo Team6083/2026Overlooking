@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
   /** Creates a new SwerveDrive. */
-  public SwerveModule testModule = new SwerveModule(
+  public SwerveModule m_testModule = new SwerveModule(
       23, 24, 34, 0.928711, true, false);
 
   public SwerveDrive() {
@@ -17,9 +17,9 @@ public class SwerveDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("angle", testModule.getAngleRadians());
-    SmartDashboard.putData(testModule.pid);
-    SmartDashboard.putNumber("motorOutput", testModule.turningMotor.get());
+    SmartDashboard.putNumber("angle", m_testModule.getAngleRadians());
+    SmartDashboard.putData(m_testModule.pid);
+    SmartDashboard.putNumber("motorOutput", m_testModule.turningMotor.get());
     // This method will be called once per scheduler run
   }
 }
