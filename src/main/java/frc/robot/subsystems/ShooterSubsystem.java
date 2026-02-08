@@ -5,28 +5,35 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+  }
 
-  private final SparkMax shooter = new SparkMax(0, null);
+  private final VictorSPX shooterMotor = new VictorSPX(ShooterConstants.shooterMotorID);
+  private final Encoder shooterEncoder = new Encoder(ShooterConstants.encoderChannelA, ShooterConstants.encoderChannelB);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs, ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
+
 
   private void shoot() {
-    shooter.set(0.6);
+    //shooterMotor.set(ShooterConstants.shooterMotorSpeed);
+    double targetVelocity = 4000;
+    double feedforwardVoltage = feedforward.calculate(targetVelocity);
+    shooterMotor.set();
   }
-  
 
-
-  private void feed() {
-
-  }
-  
   private void stopShooter() {
-    shooter.set(0);
-
+    shooterMotor.set(0);
   }
 
   @Override
