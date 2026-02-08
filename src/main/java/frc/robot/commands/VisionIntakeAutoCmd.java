@@ -32,7 +32,7 @@ public class VisionIntakeAutoCmd extends Command {
   @Override
   public void execute() {
     if (Vision.getYVisionSet() > 0.5) {
-      //intakeSubsystem.intake(); // Move right
+      //intakeSubsystem.intake(); // intake 
     } else if (Vision.getYVisionSet() < -0.5) {
       //intakeSubsystem.stopIntake(); // stop
     }
