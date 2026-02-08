@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.driveBase.SwerveDrive;
-import frc.robot.driveBase.SwerveModule;
+import frc.robot.drivebase.SwerveDrive;
+import frc.robot.drivebase.SwerveModule;
 
 public class RobotContainer {
   private final SwerveDrive swerveDrive = new SwerveDrive();
