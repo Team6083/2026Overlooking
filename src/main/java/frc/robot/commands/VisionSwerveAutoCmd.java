@@ -4,9 +4,9 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.swervedrive.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.Vision;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class VisionSwerveAutoCmd extends Command {
