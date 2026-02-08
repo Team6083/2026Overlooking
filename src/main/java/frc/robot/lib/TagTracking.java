@@ -6,14 +6,13 @@ package frc.robot.lib;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Constants.VisionConstants;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
   private boolean disabled = false;
 
   public TagTracking() {
-    this(VisionConstants.limelightName);
+    this("limelight");
   }
 
   public TagTracking(String name) {

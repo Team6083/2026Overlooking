@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
@@ -18,10 +17,10 @@ public class AutoAlignCmd extends Command {
   public AutoAlignCmd(TagTracking vision, SwerveDrive drive) {
     this.vision = vision;
     this.drive = drive;
-    this.yawPID = new PIDController(VisionConstants.yawP, 0, 0);
-    yawPID.setTolerance(VisionConstants.yawTolerance);
-    this.distPID = new PIDController(VisionConstants.distP, 0, 0);
-    distPID.setTolerance(VisionConstants.distanceTolerance);
+    this.yawPID = new PIDController(0.05, 0, 0);
+    yawPID.setTolerance(1.5);
+    this.distPID = new PIDController(0.05, 0, 0);
+    distPID.setTolerance(0.15);
     addRequirements(drive);
   }
   
@@ -42,14 +41,14 @@ public class AutoAlignCmd extends Command {
     lostTargetFrames = 0;
     double yawOutput = yawPID.calculate(vision.get3dYaw(), 0);
     yawOutput = MathUtil.clamp(yawOutput, -0.5, 0.5);
-    double distOutput = distPID.calculate(vision.get3dTz(), VisionConstants.idealDistance);
-    distOutput = MathUtil.clamp(distOutput, -VisionConstants.maxForwardSpeed, VisionConstants.maxForwardSpeed);
+    double distOutput = distPID.calculate(vision.get3dTz(), 1.2);
+    distOutput = MathUtil.clamp(distOutput, -0.4, 0.4);
     drive.drive(distOutput, 0, yawOutput, false);
   }
 
   @Override
   public boolean isFinished() {
-    if (lostTargetFrames >= VisionConstants.maxLostFrames) {
+    if (lostTargetFrames >= 10) {
       return true;
     }
     return yawPID.atSetpoint() && distPID.atSetpoint();
