@@ -13,6 +13,11 @@ public class VisionSwerveAutoCmd extends Command {
   private Vision vision;
   private SwerveDrive swerveDrive;
 
+  private int currentLockedId = -1;
+
+  private final double KP_TURN = 0.6;
+  private final double KP_DRIVE = 0.5;
+
   /** Creates a new VisionSwerveAutoCmd. */
   public VisionSwerveAutoCmd(SwerveDrive swerveDrive, Vision vision) {
     this.swerveDrive = swerveDrive;
@@ -24,22 +29,55 @@ public class VisionSwerveAutoCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    currentLockedId = -1;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.getVisionX() > 0.2) {
-      swerveDrive.drive(0, 0, 0.5, false); // Move right
-    } else if (vision.getVisionX() < -0.2) {
-      swerveDrive.drive(0, 0, -0.5, false); // Move left
+    double[] targetData = null;
+    
+  if (currentLockedId == -1) {
+    // 回傳格式是 {x, y, id}
+    double[] newTarget = vision.getClosestBallWithId();
+    if (newTarget != null) {
+        currentLockedId = (int) newTarget[2]; // 鎖定這顆球的 ID！
+        System.out.println("鎖定新目標 ID: " + currentLockedId);
+    } else {
+        // 完全沒球，原地停車或原地旋轉搜尋
+        swerveDrive.drive(0, 0, 0, false); // 停止
+        return;
     }
-
+    targetData = vision.getBallById(currentLockedId);
+    if (targetData == null) {
+      double[] rescueTarget = vision.getNextClosestBall(currentLockedId);
+        
+        if (rescueTarget != null) {
+            currentLockedId = (int) rescueTarget[2]; // 無縫切換到新球
+            System.out.println("快速切換到 ID: " + currentLockedId);
+            // 遞迴呼叫自己或是直接下一輪再處理，這裡簡單起見下一輪再跑
+        } else {
+            // 真的一顆球都沒了
+            currentLockedId = -1; // 重置狀態
+            swerveDrive.drive(0, 0, 0, false); // 停止
+        }
+        return; // 這一輪先結束
+    }
+    double tx = targetData[0]; 
+    double ty = targetData[1];
+    double turnOutput = tx * KP_TURN;
+    double driveOutput = (0.9 - ty) * KP_DRIVE;
+    if (driveOutput > 0.6) driveOutput = 0.3;
+    if (driveOutput < -0.6) driveOutput = -0.3;
+    swerveDrive.drive(driveOutput, 0, -turnOutput, false);
+  }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    swerveDrive.drive(0, 0, 0, false);
+    System.out.println("停止追球。");
   }
 
   // Returns true when the command should end.
