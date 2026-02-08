@@ -25,7 +25,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(false)
-        .smartCurrentLimit(30)
         .idleMode(IdleMode.kBrake);
 
     intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -75,7 +74,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("intakemotorspeed", intakeMotor.get());
+    SmartDashboard.putNumber("intakeMotorSpeed", intakeMotor.get());
     SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
   }
