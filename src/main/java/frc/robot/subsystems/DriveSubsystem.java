@@ -99,9 +99,9 @@ public class DriveSubsystem extends SubsystemBase {
     return swerveDrive.getRobotVelocity();
   }
 
-  public Command resetGyroCmd() {
+  public Command zeroGyroCmd() {
     Command cmd = runOnce(() -> swerveDrive.zeroGyro());
-    cmd.setName("resetGyroCmd");
+    cmd.setName("zeroGyroCmd");
     return cmd;
   }
 

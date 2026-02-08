@@ -37,7 +37,7 @@ public class RobotContainer {
             () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * getMagnification(),
             () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * getMagnification()));
     mainController.button(8).whileTrue(driveSubsystem.centerModulesCmd());
-    mainController.button(7).whileTrue(driveSubsystem.resetGyroCmd());
+    mainController.button(7).whileTrue(driveSubsystem.zeroGyroCmd());
   }
 
   public Command getAutonomousCommand() {
