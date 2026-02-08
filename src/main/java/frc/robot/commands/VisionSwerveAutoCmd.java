@@ -12,6 +12,7 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 public class VisionSwerveAutoCmd extends Command {
   private Vision vision;
   private SwerveDrive swerveDrive;
+
   /** Creates a new VisionSwerveAutoCmd. */
   public VisionSwerveAutoCmd(SwerveDrive swerveDrive, Vision vision) {
     this.swerveDrive = swerveDrive;
