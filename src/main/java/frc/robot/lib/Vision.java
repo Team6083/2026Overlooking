@@ -1,7 +1,7 @@
 package frc.robot.lib;
 
-import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.IntegerArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -89,26 +89,29 @@ public class Vision {
     }
     return null;
   }
+
   public double[] getClosestBallWithId() {
     long[] ids = allIdsSub.get();
     double[] xs = allXsSub.get();
     double[] ys = allYsSub.get();
 
-    if (ids.length == 0) return null;
+    if (ids.length == 0) {
+      return null;
+    }
 
     int bestIndex = -1;
     double maxScore = -1.0;
 
     for (int i = 0; i < ids.length; i++) {
-        if (ys[i] > maxScore) {  // Y 越大越近
-            maxScore = ys[i];
-            bestIndex = i;
-        }
+      if (ys[i] > maxScore) { // Y 越大越近
+        maxScore = ys[i];
+        bestIndex = i;
+      }
     }
 
     if (bestIndex != -1) {
-        return new double[] { xs[bestIndex], ys[bestIndex], (double)ids[bestIndex] };
+      return new double[] { xs[bestIndex], ys[bestIndex], (double) ids[bestIndex] };
     }
     return null;
-}
+  }
 }
