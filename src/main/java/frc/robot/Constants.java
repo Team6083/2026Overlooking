@@ -6,7 +6,7 @@ package frc.robot;
 
 /** Add your docs here. */
 public class Constants {
-    public static final class IntakeConstants {
+  public static final class IntakeConstants {
     public static final int intakeMotorId = 10;
     public static final int pivotLeftId = 11;
     public static final int pivotRightId = 12;
