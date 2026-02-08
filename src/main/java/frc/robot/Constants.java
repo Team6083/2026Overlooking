@@ -6,7 +6,7 @@ package frc.robot;
 
 /** Add your docs here. */
 public class Constants {
-    public class ShooterConstants{
+    public static final class ShooterConstants {
         public static final int shooterMotorID = 0;
         public static final double shooterMotorSpeed = 0.6;
         public static final double feedforwardKs = 0;
