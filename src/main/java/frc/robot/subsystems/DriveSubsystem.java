@@ -55,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
     swerveDrive.setHeadingCorrection(false);
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
-    swerveDrive.setModuleEncoderAutoSynchronize(true, 1);
+    swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
     swerveDrive.setChassisDiscretization(false, 0.02);
     swerveDrive.setMotorIdleMode(true);
 
@@ -68,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
         xLimiter.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
         yLimiter.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
         rotLimiter
-            .calculate(Math.pow(angularRotationX.getAsDouble(), 3)) * swerveDrive.getMaximumChassisAngularVelocity(),
+            .calculate(angularRotationX.getAsDouble()) * swerveDrive.getMaximumChassisAngularVelocity(),
         true, false));
     return cmd;
   }
@@ -127,7 +127,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     SmartDashboard.putNumber("gyroHeading", getGyroHeading());
-    SmartDashboard.putBoolean("GyroIsConnected", gyroIsConnected);
+    SmartDashboard.putBoolean("gyroIsConnected", gyroIsConnected);
 
     Pose2d currentPose = getPose2d();
     poseHistory.add(currentPose);
