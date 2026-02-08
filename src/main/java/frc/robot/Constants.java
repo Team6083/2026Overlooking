@@ -6,7 +6,7 @@ package frc.robot;
 
 /** Add your docs here. */
 public class Constants {
-    public class TransportConstant{
+    public static class TransportConstant {
         public static final int transportMotorID = 0;
         public static final double transportMotorIn = 0;
         public static final double transportMotorOut = 0;
