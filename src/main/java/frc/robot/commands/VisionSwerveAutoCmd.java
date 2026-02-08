@@ -25,9 +25,9 @@ public class VisionSwerveAutoCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.getXVisionSet() > 0.2) {
+    if (vision.getVisionX() > 0.2) {
       // Move right
-    } else if (vision.getXVisionSet() < -0.2) {
+    } else if (vision.getVisionX() < -0.2) {
       // Move left
     }
 

@@ -4,19 +4,19 @@
 
 package frc.robot.commands;
 
+import frc.robot.lib.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.lib.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class VisionIntakeAutoCmd extends Command {
   private IntakeSubsystem intakeSubsystem;
-  private Vision Vision;
+  private Vision vision;
 
   /** Creates a new VisionIntakeAutoCmd. */
   public VisionIntakeAutoCmd(IntakeSubsystem intakeSubsystem, Vision vision) {
     this.intakeSubsystem = intakeSubsystem;
-    this.Vision = vision;
+    this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakeSubsystem);
   }
@@ -29,9 +29,9 @@ public class VisionIntakeAutoCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Vision.getYVisionSet() > 0.5) {
+    if (vision.getVisionY() > 0.5) {
       //intakeSubsystem.intake(); // intake 
-    } else if (Vision.getYVisionSet() < -0.5) {
+    } else if (vision.getVisionY() < -0.5) {
       //intakeSubsystem.stopIntake(); // stop
     }
   }
