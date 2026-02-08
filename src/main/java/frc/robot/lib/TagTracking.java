@@ -10,7 +10,7 @@ import frc.robot.Constants.VisionConstants;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
-  private boolean m_disabled = false;
+  private boolean disabled = false;
 
   public TagTracking() {
     this(VisionConstants.limelightName);
@@ -21,7 +21,7 @@ public class TagTracking {
   }
 
   public double getTv() {
-    if (m_disabled) return 0;
+    if (disabled) return 0;
     return limelightTable.getEntry("tv").getDouble(0);
   }
 
@@ -73,6 +73,6 @@ public class TagTracking {
   }
 
   public void setDisabled(boolean disabled) {
-    this.m_disabled = disabled;
+    this.disabled = disabled;
   }
 }
