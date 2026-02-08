@@ -74,8 +74,9 @@ public class Vision {
     int bestIndex = -1;
 
     for (int i = 0; i < ids.length; i++) {
-      if (ids[i] == currentLockedId)
+      if (ids[i] == currentLockedId) {
         continue; // 跳過目前鎖定的那顆
+      }
 
       // 找第二近的 (Y 越大越近)
       if (ys[i] > maxY) {

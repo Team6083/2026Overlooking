@@ -13,8 +13,8 @@ public class VisionSwerveAutoCmd extends Command {
   private Vision vision;
   private SwerveDrive swerveDrive;
   private int currentLockedId = -1;
-  private final double visionTurnKP = 0.6;
-  private final double visionDriveKP = 0.5;
+  private final double visionTurnKp = 0.6;
+  private final double visionDriveKp = 0.5;
 
   /** Creates a new VisionSwerveAutoCmd. */
   public VisionSwerveAutoCmd(SwerveDrive swerveDrive, Vision vision) {
@@ -62,8 +62,8 @@ public class VisionSwerveAutoCmd extends Command {
       }
       double tx = targetData[0];
       double ty = targetData[1];
-      double turnOutput = tx * visionTurnKP;
-      double driveOutput = (0.9 - ty) * visionDriveKP;
+      double turnOutput = tx * visionTurnKp;
+      double driveOutput = (0.9 - ty) * visionDriveKp;
       if (driveOutput > 0.6) {
         driveOutput = 0.3;
       }
