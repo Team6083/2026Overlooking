@@ -25,10 +25,15 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
       ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
+  private void setShooterVoltage(double voltage) {
+    shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
+
+  }
+
   private void shoot() {
     double targetVelocity = ShooterConstants.targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
-    shooterMotor.set();
+    shooterMotor.set(ControlMode.PercentOutput, feedforwardVoltage);
   }
 
   private void stopShooter() {
