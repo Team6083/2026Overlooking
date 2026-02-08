@@ -21,7 +21,9 @@ public class TagTracking {
   }
 
   public double getTv() {
-    if (disabled) return 0;
+    if (disabled) {
+      return 0;
+    }
     return limelightTable.getEntry("tv").getDouble(0);
   }
 
@@ -58,10 +60,13 @@ public class TagTracking {
   }
 
   public boolean isHubTag() {
-    if (!hasTarget()) return false;
+    if (!hasTarget()) {
+      return false;
+    }
     int id = (int) getTid();
-    return (id >= 2 && id <= 5) || (id >= 8 && id <= 11) || 
-           (id >= 18 && id <= 21) || (id >= 24 && id <= 27);
+    return (id >= 2 && id <= 5) || (id >= 8 && id <= 11) 
+            || (id >= 18 && id <= 21) || (id >= 24 && id <= 27);
+           
   }
 
   public void setLedMode(int mode) {
