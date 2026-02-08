@@ -8,10 +8,10 @@ package frc.robot;
 public class Constants {
     public static final class DriveBaseConstant {
         //turningMotor ID
-        public static final int leftFrontTurningMotorId = 0;
+        public static final int leftFrontTurningMotorId = 23;
 
         //driveMotor ID
-        public static final int leftFrontDriveMotorId = 0;
+        public static final int leftFrontDriveMotorId = 24;
     }
 
 
