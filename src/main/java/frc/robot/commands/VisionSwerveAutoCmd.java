@@ -29,9 +29,9 @@ public class VisionSwerveAutoCmd extends Command {
   @Override
   public void execute() {
     if (vision.getVisionX() > 0.2) {
-      swerveDrive.drive(0.5, 0, 0, true); // Move right
+      swerveDrive.drive(0, 0, 0.5, false); // Move right
     } else if (vision.getVisionX() < -0.2) {
-      swerveDrive.drive(-0.5, 0, 0, true); // Move left
+      swerveDrive.drive(0, 0, -0.5, false); // Move left
     }
 
   }
