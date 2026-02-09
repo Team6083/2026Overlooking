@@ -33,8 +33,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final List<Pose2d> poseHistory = new ArrayList<>();
 
-  private final SlewRateLimiter xAxisLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter yAxisLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter limiterX = new SlewRateLimiter(3);
+  private final SlewRateLimiter limiterY = new SlewRateLimiter(3);
   private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
   public DriveSubsystem(File directory) {
@@ -65,18 +65,18 @@ public class DriveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
       DoubleSupplier angularRotationX) {
     Command cmd = run(() -> swerveDrive.drive(new Translation2d(
-        xAxisLimiter.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
-        yAxisLimiter.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
+        limiterX.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
+        limiterY.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
         rotLimiter
             .calculate(angularRotationX.getAsDouble()) * swerveDrive.getMaximumChassisAngularVelocity(),
         true, false));
     return cmd;
   }
 
-  public Command driveCommand(double xVelocity, double yVelocity,
-      double rotVelocity, boolean fieldRelative) {
+  public Command driveCommand(double speedX, double speedY,
+      double rotSpeed, boolean fieldRelative) {
     Command cmd = run(
-        () -> swerveDrive.drive(new Translation2d(xVelocity, yVelocity), rotVelocity, fieldRelative, false));
+        () -> swerveDrive.drive(new Translation2d(speedX, speedY), rotSpeed, fieldRelative, false));
     return cmd;
   }
 
