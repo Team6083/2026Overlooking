@@ -29,7 +29,7 @@ public class auto {
                 drivetrain::resetPose,              // 重設位置
                 drivetrain::getRobotRelativeSpeeds, // 現在速度
                 
-                (speeds, feedforwards) -> drivetrain.driveRobotRelative(speeds), 
+                (speeds, feedforwards) -> drivetrain.driveRobotRelative(speeds, feedforwards),
                 
                 new PPHolonomicDriveController(
                     new PIDConstants(0.0, 0.0, 0.0), 
@@ -40,7 +40,8 @@ public class auto {
                     var alliance = DriverStation.getAlliance();
                     return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
                 },
-                drivetrain // 這裡雖然傳入介面，但執行時會是真正的 Subsystem
+                drivetrain 
+
             );
 
         } catch (Exception e) {
