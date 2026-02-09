@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SwerveYAGSL;
 import java.io.File;
 
 public class RobotContainer {
-  private final DriveSubsystem driveSubsystem;
+  private final SwerveYAGSL driveSubsystem;
   private final CommandXboxController mainController;
   private double magnification;
 
   public RobotContainer() {
-    driveSubsystem = new DriveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+    driveSubsystem = new SwerveYAGSL(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
     configureBindings();
   }
