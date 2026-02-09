@@ -21,7 +21,7 @@ public interface SwerveDrive extends Subsystem {
   Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
       Supplier<Double> angularRotationX, boolean fieldRelative);
 
-  Command driveCommand(ChassisSpeeds speeds);
+  void driveCommand(ChassisSpeeds speeds);
 
   Command zeroGyroCommand();
 
