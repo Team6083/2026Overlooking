@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorId, MotorType.kBrushless);
   private final SparkMax pivotLeft = new SparkMax(IntakeConstants.pivotLeftId, MotorType.kBrushless);
   private final SparkMax pivotRight = new SparkMax(IntakeConstants.pivotRightId, MotorType.kBrushless);
-  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId);
+  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId, IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
 
   public IntakeSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
