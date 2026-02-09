@@ -30,9 +30,9 @@ public class VisionIntakeAutoCmd extends Command {
   @Override
   public void execute() {
     if (vision.getVisionY() > 0.6) {
-      // intakeSubsystem.intake(); // intake
+      intakeSubsystem.intake(); // intake
     } else if (vision.getVisionY() < -0.6) {
-      // intakeSubsystem.stopIntake(); // stop
+      intakeSubsystem.stopIntake(); // stop
     }
   }
 
