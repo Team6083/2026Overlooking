@@ -22,7 +22,7 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
-public class SwerveYAGSL extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
+public class SwerveYagsl extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
   private final SwerveDrive swerveDrive;
 
@@ -37,7 +37,7 @@ public class SwerveYAGSL extends SubsystemBase implements frc.robot.subsystems.s
   private final SlewRateLimiter limiterY = new SlewRateLimiter(3);
   private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
-  public SwerveYAGSL(File directory) {
+  public SwerveYagsl(File directory) {
     var alliance = DriverStation.getAlliance();
     boolean blueAlliance = alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Blue : true;
     Pose2d startingPose = blueAlliance ? new Pose2d(new Translation2d(1, 4),
