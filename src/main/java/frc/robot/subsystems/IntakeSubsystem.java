@@ -44,17 +44,17 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(0);
   }
 
-  public void retract() {
+  public void rotateUp() {
     pivotLeft.set(IntakeConstants.pivotSpeed);
     pivotRight.set(-IntakeConstants.pivotSpeed);
   }
 
-  public void deployintake() {
+  public void rotateDown() {
     pivotLeft.set(IntakeConstants.reversePivotSpeed);
     pivotRight.set(-IntakeConstants.reversePivotSpeed);
   }
 
-  public void stopRotate() {
+  public void rotateStop() {
     pivotLeft.set(0);
     pivotRight.set(0);
   }
