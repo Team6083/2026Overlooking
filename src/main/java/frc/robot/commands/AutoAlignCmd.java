@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
@@ -14,6 +14,7 @@ public class AutoAlignCmd extends Command {
   private final PIDController yawPID;
   private final PIDController distPID; 
   private final Debouncer targetDebouncer;
+  private boolean isTargetValid;
 
   public AutoAlignCmd(TagTracking vision, SwerveDrive drive) {
     this.vision = vision;
@@ -34,8 +35,8 @@ public class AutoAlignCmd extends Command {
 
   @Override
   public void execute() {
-    boolean hasValidTarget = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
-    if (!hasValidTarget) {
+    isTargetValid = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
+    if (!isTargetValid) {
       drive.drive(0, 0, 0, false);
       return;
     }
@@ -49,8 +50,7 @@ public class AutoAlignCmd extends Command {
 
   @Override
   public boolean isFinished() {
-    boolean persistentTarget = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
-    if (!persistentTarget) {
+    if (!isTargetValid) {
       return true;
     }
     return yawPID.atSetpoint() && distPID.atSetpoint();
