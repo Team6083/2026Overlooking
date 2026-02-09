@@ -20,15 +20,26 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorId, MotorType.kBrushless);
   private final SparkMax pivotLeft = new SparkMax(IntakeConstants.pivotLeftId, MotorType.kBrushless);
   private final SparkMax pivotRight = new SparkMax(IntakeConstants.pivotRightId, MotorType.kBrushless);
-  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId, IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
+  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId,
+      IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
 
   public IntakeSubsystem() {
-    SparkMaxConfig config = new SparkMaxConfig();
-    config.idleMode(IdleMode.kBrake);
+    SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
+    intakeMotorConfig
+        .idleMode(IdleMode.kBrake);
 
-    intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotLeft.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotRight.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig pivotLeftConfig = new SparkMaxConfig();
+    pivotLeftConfig
+        .idleMode(IdleMode.kBrake);
+
+    SparkMaxConfig pivotRightConfig = new SparkMaxConfig();
+    pivotRightConfig
+        .idleMode(IdleMode.kBrake)
+        .inverted(true);
+
+    intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotLeft.configure(pivotLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotRight.configure(pivotRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void intake() {
@@ -45,12 +56,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void retract() {
     pivotLeft.set(IntakeConstants.pivotSpeed);
-    pivotRight.set(-IntakeConstants.pivotSpeed);
+    pivotRight.set(IntakeConstants.pivotSpeed);
   }
 
   public void deployintake() {
     pivotLeft.set(IntakeConstants.reversePivotSpeed);
-    pivotRight.set(-IntakeConstants.reversePivotSpeed);
+    pivotRight.set(IntakeConstants.reversePivotSpeed);
   }
 
   public void stopRotate() {
