@@ -70,6 +70,11 @@ public class SwerveYagsl extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
+  public void drive(ChassisSpeeds speeds) {
+    swerveDrive.drive(speeds);
+  }
+
+  @Override
   public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
       Supplier<Double> angularRotationX, boolean fieldRelative) {
     Command cmd = run(() -> swerveDrive.drive(new Translation2d(

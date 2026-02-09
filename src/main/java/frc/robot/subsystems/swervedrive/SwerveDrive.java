@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 public interface SwerveDrive extends Subsystem {
   void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
+  void drive(ChassisSpeeds speeds);
+
   void zeroGyro();
 
   Command driveCommand(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
