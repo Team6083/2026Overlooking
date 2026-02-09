@@ -10,16 +10,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.SwerveYagsl;
+import frc.robot.subsystems.ShooterSubsystem;
 import java.io.File;
 
 public class RobotContainer {
   private final SwerveYagsl driveSubsystem;
   private final CommandXboxController mainController;
   private double magnification;
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   public RobotContainer() {
     driveSubsystem = new SwerveYagsl(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
+  
     configureBindings();
   }
 
@@ -36,8 +39,16 @@ public class RobotContainer {
             () -> (MathUtil.applyDeadband(mainController.getRightX(), 0.1) * getMagnification()),
             true));
     mainController.button(8).onTrue(driveSubsystem.zeroGyroCommand());
+    mainController.a().toggleOnTrue(setShooterCommand());
   }
 
+  public Command setShooterCommand() {
+    return Commands.startEnd(
+      shooter::shoot,
+      shooter::stopShooter,
+      shooter
+    );
+  }
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }

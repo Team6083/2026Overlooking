@@ -27,13 +27,13 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
   }
 
-  private void shoot() {
+  public void shoot() {
     double targetVelocity = ShooterConstants.targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
     setShooterVoltage(feedforwardVoltage);
   }
 
-  private void stopShooter() {
+  public void stopShooter() {
     shooterMotor.set(ControlMode.PercentOutput, 0);
   }
 
