@@ -26,7 +26,7 @@ public class RobotContainer {
   }
 
   private double getMagnification() {
-    magnification = mainController.leftBumper().getAsBoolean() ? 0.5 : 0.3;
+    magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
     return magnification;
   }
 
@@ -36,8 +36,7 @@ public class RobotContainer {
             () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * getMagnification(),
             () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * getMagnification(),
             () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * getMagnification()));
-    mainController.button(8).whileTrue(driveSubsystem.centerModulesCmd());
-    mainController.button(7).whileTrue(driveSubsystem.zeroGyroCmd());
+    mainController.button(8).onTrue(driveSubsystem.zeroGyroCmd());
   }
 
   public Command getAutonomousCommand() {
