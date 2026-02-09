@@ -1,10 +1,5 @@
 package frc.robot.subsystems;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,6 +12,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.DoubleSupplier;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -33,8 +33,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final List<Pose2d> poseHistory = new ArrayList<>();
 
-  private final SlewRateLimiter xLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter yLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter xAxisLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter yAxisLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
   public DriveSubsystem(File directory) {
@@ -65,17 +65,18 @@ public class DriveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
       DoubleSupplier angularRotationX) {
     Command cmd = run(() -> swerveDrive.drive(new Translation2d(
-        xLimiter.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
-        yLimiter.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
+        xAxisLimiter.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
+        yAxisLimiter.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
         rotLimiter
             .calculate(angularRotationX.getAsDouble()) * swerveDrive.getMaximumChassisAngularVelocity(),
         true, false));
     return cmd;
   }
 
-  public Command driveCommand(double xSpeed, double ySpeed,
-      double rotSpeed, boolean fieldRelative) {
-    Command cmd = run(() -> swerveDrive.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, fieldRelative, false));
+  public Command driveCommand(double xVelocity, double yVelocity,
+      double rotVelocity, boolean fieldRelative) {
+    Command cmd = run(
+        () -> swerveDrive.drive(new Translation2d(xVelocity, yVelocity), rotVelocity, fieldRelative, false));
     return cmd;
   }
 
