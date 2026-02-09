@@ -24,8 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
-    config.inverted(false)
-        .idleMode(IdleMode.kBrake);
+    config.idleMode(IdleMode.kBrake);
 
     intakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     pivotLeft.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
