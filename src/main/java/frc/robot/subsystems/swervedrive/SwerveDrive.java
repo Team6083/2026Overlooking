@@ -21,6 +21,8 @@ public interface SwerveDrive extends Subsystem {
   Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
       Supplier<Double> angularRotationX, boolean fieldRelative);
 
+  Command driveRobotRelative(ChassisSpeeds speeds);
+
   Command zeroGyroCommand();
 
   Pose2d getPose2d();
