@@ -25,7 +25,7 @@ public class auto {
             RobotConfig config = RobotConfig.fromGUISettings();
 
             AutoBuilder.configure(
-                drivetrain::getPose,                // 現在位置
+                drivetrain::getPose2d,                // 現在位置
                 drivetrain::resetPose,              // 重設位置
                 drivetrain::getRobotRelativeSpeeds, // 現在速度
                 
