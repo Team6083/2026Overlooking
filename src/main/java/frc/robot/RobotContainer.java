@@ -31,10 +31,11 @@ public class RobotContainer {
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(
         driveSubsystem.driveCommand(
-            () -> MathUtil.applyDeadband(-mainController.getLeftY(), 0.1) * getMagnification(),
-            () -> MathUtil.applyDeadband(-mainController.getLeftX(), 0.1) * getMagnification(),
-            () -> MathUtil.applyDeadband(-mainController.getRightX(), 0.1) * getMagnification()));
-    mainController.button(8).onTrue(driveSubsystem.zeroGyroCmd());
+            () -> (MathUtil.applyDeadband(mainController.getLeftY(), 0.1) * getMagnification()),
+            () -> (MathUtil.applyDeadband(mainController.getLeftX(), 0.1) * getMagnification()),
+            () -> (MathUtil.applyDeadband(mainController.getRightX(), 0.1) * getMagnification()),
+            true));
+    mainController.button(8).onTrue(driveSubsystem.zeroGyroCommand());
   }
 
   public Command getAutonomousCommand() {

@@ -16,13 +16,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
   private final SwerveDrive swerveDrive;
 
@@ -62,26 +63,58 @@ public class DriveSubsystem extends SubsystemBase {
     swerveDrive.zeroGyro();
   }
 
-  public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
-      DoubleSupplier angularRotationX) {
+  @Override
+  public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
+    swerveDrive.drive(new Translation2d(translationX, translationY),
+        angularRotationX * swerveDrive.getMaximumChassisAngularVelocity(),
+        fieldRelative, false);
+  }
+
+  @Override
+  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
+      Supplier<Double> angularRotationX, boolean fieldRelative) {
     Command cmd = run(() -> swerveDrive.drive(new Translation2d(
-        limiterX.calculate(translationX.getAsDouble()) * swerveDrive.getMaximumChassisVelocity(),
-        limiterY.calculate(translationY.getAsDouble()) * swerveDrive.getMaximumChassisVelocity()),
-        rotLimiter
-            .calculate(angularRotationX.getAsDouble()) * swerveDrive.getMaximumChassisAngularVelocity(),
-        true, false));
+        -limiterX.calculate(translationX.get()) * swerveDrive.getMaximumChassisVelocity(),
+        -limiterY.calculate(translationY.get()) * swerveDrive.getMaximumChassisVelocity()),
+        -rotLimiter
+            .calculate(angularRotationX.get()) * swerveDrive.getMaximumChassisAngularVelocity(),
+        fieldRelative, false));
     return cmd;
   }
 
-  public Command driveCommand(double speedX, double speedY,
-      double rotSpeed, boolean fieldRelative) {
+  @Override
+  public Command driveCommand(double translationX, double translationY, double angularRotationX,
+      boolean fieldRelative) {
     Command cmd = run(
-        () -> swerveDrive.drive(new Translation2d(speedX, speedY), rotSpeed, fieldRelative, false));
+        () -> this.drive(translationX, translationY, angularRotationX, fieldRelative));
     return cmd;
   }
 
+  @Override
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
+  }
+
+  @Override
   public Pose2d getPose2d() {
     return swerveDrive.getPose();
+  }
+
+  @Override
+  public void resetPose(Pose2d pose) {
+    swerveDrive.resetOdometry(pose);
+  }
+
+  @Override
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return swerveDrive.getRobotVelocity();
+  }
+
+  @Override
+  public Command zeroGyroCommand() {
+    Command cmd = runOnce(() -> this.zeroGyro());
+    cmd.setName("zeroGyroCommand");
+    return cmd;
   }
 
   public double getGyroHeading() {
@@ -90,20 +123,6 @@ public class DriveSubsystem extends SubsystemBase {
       gyroHeading += 360;
     }
     return gyroHeading;
-  }
-
-  public ChassisSpeeds getFieldVelocity() {
-    return swerveDrive.getFieldVelocity();
-  }
-
-  public ChassisSpeeds getRobotVelocity() {
-    return swerveDrive.getRobotVelocity();
-  }
-
-  public Command zeroGyroCmd() {
-    Command cmd = runOnce(() -> swerveDrive.zeroGyro());
-    cmd.setName("zeroGyroCmd");
-    return cmd;
   }
 
   public Command centerModulesCmd() {
