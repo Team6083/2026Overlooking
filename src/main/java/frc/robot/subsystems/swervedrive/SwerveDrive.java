@@ -14,14 +14,14 @@ import java.util.function.Supplier;
 public interface SwerveDrive extends Subsystem {
   void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
+  void drive(ChassisSpeeds speeds);
+
   void zeroGyro();
 
   Command driveCommand(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
   Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
       Supplier<Double> angularRotationX, boolean fieldRelative);
-
-  void driveCommand(ChassisSpeeds speeds);
 
   Command zeroGyroCommand();
 
