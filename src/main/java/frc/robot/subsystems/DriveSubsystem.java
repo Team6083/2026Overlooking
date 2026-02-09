@@ -52,11 +52,11 @@ public class DriveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
 
-    swerveDrive.setHeadingCorrection(false);
+    swerveDrive.setHeadingCorrection(true);
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
-    swerveDrive.setChassisDiscretization(false, 0.02);
+    swerveDrive.setChassisDiscretization(true, 0.02);
     swerveDrive.setMotorIdleMode(true);
 
     swerveDrive.zeroGyro();
