@@ -8,15 +8,19 @@ package frc.robot;
 public class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 10;
-    public static final int pivotLeftId = 11;
-    public static final int pivotRightId = 12;
-    public static final int pivotEncoderId = 4;
-    // ---------------------------------- Intake Motor Speeds
-    // ----------------------------------
+
     public static final double intakeSpeed = 0.5;
     public static final double reverseIntakeSpeed = -0.5;
-    public static final double pivotSpeed = 0.2;
-    public static final double reversePivotSpeed = -0.2;
+
+    public static final int rotateLeftId = 11;
+    public static final int rotateRightId = 12;
+
+    public static final int rotateEncoderId = 4;
+    public static final double rotateFullRange = 360;
+    public static final double rotateExpectedZero = 0;
+
+    public static final double rotateSpeed = 0.2;
+    public static final double reverseRotateSpeed = -0.2;
   }
 
   public static final class ShooterConstants {
