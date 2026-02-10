@@ -12,9 +12,9 @@ import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class shootercomboCmd extends SequentialCommandGroup {
+public class ShooterComboCmd extends SequentialCommandGroup {
   /** Creates a new shootercomboCmd. */
-  public shootercomboCmd(
+  public ShooterComboCmd(
     SwerveDrive drive,
     ShooterSubsystem shooter,
     TransportSubsystem transport
