@@ -15,7 +15,7 @@ import java.io.File;
 public class RobotContainer {
   private final SwerveYagsl driveSubsystem;
   private final CommandXboxController mainController;
-  private double magnification; 
+  private double magnification;
 
   public RobotContainer() {
     driveSubsystem = new SwerveYagsl(new File(Filesystem.getDeployDirectory(), "swerve"));
@@ -37,6 +37,7 @@ public class RobotContainer {
             true));
     mainController.button(8).onTrue(driveSubsystem.zeroGyroCommand());
   }
+
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }

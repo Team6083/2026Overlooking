@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TransportConstants;
@@ -29,7 +28,7 @@ public class TransportSubsystem extends SubsystemBase {
     transportMotor.set(ControlMode.PercentOutput, 0);
   }
 
-  public Command TransportCmd() {
+  public Command transportCmd() {
     Command cmd = runEnd(this::transportIn, this::stopTransport);
     cmd.setName("transport");
     return cmd;
