@@ -19,6 +19,9 @@ public class Constants {
     public static final double pivotFullRange = 360;
     public static final double pivotExpectedZero = 0;
 
+    public static final double pivotDeployStopPosition = 100;
+    public static final double pivotRetractPosition = 0;
+
     public static final double pivotSpeed = 0.2;
     public static final double reversePivotSpeed = -0.2;
   }

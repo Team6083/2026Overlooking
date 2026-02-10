@@ -88,9 +88,33 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command stopIntakeCmd() {
     Command cmd = runOnce(this::stopIntake);
-    cmd.setName("StopIntakeCmd");
+    cmd.setName("stopIntakeCmd");
     return cmd;
   }
+
+  public Command manualDeployIntakeCmd() {
+    Command cmd = runEnd(this::deployintake, this::stopRotate);
+    cmd.setName("manualDeployIntakeCmd");
+    return cmd;
+  }
+
+  public Command deployIntakeCmd() {
+    Command cmd = run(this::deployIntakeCmd).repeatedly()
+        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition)
+        .finallyDo(this::stopRotate);
+        cmd.setName("deployIntakeCmd");
+        return cmd;
+  }
+
+
+  public Command retractIntakeCmd() {
+     Command cmd = run(this::retractIntakeCmd).repeatedly()
+     .until(()-> getPivotAbsolutePosition() > IntakeConstants.pivotRetractPosition)
+     .finallyDo(this::stopRotate);
+     cmd.setName("retractIntakeCmd");
+     return cmd;
+  }
+
 
   @Override
   public void periodic() {
