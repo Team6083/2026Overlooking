@@ -28,9 +28,9 @@ public class TransportSubsystem extends SubsystemBase {
     transportMotor.set(ControlMode.PercentOutput, 0);
   }
 
-  public Command transportCmd() {
+  public Command transportInCmd() {
     Command cmd = runEnd(this::transportIn, this::stopTransport);
-    cmd.setName("transport");
+    cmd.setName("transportInCmd");
     return cmd;
   }
 
