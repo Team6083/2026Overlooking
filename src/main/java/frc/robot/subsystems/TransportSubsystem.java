@@ -17,7 +17,7 @@ public class TransportSubsystem extends SubsystemBase {
 
   public TransportSubsystem() {}
 
-  private void transportIn() {
+  public void transportIn() {
     transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);;
   }
 
