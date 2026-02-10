@@ -30,7 +30,7 @@ public class TransportSubsystem extends SubsystemBase {
   }
 
   public Command TransportCmd() {
-    Command cmd = run(this::transportIn);
+    Command cmd = runEnd(this::transportIn, this::stopTransport);
     cmd.setName("transport");
     return cmd;
   }
