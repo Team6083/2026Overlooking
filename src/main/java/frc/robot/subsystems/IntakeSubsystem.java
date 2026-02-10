@@ -18,10 +18,10 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorId, MotorType.kBrushless);
-  private final SparkMax rotateLeft = new SparkMax(IntakeConstants.rotateLeftId, MotorType.kBrushless);
-  private final SparkMax rotateRight = new SparkMax(IntakeConstants.rotateRightId, MotorType.kBrushless);
-  private final DutyCycleEncoder rotateEncoder = new DutyCycleEncoder(IntakeConstants.rotateEncoderId,
-      IntakeConstants.rotateFullRange, IntakeConstants.rotateExpectedZero);
+  private final SparkMax pivotLeft = new SparkMax(IntakeConstants.pivotLeftId, MotorType.kBrushless);
+  private final SparkMax pivotRight = new SparkMax(IntakeConstants.pivotRightId, MotorType.kBrushless);
+  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId,
+      IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
 
   public IntakeSubsystem() {
     SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
@@ -38,8 +38,8 @@ public class IntakeSubsystem extends SubsystemBase {
         .inverted(true);
 
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    rotateLeft.configure(pivotLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    rotateRight.configure(pivotRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotLeft.configure(pivotLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotRight.configure(pivotRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void intake() {
@@ -54,29 +54,29 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(0);
   }
 
-  public void rotateUp() {
-    rotateLeft.set(IntakeConstants.rotateSpeed);
-    rotateRight.set(IntakeConstants.rotateSpeed);
+  public void retract() {
+    pivotLeft.set(IntakeConstants.pivotSpeed);
+    pivotRight.set(IntakeConstants.pivotSpeed);
   }
 
-  public void rotateDown() {
-    rotateLeft.set(IntakeConstants.reverseRotateSpeed);
-    rotateRight.set(IntakeConstants.reverseRotateSpeed);
+  public void deployintake() {
+    pivotLeft.set(IntakeConstants.reversePivotSpeed);
+    pivotRight.set(IntakeConstants.reversePivotSpeed);
   }
 
-  public void rotateStop() {
-    rotateLeft.set(0);
-    rotateRight.set(0);
+  public void stopRotate() {
+    pivotLeft.set(0);
+    pivotRight.set(0);
   }
 
   public double getPivotAbsolutePosition() {
-    return rotateEncoder.get();
+    return pivotEncoder.get();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("intakeMotorSpeed", intakeMotor.get());
     SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
-    SmartDashboard.putBoolean("intakeEncoderConnected", rotateEncoder.isConnected());
+    SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
   }
 }
