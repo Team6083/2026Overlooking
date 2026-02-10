@@ -17,12 +17,10 @@ public class shootercomboCmd extends SequentialCommandGroup {
   public shootercomboCmd(
     SwerveDrive drive,
     ShooterSubsystem shooter,
-    TransportSubsystem transport,
-    TagTracking vision
+    TransportSubsystem transport
   ) {
     addCommands(
       Commands.parallel(
-        new AutoAlignCmd(vision, drive),
         shooter.run(shooter::shoot)
       ).until(shooter::isShooterAtSpeed),
       transport.run(transport::transportIn)
