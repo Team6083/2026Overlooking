@@ -10,6 +10,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import swervelib.encoders.SparkMaxEncoderSwerve;
 
@@ -33,8 +34,8 @@ public class auto {
                 (speeds, feedforwards) -> drivetrain.drive(speeds),
                 
                 new PPHolonomicDriveController(
-                    new PIDConstants(5.75, 0.0, 0.75), 
-                    new PIDConstants(4.5, 0.0, 0.5)
+                    new PIDConstants(AutoConstants.kpTranslation, AutoConstants.kiTranslation,AutoConstants.kdTranslation), 
+                    new PIDConstants(AutoConstants.kpRotation, AutoConstants.kiRotation,AutoConstants.kdRotation)
                 ),
                 config,
                 () -> {
