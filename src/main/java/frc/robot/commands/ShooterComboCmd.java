@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
@@ -15,12 +13,12 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 public class ShooterComboCmd extends SequentialCommandGroup {
   /** Creates a new shootercomboCmd. */
   public ShooterComboCmd(
-      SwerveDrive drive,
-      ShooterSubsystem shooter,
-      TransportSubsystem transport) {
+      SwerveDrive swervedrive,
+      ShooterSubsystem shootersubsystem,
+      TransportSubsystem transportsubsystem) {
     addCommands(
-        shooter.run(shooter::shoot).repeatedly().until(shooter::isShooterAtSpeed),
-        transport.run(transport::transportIn));
-    addRequirements(drive, shooter, transport);
+        shootersubsystem.run(shootersubsystem::shoot).repeatedly().until(shootersubsystem::isShooterAtSpeed),
+        transportsubsystem.run(transportsubsystem::transportIn));
+    addRequirements(swervedrive, shootersubsystem, transportsubsystem);
   }
 }
