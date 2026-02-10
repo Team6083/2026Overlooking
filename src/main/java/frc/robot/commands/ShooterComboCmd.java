@@ -13,12 +13,12 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 public class ShooterComboCmd extends SequentialCommandGroup {
   /** Creates a new shootercomboCmd. */
   public ShooterComboCmd(
-      SwerveDrive swervedrive,
-      ShooterSubsystem shootersubsystem,
-      TransportSubsystem transportsubsystem) {
+      SwerveDrive swerveDrive,
+      ShooterSubsystem shooterSubsystem,
+      TransportSubsystem transportSubsystem) {
     addCommands(
-        shootersubsystem.run(shootersubsystem::shoot).repeatedly().until(shootersubsystem::isShooterAtSpeed),
-        transportsubsystem.run(transportsubsystem::transportIn));
-    addRequirements(swervedrive, shootersubsystem, transportsubsystem);
+        shooterSubsystem.run(shooterSubsystem::shoot).repeatedly().until(shooterSubsystem::isShooterAtSpeed),
+        transportSubsystem.run(transportSubsystem::transportIn));
+    addRequirements(swerveDrive, shooterSubsystem, transportSubsystem);
   }
 }
