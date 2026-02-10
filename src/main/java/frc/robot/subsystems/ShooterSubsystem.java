@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -27,13 +28,13 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
   }
 
-  public void shoot() {
+  private void shoot() {
     double targetVelocity = ShooterConstants.targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
     setShooterVoltage(feedforwardVoltage);
   }
 
-  public void stopShooter() {
+  private void stopShooter() {
     shooterMotor.set(ControlMode.PercentOutput, 0);
   }
 
@@ -43,6 +44,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private boolean isShooterAtSpeed() {
     return getShooterVelocity() >= ShooterConstants.targetVelocity;
+  }
+
+  public Command shooterCmd() {
+    Command cmd = startEnd(this::shoot, this::stopShooter);
+    cmd.setName("shooter");
+    return cmd;
   }
 
   @Override
