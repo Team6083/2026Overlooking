@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.SwerveYagsl;
 import java.io.File;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 public class RobotContainer {
-  private final SendableChooser<String> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Command> autoChooser;
   private final SwerveYagsl driveSubsystem;
   private final CommandXboxController mainController;
   private double magnification;
@@ -22,9 +25,11 @@ public class RobotContainer {
   public RobotContainer() {
     driveSubsystem = new SwerveYagsl(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
-    configureBindings();
+    autoChooser = AutoBuilder.buildAutoChooser();
 
-    autoChooser.addOption("blueLeftAuto", "blueLeftAuto");
+    SmartDashboard.putData("autoChooser", autoChooser);
+
+    configureBindings();
   }
 
   private double getMagnification() {

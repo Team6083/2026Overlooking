@@ -11,6 +11,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
+import swervelib.encoders.SparkMaxEncoderSwerve;
 
 
 /** Add your docs here. */
@@ -29,11 +30,11 @@ public class auto {
                 drivetrain::resetPose,              // 重設位置
                 drivetrain::getRobotRelativeSpeeds, // 現在速度
                 
-                (speeds, feedforwards) -> drivetrain.driveRobotRelative(speeds, feedforwards),
+                (speeds, feedforwards) -> drivetrain.drive(speeds),
                 
                 new PPHolonomicDriveController(
-                    new PIDConstants(0.0, 0.0, 0.0), 
-                    new PIDConstants(0.0, 0.0, 0.0)
+                    new PIDConstants(5.75, 0.0, 0.75), 
+                    new PIDConstants(4.5, 0.0, 0.5)
                 ),
                 config,
                 () -> {
