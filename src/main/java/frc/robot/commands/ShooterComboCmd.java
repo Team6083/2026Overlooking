@@ -19,8 +19,7 @@ public class ShooterComboCmd extends SequentialCommandGroup {
       ShooterSubsystem shooter,
       TransportSubsystem transport) {
     addCommands(
-        Commands.parallel(
-            shooter.run(shooter::shoot)).until(shooter::isShooterAtSpeed),
+        shooter.run(shooter::shoot).repeatedly().until(shooter::isShooterAtSpeed),
         transport.run(transport::transportIn));
     addRequirements(drive, shooter, transport);
   }
