@@ -1,7 +1,12 @@
 package frc.robot.drivebase;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Minutes;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -10,10 +15,14 @@ import edu.wpi.first.math.MathUtil;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ModuleConstant;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule extends SubsystemBase {
@@ -21,6 +30,7 @@ public class SwerveModule extends SubsystemBase {
   private final SparkMax driveMotor;
   private final CANcoder turningEncoder;
   private final PIDController rotPIDController;
+  private final RelativeEncoder driveEncoder;
 
   public SwerveModule(int turningMotorId, int driveMotorId,
       int canCoderId, double canCoderOffset,
@@ -38,6 +48,8 @@ public class SwerveModule extends SubsystemBase {
         .idleMode(IdleMode.kBrake)
         .inverted(driveInverted);
     driveMotor.configure(driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+
+    driveEncoder = driveMotor.getEncoder();
 
     turningEncoder = new CANcoder(canCoderId);
     CANcoderConfiguration turningEncoderConfiguration = new CANcoderConfiguration();
@@ -57,8 +69,33 @@ public class SwerveModule extends SubsystemBase {
 
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-        driveMotor.getEncoder().getVelocity() / 6.75 * 2.0 * Math.PI * 0.0508,
+        getDriveRate().in(MetersPerSecond),
         Rotation2d.fromRadians(getAngleRadians()));
+  }
+
+  public SwerveModulePosition getPosition() {
+    return new SwerveModulePosition(
+        driveMotor.getEncoder().getPosition() / 6.75 * 2.0 * Math.PI * 0.0508,
+        Rotation2d.fromRadians(getAngleRadians()));
+  }
+
+  // to get the drive distance
+  public Distance getDriveDistance() {
+    return ModuleConstant.kWheelRadius.times(2.0 * Math.PI)
+        .times(driveEncoder.getPosition() / 6.75);
+  }
+
+  // calculate the rate of the drive
+  public LinearVelocity getDriveRate() {
+    return Meters.per(Minutes).of(driveEncoder.getVelocity() / 6.75 * 2.0 * Math.PI
+        * ModuleConstant.kWheelRadius.in(Meters));
+  }
+
+  // to get rotation of turning motor
+  public Rotation2d getRotation2d() {
+    return new Rotation2d(
+        Math.toRadians(
+            turningEncoder.getAbsolutePosition().getValueAsDouble() * 360.0));
   }
 
   public void setDesiredState(SwerveModuleState desiredState) {

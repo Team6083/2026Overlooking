@@ -4,14 +4,21 @@
 
 package frc.robot.drivebase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class SwerveDrive extends SubsystemBase {
   /** Creates a new SwerveDrive. */
   private final SwerveDriveKinematics kinematics;
+  private SwerveDriveOdometry odometry;
+
   public SwerveModule frontLeft = new SwerveModule(
       25, 26, 33, 0.321533, true, true, "frontLeft");
   public SwerveModule backLeft = new SwerveModule(
@@ -37,6 +46,13 @@ public class SwerveDrive extends SubsystemBase {
   private final StructArrayPublisher<SwerveModuleState> swerveCurrentStatePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("CurrentStates", SwerveModuleState.struct).publish();
 
+  private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("currentPose", Pose2d.struct).publish();
+  private final StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("poseHistory", Pose2d.struct).publish();
+
+  private final List<Pose2d> poseHistory = new ArrayList<>();
+
   public SwerveDrive() {
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
@@ -46,10 +62,24 @@ public class SwerveDrive extends SubsystemBase {
     gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
     gyro.reset();
 
+    odometry = new SwerveDriveOdometry(
+        kinematics,
+        gyro.getRotation2d(),
+        getSwerveModulePosition());
+
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();
     swerveModuleStates[2] = new SwerveModuleState();
     swerveModuleStates[3] = new SwerveModuleState();
+  }
+
+  public SwerveModulePosition[] getSwerveModulePosition() {
+    return new SwerveModulePosition[] {
+        frontLeft.getPosition(),
+        frontRight.getPosition(),
+        backLeft.getPosition(),
+        backRight.getPosition()
+    };
   }
 
   public void drive(double vx, double vy, double omega, boolean feildRelative) {
@@ -63,6 +93,28 @@ public class SwerveDrive extends SubsystemBase {
     frontRight.setDesiredState(swerveModuleStates[1]);
     backLeft.setDesiredState(swerveModuleStates[2]);
     backRight.setDesiredState(swerveModuleStates[3]);
+
+    odometry = new SwerveDriveOdometry(
+        kinematics,
+        gyro.getRotation2d(),
+        getSwerveModulePosition());
+  }
+
+  public void resetPose(Pose2d pose) {
+    odometry.resetPosition(
+        gyro.getRotation2d(),
+        getSwerveModulePosition(),
+        pose);
+  }
+
+  public Pose2d getPose2d() {
+    return odometry.getPoseMeters();
+  }
+
+  private void updateOdometry() {
+    odometry.update(
+        gyro.getRotation2d(),
+        getSwerveModulePosition());
   }
 
   public Command resetGyroCmd() {
@@ -73,6 +125,8 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateOdometry();
+
     SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
     swerveDesiredStatePublisher.set(swerveModuleStates);
     swerveCurrentStatePublisher
@@ -82,5 +136,13 @@ public class SwerveDrive extends SubsystemBase {
             backLeft.getState(),
             backRight.getState()
         });
+
+    Pose2d currentPose = getPose2d();
+    poseHistory.add(currentPose);
+    currentPosePublisher.set(getPose2d());
+    if (poseHistory.size() > 500) {
+      poseHistory.remove(0);
+    }
+    arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
   }
 }
