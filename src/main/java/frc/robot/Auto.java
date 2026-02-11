@@ -5,49 +5,75 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-import swervelib.encoders.SparkMaxEncoderSwerve;
-
 
 /** Add your docs here. */
 public class Auto {
 
-    RobotConfig config ;
-    
-    public static void configureAutoBuilder(SwerveDrive drivetrain) {
+  RobotConfig config;
 
-          try {
+  public static void configureAutoBuilder(SwerveDrive swerveDrive) {
 
-            RobotConfig config = RobotConfig.fromGUISettings();
+    try {
 
-            AutoBuilder.configure(
-                drivetrain::getPose2d,                // 現在位置
-                drivetrain::resetPose,              // 重設位置
-                drivetrain::getRobotRelativeSpeeds, // 現在速度
-                
-                (speeds, feedforwards) -> drivetrain.drive(speeds),
-                
-                new PPHolonomicDriveController(
-                    new PIDConstants(AutoConstants.kpTranslation, AutoConstants.kiTranslation,AutoConstants.kdTranslation), 
-                    new PIDConstants(AutoConstants.kpRotation, AutoConstants.kiRotation,AutoConstants.kdRotation)
-                ),
-                config,
-                () -> {
-                    var alliance = DriverStation.getAlliance();
-                    return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
-                },
-                drivetrain 
+      RobotConfig config = RobotConfig.fromGUISettings();
 
-            );
+      AutoBuilder.configure(
+          swerveDrive::getPose2d, // 現在位置
+          swerveDrive::resetPose, // 重設位置
+          swerveDrive::getRobotRelativeSpeeds, // 現在速度
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+          (speeds, feedforwards) -> swerveDrive.drive(speeds),
+
+          new PPHolonomicDriveController(
+              new PIDConstants(AutoConstants.kpTranslation, AutoConstants.kiTranslation, AutoConstants.kdTranslation),
+              new PIDConstants(AutoConstants.kpRotation, AutoConstants.kiRotation, AutoConstants.kdRotation)),
+          config,
+          () -> {
+            var alliance = DriverStation.getAlliance();
+            return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+          },
+          swerveDrive
+
+      );
+
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
+
+  // public Command followPathCommand(SwerveDrive swerveDrive, String pathName) {
+  // try{
+  // PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+  // return new FollowPathCommand(
+  // path,
+  // swerveDrive::getPose2d,
+  // swerveDrive::getRobotRelativeSpeeds,
+  // swerveDrive::drive(ChassisSpeeds speeds),
+  // new PPHolonomicDriveController(
+  // new PIDConstants(5.0, 0.0, 0.0),
+  // new PIDConstants(5.0, 0.0, 0.0)
+  // ),
+  // Constants.robotConfig,
+  // () -> {
+  // var alliance = DriverStation.getAlliance();
+  // if(alliance.isPresent() ){
+  // return alliance.get() == DriverStation.Alliance.Red;
+  // }
+
+  // }
+
+  //
+
 }
