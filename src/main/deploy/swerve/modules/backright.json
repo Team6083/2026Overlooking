@@ -1,12 +1,12 @@
 {
   "drive": {
     "type": "sparkmax",
-    "id": 22,
+    "id": 24,
     "canbus": "rio"
   },
   "angle": {
     "type": "sparkmax",
-    "id": 21,
+    "id": 23,
     "canbus": "rio"
   },
   "encoder": {
