@@ -28,8 +28,6 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("poseHistory", Pose2d.struct).publish();
 
-  private final List<Pose2d> poseHistory = new ArrayList<>();
-
   public YagslSwerve(File directory) {
 
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -140,13 +138,7 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     SmartDashboard.putNumber("gyroHeading", getGyroHeading());
     SmartDashboard.putBoolean("gyroIsConnected", gyroIsConnected);
 
-    Pose2d currentPose = getPose2d();
-    poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
-    if (poseHistory.size() > 500) {
-      poseHistory.remove(0);
-    }
-    arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
     SwerveDriveTelemetry.updateData();
   }
 }
