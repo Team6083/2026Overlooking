@@ -100,16 +100,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command deployIntakeCmd() {
     Command cmd = manualDeployIntakeCmd()
-        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition)
-        .finallyDo(this::stopRotate);
+        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
     cmd.setName("deployIntakeCmd");
     return cmd;
   }
 
   public Command retractIntakeCmd() {
     Command cmd = manualRetractCmd()
-        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition)
-        .finallyDo(this::stopRotate);
+        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition);
     cmd.setName("retractIntakeCmd");
     return cmd;
   }
