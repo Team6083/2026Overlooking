@@ -46,9 +46,9 @@ public class AutoAlignCmd extends Command {
         
       distOutput = distPID.calculate(vision.get3dTz(), 1.2);
       distOutput = MathUtil.clamp(distOutput, -0.4, 0.4);
+
+      drive.drive(0, distOutput, yawOutput, false);
     } 
-    
-    drive.drive(distOutput, 0, yawOutput, false);
   }
 
   @Override
