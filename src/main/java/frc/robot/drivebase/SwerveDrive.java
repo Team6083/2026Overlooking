@@ -29,14 +29,13 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveDriveOdometry odometry;
 
   public SwerveModule frontLeft = new SwerveModule(
-      25, 26, 33, 0.321533, true, true, "FrontLeft");
+      21, 26, 13, 0.329102 , true, true, "FrontLeft");
   public SwerveModule backLeft = new SwerveModule(
-      23, 24, 34, -0.434814, true, true, "BackLeft");
+      22, 18, 14, 0.245850, true, true, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
-
-      27, 28, 32, 0.499756, true, true, "FrontRight");
+      25, 27, 11, -0.010010, true, true, "FrontRight");
   public SwerveModule backRight = new SwerveModule(
-      21, 22, 31, 0.314453, true, true, "BackRight");
+      23, 24, 12, 0.259277, true, true, "BackRight");
 
   private final AHRS gyro;
 
