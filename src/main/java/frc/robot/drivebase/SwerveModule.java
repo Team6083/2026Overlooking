@@ -32,6 +32,9 @@ public class SwerveModule extends SubsystemBase {
   private final PIDController rotPIDController;
   private final RelativeEncoder driveEncoder;
 
+  private double turningMotorVoltage;
+  private double driveMotorVoltage;
+
   public SwerveModule(int turningMotorId, int driveMotorId,
       int canCoderId, double canCoderOffset,
       boolean turningInverted, boolean driveInverted, String name) {
@@ -58,6 +61,9 @@ public class SwerveModule extends SubsystemBase {
 
     rotPIDController = new PIDController(0.5, 0, 0);
     rotPIDController.enableContinuousInput(-Math.PI, Math.PI);
+
+    driveMotorVoltage = 0;
+    turningMotorVoltage = 0;
   }
 
   public double getAngleRadians() {
@@ -114,6 +120,9 @@ public class SwerveModule extends SubsystemBase {
 
     double driveOutput = optimized.speedMetersPerSecond / 4;
     driveMotor.set(driveOutput);
+
+    driveMotorVoltage = driveOutput * driveMotor.getBusVoltage();
+    turningMotorVoltage = turnOutput * turningMotor.getBusVoltage();
   }
 
   public void setAngle(Rotation2d targetAngle) {
@@ -121,12 +130,17 @@ public class SwerveModule extends SubsystemBase {
         getAngleRadians(),
         targetAngle.getRadians());
     output = MathUtil.clamp(output, -1.0, 1.0);
+
+    turningMotorVoltage = output * turningMotor.getBusVoltage();
     turningMotor.set(output);
   }
 
   public void stop() {
     turningMotor.set(0);
     driveMotor.set(0);
+
+      turningMotorVoltage = 0;
+      driveMotorVoltage = 0;
   }
 
   @Override
@@ -134,5 +148,12 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putData(this.getName() + "AnglePID", rotPIDController);
     SmartDashboard.putNumber(this.getName() + "MotorOutput", turningMotor.get());
     SmartDashboard.putNumber(this.getName() + "AngleRadius", getAngleRadians());
+    SmartDashboard.putNumber(this.getName() + "DriveRate", getDriveRate().in(MetersPerSecond));
+    SmartDashboard.putNumber(this.getName() + "DriveMotorVoltage", driveMotorVoltage);
+    SmartDashboard.putNumber(this.getName() + "TurningMotorVoltage", turningMotorVoltage);
+    SmartDashboard.putNumber(this.getName() + "DriveMotorAppliedVoltage", driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
+    SmartDashboard.putNumber(this.getName() + "DriveMotorCurrent", driveMotor.getOutputCurrent());
+    SmartDashboard.putNumber(this.getName() + "TurningMotorAppliedVoltage", turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
+    SmartDashboard.putNumber(this.getName() + "TurningMotorCurrent", turningMotor.getOutputCurrent());
   }
 }
