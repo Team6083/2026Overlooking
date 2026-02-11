@@ -7,27 +7,38 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.SwerveYagsl;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
+
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
+  private final SwerveDrive swerveDrive;
   private final SwerveYagsl driveSubsystem;
   private final CommandXboxController mainController;
   private double magnification;
 
   public RobotContainer() {
     driveSubsystem = new SwerveYagsl(new File(Filesystem.getDeployDirectory(), "swerve"));
+    swerveDrive = driveSubsystem;
     mainController = new CommandXboxController(0);
+    Auto.configureAutoBuilder(swerveDrive);
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("autoChooser", autoChooser);
+
+   //NamedCommands.registerCommand("",)
+
+
 
     configureBindings();
   }
@@ -48,6 +59,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected();
   }
 }
