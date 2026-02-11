@@ -37,11 +37,17 @@ public class AutoAlignCmd extends Command {
   public void execute() {
     isTargetValid = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
 
-    double yawOutput = yawPID.calculate(vision.get3dYaw(), 0);
-    yawOutput = MathUtil.clamp(yawOutput, -0.5, 0.5);
+    double yawOutput = 0;
+    double distOutput = 0;
+
+    if (isTargetValid) {
+        yawOutput = yawPID.calculate(vision.get3dYaw(), 0);
+        yawOutput = MathUtil.clamp(yawOutput, -0.5, 0.5);
+        
+        distOutput = distPID.calculate(vision.get3dTz(), 1.2);
+        distOutput = MathUtil.clamp(distOutput, -0.4, 0.4);
+    } 
     
-    double distOutput = distPID.calculate(vision.get3dTz(), 1.2);
-    distOutput = MathUtil.clamp(distOutput, -0.4, 0.4);
     drive.drive(distOutput, 0, yawOutput, false);
   }
 
