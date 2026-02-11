@@ -43,13 +43,13 @@ public class SwerveControlCmd extends Command {
   public void execute() {
 
     magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
-    rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
+    rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
 
     speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * yagslSwerve.getMaxSpeed()
         * magnification;
     speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * yagslSwerve.getMaxSpeed()
         * magnification;
-    rotSpeed = rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * yagslSwerve.getMaxSpeed()
+    rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * yagslSwerve.getMaxSpeed()
         * rotMagnification;
     yagslSwerve.drive(speedX, speedY, rotSpeed, true);
   }
