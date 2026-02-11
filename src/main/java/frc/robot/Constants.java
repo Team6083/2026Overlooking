@@ -12,8 +12,8 @@ public class Constants {
     public static final double intakeSpeed = 0.5;
     public static final double reverseIntakeSpeed = -0.5;
 
-    public static final int pivotLeftId = 11;
-    public static final int pivotRightId = 12;
+    public static final int pivotLeftId = 31;
+    public static final int pivotRightId = 30;
 
     public static final int pivotEncoderId = 4;
     public static final double pivotFullRange = 360;
