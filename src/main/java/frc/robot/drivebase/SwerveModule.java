@@ -17,10 +17,10 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule extends SubsystemBase {
-  SparkMax turningMotor;
-  SparkMax driveMotor;
-  CANcoder turningEncoder;
-  PIDController rotPIDController;
+  private final SparkMax turningMotor;
+  private final SparkMax driveMotor;
+  private final CANcoder turningEncoder;
+  private final PIDController rotPIDController;
 
   public SwerveModule(int turningMotorId, int driveMotorId,
       int canCoderId, double canCoderOffset,
