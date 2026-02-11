@@ -8,11 +8,12 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
-  private final YagslSwerve yagslSwerve;
+  private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController;
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
@@ -24,13 +25,13 @@ public class SwerveControlCmd extends Command {
   private double rotSpeed;
 
   /** Creates a new SwerveControlCmd. */
-  public SwerveControlCmd(YagslSwerve yagslSwerve, CommandXboxController mainController) {
-    this.yagslSwerve = yagslSwerve;
+  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController) {
+    this.swerveDrive = swerveDrive;
     this.mainController = mainController;
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    addRequirements(yagslSwerve);
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -51,7 +52,7 @@ public class SwerveControlCmd extends Command {
         * magnification;
     rotSpeed = rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * yagslSwerve.getMaxSpeed()
         * rotMagnification;
-    yagslSwerve.drive(speedX, speedY, rotSpeed, true);
+    swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
 
   // Called once the command ends or is interrupted.
