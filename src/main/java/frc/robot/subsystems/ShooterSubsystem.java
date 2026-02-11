@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -39,7 +40,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getShooterVelocity() {
-    return shooterEncoder.getRate();
+    return shooterEncoder.getRate() * 60;
   }
 
   public boolean isShooterAtSpeed() {
@@ -47,13 +48,16 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command shootCmd() {
-    Command cmd = startEnd(this::shoot, this::stopShooter);
+    Command cmd = runEnd(this::shoot, this::stopShooter);
     cmd.setName("shootCmd");
     return cmd;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
+    SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
+    SmartDashboard.putNumber("shooterMotorSpeed", shooterMotor.getMotorOutputPercent());
     // This method will be called once per scheduler run
   }
 }

@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TransportConstants;
@@ -14,7 +16,9 @@ public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
   VictorSPX transportMotor = new VictorSPX(TransportConstants.transportMotorID);
 
-  public TransportSubsystem() {}
+  public TransportSubsystem() {
+    transportMotor.setInverted(true);
+  }
 
   public void transportIn() {
     transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);;
@@ -36,6 +40,7 @@ public class TransportSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("transportSpeed", transportMotor.getMotorOutputPercent());
     // This method will be called once per scheduler run
   }
 }

@@ -4,20 +4,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveDrive;
+
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ShooterComboCmd extends SequentialCommandGroup {
+public class ShooterComboCmd extends ParallelCommandGroup {
   /** Creates a new shootercomboCmd. */
   public ShooterComboCmd(
       ShooterSubsystem shooterSubsystem,
       TransportSubsystem transportSubsystem) {
     addCommands(
-        shooterSubsystem.run(shooterSubsystem::shoot).until(shooterSubsystem::isShooterAtSpeed),
-        transportSubsystem.run(transportSubsystem::transportIn));
+        shooterSubsystem.shootCmd(),
+        Commands.idle().until(shooterSubsystem::isShooterAtSpeed).andThen(transportSubsystem.transportInCmd())
+    );
     addRequirements(shooterSubsystem, transportSubsystem);
   }
 }
