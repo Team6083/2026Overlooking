@@ -9,22 +9,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.SwerveControlCmd;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
-
 import java.io.File;
 
 public class RobotContainer {
-  private final YagslSwerve yagslSwerve;
+  private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
 
   public RobotContainer() {
-    yagslSwerve = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
+    swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
     configureBindings();
   }
 
   private void configureBindings() {
-    yagslSwerve.setDefaultCommand(new SwerveControlCmd(yagslSwerve, mainController));
-    mainController.button(8).onTrue(yagslSwerve.zeroGyroCommand());
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
+    mainController.button(8).onTrue(swerveDrive.zeroGyroCommand());
   }
 
   public Command getAutonomousCommand() {

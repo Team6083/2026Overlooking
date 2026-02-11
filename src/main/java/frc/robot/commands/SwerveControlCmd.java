@@ -8,11 +8,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.swervedrive.YagslSwerve;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
-  private final YagslSwerve yagslSwerve;
+  private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController;
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
@@ -24,13 +24,13 @@ public class SwerveControlCmd extends Command {
   private double rotSpeed;
 
   /** Creates a new SwerveControlCmd. */
-  public SwerveControlCmd(YagslSwerve yagslSwerve, CommandXboxController mainController) {
-    this.yagslSwerve = yagslSwerve;
+  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController) {
+    this.swerveDrive = swerveDrive;
     this.mainController = mainController;
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    addRequirements(yagslSwerve);
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -45,13 +45,13 @@ public class SwerveControlCmd extends Command {
     magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
     rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
 
-    speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * yagslSwerve.getMaxSpeed()
+    speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
         * magnification;
-    speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * yagslSwerve.getMaxSpeed()
+    speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
         * magnification;
-    rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * yagslSwerve.getMaxSpeed()
-        * rotMagnification;
-    yagslSwerve.drive(speedX, speedY, rotSpeed, true);
+    rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
+        * 4 * rotMagnification;
+    swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
 
   // Called once the command ends or is interrupted.
