@@ -29,14 +29,14 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveDriveOdometry odometry;
 
   public SwerveModule frontLeft = new SwerveModule(
-      25, 26, 33, 0.321533, true, true, "frontLeft");
+      25, 26, 33, 0.321533, true, true, "FrontLeft");
   public SwerveModule backLeft = new SwerveModule(
-      23, 24, 34, -0.434814, true, true, "backLeft");
+      23, 24, 34, -0.434814, true, true, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
 
-      27, 28, 32, 0.499756, true, true, "frontRight");
+      27, 28, 32, 0.499756, true, true, "FrontRight");
   public SwerveModule backRight = new SwerveModule(
-      21, 22, 31, 0.314453, true, true, "backRight");
+      21, 22, 31, 0.314453, true, true, "BackRight");
 
   private final AHRS gyro;
 
@@ -93,11 +93,6 @@ public class SwerveDrive extends SubsystemBase {
     frontRight.setDesiredState(swerveModuleStates[1]);
     backLeft.setDesiredState(swerveModuleStates[2]);
     backRight.setDesiredState(swerveModuleStates[3]);
-
-    odometry = new SwerveDriveOdometry(
-        kinematics,
-        gyro.getRotation2d(),
-        getSwerveModulePosition());
   }
 
   public void resetPose(Pose2d pose) {
@@ -140,9 +135,10 @@ public class SwerveDrive extends SubsystemBase {
     Pose2d currentPose = getPose2d();
     poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
-    if (poseHistory.size() > 500) {
-      poseHistory.remove(0);
-    }
-    arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
+  
+  //   if (poseHistory.size() > 500) {
+  //     poseHistory.remove(0);
+  //   }
+  //   arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
   }
 }

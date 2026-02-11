@@ -64,6 +64,8 @@ public class SwerveModule extends SubsystemBase {
 
     driveMotorVoltage = 0;
     turningMotorVoltage = 0;
+
+    setName(name + "Module");
   }
 
   public double getAngleRadians() {
@@ -79,10 +81,10 @@ public class SwerveModule extends SubsystemBase {
         Rotation2d.fromRadians(getAngleRadians()));
   }
 
+  // to the get the position by wpi function
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-        driveMotor.getEncoder().getPosition() / 6.75 * 2.0 * Math.PI * 0.0508,
-        Rotation2d.fromRadians(getAngleRadians()));
+        getDriveDistance(), getRotation2d());
   }
 
   // to get the drive distance
@@ -139,8 +141,8 @@ public class SwerveModule extends SubsystemBase {
     turningMotor.set(0);
     driveMotor.set(0);
 
-      turningMotorVoltage = 0;
-      driveMotorVoltage = 0;
+    turningMotorVoltage = 0;
+    driveMotorVoltage = 0;
   }
 
   @Override
@@ -151,9 +153,12 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(this.getName() + "DriveRate", getDriveRate().in(MetersPerSecond));
     SmartDashboard.putNumber(this.getName() + "DriveMotorVoltage", driveMotorVoltage);
     SmartDashboard.putNumber(this.getName() + "TurningMotorVoltage", turningMotorVoltage);
-    SmartDashboard.putNumber(this.getName() + "DriveMotorAppliedVoltage", driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
+    SmartDashboard.putNumber(this.getName() + "DriveMotorAppliedVoltage",
+        driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
     SmartDashboard.putNumber(this.getName() + "DriveMotorCurrent", driveMotor.getOutputCurrent());
-    SmartDashboard.putNumber(this.getName() + "TurningMotorAppliedVoltage", turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
+    SmartDashboard.putNumber(this.getName() + "TurningMotorAppliedVoltage",
+        turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
     SmartDashboard.putNumber(this.getName() + "TurningMotorCurrent", turningMotor.getOutputCurrent());
+    SmartDashboard.putNumber(this.getName() + "DriveDistance", getDriveDistance().in(Meters));
   }
 }
