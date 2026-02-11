@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "starting line_neutrol zone"
+            "pathName": "middle_ depot"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "neutrol zone"
+            "pathName": "depot"
           }
         },
         {
@@ -31,25 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "neutrol zone_starting line"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "starting line_ hub"
+            "pathName": "depot_ hub"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.0
           }
         },
         {

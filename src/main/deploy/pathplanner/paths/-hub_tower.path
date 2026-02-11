@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.804871794871797,
-        "y": 1.3372564102564115
+        "x": 2.827999999994648,
+        "y": 4.023371794877736
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.875071038794763,
-        "y": 0.7422956854538877
+        "x": 2.107384351732681,
+        "y": 4.683156235433673
       },
       "isLocked": false,
-      "linkedName": "right neutrol zone"
+      "linkedName": "hub"
     },
     {
       "anchor": {
-        "x": 5.5926397919375805,
-        "y": 0.6794538361508455
+        "x": 1.5605256410256425,
+        "y": 3.6396410256410254
       },
       "prevControl": {
-        "x": 6.287557178899956,
-        "y": 0.9466319992703773
+        "x": 1.803724792408067,
+        "y": 4.427710557532621
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "right starting line"
+      "linkedName": "tower"
     }
   ],
   "rotationTargets": [],
@@ -45,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "blueRight",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.70731936854442
+    "rotation": -3.8659580001250036
   },
   "useDefaultConstraints": true
 }
