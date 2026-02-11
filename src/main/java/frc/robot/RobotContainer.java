@@ -4,38 +4,30 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.SwerveYagsl;
+import frc.robot.commands.SwerveControlCmd;
+import frc.robot.subsystems.swervedrive.YagslSwerve;
+
 import java.io.File;
 
 public class RobotContainer {
-  private final SwerveYagsl driveSubsystem;
+  private final YagslSwerve yagslSwerve;
   private final CommandXboxController mainController;
-  private double magnification;
+  private final SwerveControlCmd swerveControlCmd;
 
   public RobotContainer() {
-    driveSubsystem = new SwerveYagsl(new File(Filesystem.getDeployDirectory(), "swerve"));
+    yagslSwerve = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
     mainController = new CommandXboxController(0);
+    swerveControlCmd = new SwerveControlCmd(yagslSwerve, mainController);
     configureBindings();
   }
 
-  private double getMagnification() {
-    magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
-    return magnification;
-  }
-
   private void configureBindings() {
-    driveSubsystem.setDefaultCommand(
-        driveSubsystem.driveCommand(
-            () -> (MathUtil.applyDeadband(mainController.getLeftY(), 0.1) * getMagnification()),
-            () -> (MathUtil.applyDeadband(mainController.getLeftX(), 0.1) * getMagnification()),
-            () -> (MathUtil.applyDeadband(mainController.getRightX(), 0.1) * getMagnification()),
-            true));
-    mainController.button(8).onTrue(driveSubsystem.zeroGyroCommand());
+    yagslSwerve.setDefaultCommand(swerveControlCmd);
+    mainController.button(8).onTrue(yagslSwerve.zeroGyroCommand());
   }
 
   public Command getAutonomousCommand() {
