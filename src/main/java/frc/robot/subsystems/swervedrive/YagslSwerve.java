@@ -112,7 +112,7 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     return gyroHeading;
   }
 
-  public double getMaxSpeed(){
+  public double getMaxSpeed() {
     return swerveDrive.getMaximumChassisVelocity();
   }
 
