@@ -7,7 +7,7 @@ package frc.robot;
 /** Add your docs here. */
 public class Constants {
   public static final class IntakeConstants {
-    public static final int intakeMotorId = 10;
+    public static final int intakeMotorId = 34;
 
     public static final double intakeSpeed = 0.5;
     public static final double reverseIntakeSpeed = -0.5;
