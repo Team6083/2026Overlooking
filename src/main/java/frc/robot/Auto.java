@@ -16,7 +16,7 @@ import swervelib.encoders.SparkMaxEncoderSwerve;
 
 
 /** Add your docs here. */
-public class auto {
+public class Auto {
 
     RobotConfig config ;
     
