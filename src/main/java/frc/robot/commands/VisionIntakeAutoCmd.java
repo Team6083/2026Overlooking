@@ -35,8 +35,9 @@ public class VisionIntakeAutoCmd extends Command {
       intakeSubsystem.stopIntake(); // stop
     }
   }
-  //X: 左 -1 ~ 1 右
-  //Y: 上  0 ~ 1 下
+
+  // X: 左 -1 ~ 1 右
+  // Y: 上 0 ~ 1 下
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
