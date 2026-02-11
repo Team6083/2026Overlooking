@@ -64,24 +64,17 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
-  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative) {
-    Command cmd = run(() -> this.drive(translationX.get() * swerveDrive.getMaximumChassisVelocity(),
-        translationY.get() * swerveDrive.getMaximumChassisVelocity(),
-        angularRotationX.get() * swerveDrive.getMaximumChassisAngularVelocity(), fieldRelative));
-    cmd.setName("driveCommand");
-    return cmd;
+  public Command driveCommand(double translationX, double translationY, double angularRotationX,
+      boolean fieldRelative) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
   }
 
   @Override
-  public Command driveCommand(double translationX, double translationY, double angularRotationX,
-      boolean fieldRelative) {
-    Command cmd = run(
-        () -> this.drive(translationX,
-            translationY,
-            angularRotationX, fieldRelative));
-    cmd.setName("driveCommand");
-    return cmd;
+  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
+      Supplier<Double> angularRotationX, boolean fieldRelative) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
   }
 
   @Override
@@ -117,6 +110,10 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       gyroHeading += 360;
     }
     return gyroHeading;
+  }
+
+  public double getMaxSpeed(){
+    return swerveDrive.getMaximumChassisVelocity();
   }
 
   public Command centerModulesCmd() {

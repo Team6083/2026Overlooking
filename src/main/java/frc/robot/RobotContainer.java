@@ -15,18 +15,15 @@ import java.io.File;
 
 public class RobotContainer {
   private final YagslSwerve yagslSwerve;
-  private final CommandXboxController mainController;
-  private final SwerveControlCmd swerveControlCmd;
+  private final CommandXboxController mainController = new CommandXboxController(0);
 
   public RobotContainer() {
     yagslSwerve = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
-    mainController = new CommandXboxController(0);
-    swerveControlCmd = new SwerveControlCmd(yagslSwerve, mainController);
     configureBindings();
   }
 
   private void configureBindings() {
-    yagslSwerve.setDefaultCommand(swerveControlCmd);
+    yagslSwerve.setDefaultCommand(new SwerveControlCmd(yagslSwerve, mainController));
     mainController.button(8).onTrue(yagslSwerve.zeroGyroCommand());
   }
 
