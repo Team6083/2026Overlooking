@@ -74,21 +74,21 @@ public class IntakeSubsystem extends SubsystemBase {
     return pivotEncoder.get();
   }
 
-  public Command startIntakeCmd() {
-    Command cmd = run(this::intake);
+  public Command intakeCmd() {
+    Command cmd = runEnd(this::intake, this::stopIntake);
     cmd.setName("startIntakeCmd");
     return cmd;
   }
 
-  public Command startReverseIntakeCmd() {
-    Command cmd = run(this::reverseIntake);
+  public Command reverseIntakeCmd() {
+    Command cmd = runEnd(this::reverseIntake, this::stopIntake);
     cmd.setName("startReverseIntakeCmd");
     return cmd;
   }
 
-  public Command stopIntakeCmd() {
-    Command cmd = runOnce(this::stopIntake);
-    cmd.setName("stopIntakeCmd");
+  public Command manualRetractCmd() {
+    Command cmd = runEnd(this::retract, this::stopRotate);
+    cmd.setName("manualRetractCmd");
     return cmd;
   }
 
@@ -99,22 +99,20 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command deployIntakeCmd() {
-    Command cmd = run(this::deployIntakeCmd).repeatedly()
+    Command cmd = manualDeployIntakeCmd()
         .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition)
         .finallyDo(this::stopRotate);
-        cmd.setName("deployIntakeCmd");
-        return cmd;
+    cmd.setName("deployIntakeCmd");
+    return cmd;
   }
-
 
   public Command retractIntakeCmd() {
-     Command cmd = run(this::retractIntakeCmd).repeatedly()
-     .until(()-> getPivotAbsolutePosition() > IntakeConstants.pivotRetractPosition)
-     .finallyDo(this::stopRotate);
-     cmd.setName("retractIntakeCmd");
-     return cmd;
+    Command cmd = manualRetractCmd()
+        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition)
+        .finallyDo(this::stopRotate);
+    cmd.setName("retractIntakeCmd");
+    return cmd;
   }
-
 
   @Override
   public void periodic() {
