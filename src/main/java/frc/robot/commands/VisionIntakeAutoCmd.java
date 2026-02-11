@@ -29,13 +29,14 @@ public class VisionIntakeAutoCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.getVisionY() > 0.6) {
-      // intakeSubsystem.intake(); // intake
-    } else if (vision.getVisionY() < -0.6) {
-      // intakeSubsystem.stopIntake(); // stop
+    if (vision.getVisionY() > 0.8) {
+      intakeSubsystem.intake(); // intake
+    } else if (vision.getVisionY() < 0.8) {
+      intakeSubsystem.stopIntake(); // stop
     }
   }
-
+  //X: 左 -1 ~ 1 右
+  //Y: 上  0 ~ 1 下
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
