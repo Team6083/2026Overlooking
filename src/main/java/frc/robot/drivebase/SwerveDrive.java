@@ -76,5 +76,12 @@ public class SwerveDrive extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
     swerveDesiredStatePublisher.set(swerveModuleStates);
+    swerveCurrentStatePublisher
+        .set(new SwerveModuleState[] {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        });
   }
 }

@@ -57,6 +57,12 @@ public class SwerveModule extends SubsystemBase {
     return MathUtil.angleModulus(angle);
   }
 
+  public SwerveModuleState getState() {
+    return new SwerveModuleState(
+        driveMotor.getEncoder().getVelocity() / 6.75 * 2.0 * Math.PI * 0.0508,
+        Rotation2d.fromRadians(getAngleRadians()));
+  }
+
   public void setDesiredState(SwerveModuleState desiredState) {
     Rotation2d currentAngle = Rotation2d.fromRadians(getAngleRadians());
 
