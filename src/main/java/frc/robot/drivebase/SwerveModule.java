@@ -1,8 +1,15 @@
 package frc.robot.drivebase;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.MathUtil;
+
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,64 +19,79 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule extends SubsystemBase {
-    SparkMax turningMotor;
-    SparkMax driveMotor;
-    CANcoder canCoder;
-    PIDController pid;
-    double offset;
+  SparkMax turningMotor;
+  SparkMax driveMotor;
+  CANcoder turningEncoder;
+  PIDController rotPIDController;
 
-    private final double kMaxSpeedMetersPerSecond = 4.5;
+  public SwerveModule(int turningMotorId, int driveMotorId,
+      int canCoderId, double canCoderOffset,
+      boolean turningInverted, boolean driveInverted, String name) {
+    turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
+    SparkMaxConfig turningMotorConfig = new SparkMaxConfig();
+    turningMotorConfig.smartCurrentLimit(40)
+        .idleMode(IdleMode.kCoast)
+        .inverted(turningInverted);
+    turningMotor.configure(turningMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    public SwerveModule(int turningMotorId, int driveMotorId, 
-                        int canCoderId, double canCoderOffset, 
-                        boolean turningInverted, boolean driveInverted){
-        turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
-        driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
-        canCoder = new CANcoder(canCoderId);
+    driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
+    SparkMaxConfig driveMotorConfig = new SparkMaxConfig();
+    driveMotorConfig.smartCurrentLimit(40)
+        .idleMode(IdleMode.kBrake)
+        .inverted(driveInverted);
+    driveMotor.configure(driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        pid = new PIDController(0.5, 0, 0);
-        pid.enableContinuousInput(-Math.PI, Math.PI);
+    turningEncoder = new CANcoder(canCoderId);
+    CANcoderConfiguration turningEncoderConfiguration = new CANcoderConfiguration();
+    turningEncoderConfiguration.MagnetSensor.MagnetOffset = canCoderOffset;
+    turningEncoder.getConfigurator().apply(turningEncoderConfiguration);
 
-        offset = canCoderOffset;
-    }
-    public double getAngleRadians() {
-        double angle = canCoder.getAbsolutePosition()
-                       .getValue()
-                       .in(Units.Radians)
-               - offset;
-        return MathUtil.angleModulus(angle);
-    }
-    public void setDesiredState(SwerveModuleState desiredState) {
-        Rotation2d currentAngle = Rotation2d.fromRadians(getAngleRadians());
+    rotPIDController = new PIDController(0.5, 0, 0);
+    rotPIDController.enableContinuousInput(-Math.PI, Math.PI);
+  }
 
-        desiredState.optimize(currentAngle);
-        SwerveModuleState optimized = desiredState;
+  public double getAngleRadians() {
+    double angle = turningEncoder.getAbsolutePosition()
+        .getValue()
+        .in(Units.Radians);
+    return MathUtil.angleModulus(angle);
+  }
 
-        SmartDashboard.putNumber("optimize", desiredState.angle.getRadians());
+  public void setDesiredState(SwerveModuleState desiredState) {
+    Rotation2d currentAngle = Rotation2d.fromRadians(getAngleRadians());
 
-        double turnOutput = pid.calculate(
-            currentAngle.getRadians(),
-            optimized.angle.getRadians()
-        );
-        turnOutput = MathUtil.clamp(turnOutput, -1.0, 1.0);
-        turningMotor.set(turnOutput);
+    desiredState.optimize(currentAngle);
+    SwerveModuleState optimized = desiredState;
 
-        double driveOutput = optimized.speedMetersPerSecond / kMaxSpeedMetersPerSecond;
-        driveMotor.set(driveOutput);
-    }
+    SmartDashboard.putNumber("optimize", desiredState.angle.getRadians());
 
-    public void setAngle(Rotation2d targetAngle) {
-        double output = pid.calculate(
-            getAngleRadians(),
-            targetAngle.getRadians()
-        );
-        output = MathUtil.clamp(output, -1.0, 1.0);
-        turningMotor.set(output);
-    }
+    double turnOutput = rotPIDController.calculate(
+        currentAngle.getRadians(),
+        optimized.angle.getRadians());
+    turnOutput = MathUtil.clamp(turnOutput, -1.0, 1.0);
+    turningMotor.set(turnOutput);
 
-    public void stop() {
-        turningMotor.set(0);
-        driveMotor.set(0);
-    }
+    double driveOutput = optimized.speedMetersPerSecond / 4;
+    driveMotor.set(driveOutput);
+  }
 
+  public void setAngle(Rotation2d targetAngle) {
+    double output = rotPIDController.calculate(
+        getAngleRadians(),
+        targetAngle.getRadians());
+    output = MathUtil.clamp(output, -1.0, 1.0);
+    turningMotor.set(output);
+  }
+
+  public void stop() {
+    turningMotor.set(0);
+    driveMotor.set(0);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putData(this.getName() + "AnglePID", rotPIDController);
+    SmartDashboard.putNumber(this.getName() + "MotorOutput", turningMotor.get());
+    SmartDashboard.putNumber(this.getName() + "AngleRadius", getAngleRadians());
+  }
 }

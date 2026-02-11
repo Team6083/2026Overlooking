@@ -20,17 +20,16 @@ public class RobotContainer {
 
     swerveDrive.setDefaultCommand(
         new RunCommand(
-        () -> swerveDrive.drive(
-            -MathUtil.applyDeadband(driverController.getLeftY(), 0.1),
-            -MathUtil.applyDeadband(driverController.getLeftX(), 0.1),
-            -MathUtil.applyDeadband(driverController.getRightX(), 0.1)
-        ),
-        swerveDrive
-        )
-    );
+            () -> swerveDrive.drive(
+                -MathUtil.applyDeadband(driverController.getLeftY(), 0.1),
+                -MathUtil.applyDeadband(driverController.getLeftX(), 0.1),
+                -MathUtil.applyDeadband(driverController.getRightX(), 0.1),
+                true),
+            swerveDrive));
   }
 
   private void configureBindings() {
+    driverController.start().onTrue(swerveDrive.resetGyroCmd());
   }
 
   public Command getAutonomousCommand() {
