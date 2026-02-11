@@ -36,13 +36,10 @@ public class AutoAlignCmd extends Command {
   @Override
   public void execute() {
     isTargetValid = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
-    if (!isTargetValid) {
-      drive.drive(0, 0, 0, false);
-      return;
-    }
 
     double yawOutput = yawPID.calculate(vision.get3dYaw(), 0);
     yawOutput = MathUtil.clamp(yawOutput, -0.5, 0.5);
+    
     double distOutput = distPID.calculate(vision.get3dTz(), 1.2);
     distOutput = MathUtil.clamp(distOutput, -0.4, 0.4);
     drive.drive(distOutput, 0, yawOutput, false);

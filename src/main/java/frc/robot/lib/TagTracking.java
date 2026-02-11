@@ -20,9 +20,6 @@ public class TagTracking {
   }
 
   public double getTv() {
-    if (disabled) {
-      return 0;
-    }
     return limelightTable.getEntry("tv").getDouble(0);
   }
 
