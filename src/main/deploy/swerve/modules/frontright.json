@@ -11,7 +11,7 @@
   },
   "encoder": {
     "type": "cancoder",
-    "id": 32,
+    "id": 11,
     "canbus": "rio"
   },
   "inverted": {
@@ -19,7 +19,7 @@
     "angle": true
   },
   "absoluteEncoderInverted": false,
-  "absoluteEncoderOffset": 178.76952,
+  "absoluteEncoderOffset": 3.691,
   "location": {
     "front": 10.5,
     "left": -10.5
