@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
+public class WpilibSwerve extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
   private final SwerveDriveKinematics kinematics;
   private SwerveDriveOdometry odometry;
@@ -46,7 +46,7 @@ public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.s
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
 
-  public SwerveDrive() {
+  public WpilibSwerve() {
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
         new Translation2d(+0.27, -0.27),
@@ -97,12 +97,19 @@ public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.s
 
   @Override
   public void drive(ChassisSpeeds speeds) {
-    throw new UnsupportedOperationException("Unimplemented method 'drive'");
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+
+  SwerveDriveKinematics.desaturateWheelSpeeds(states, 4.0); 
+
+  frontLeft.setDesiredState(states[0]);
+  frontRight.setDesiredState(states[1]);
+  backLeft.setDesiredState(states[2]);
+  backRight.setDesiredState(states[3]);
   }
 
   @Override
   public void zeroGyro() {
-    throw new UnsupportedOperationException("Unimplemented method 'zeroGyro'");
+    gyro.reset();
   }
 
   @Override
@@ -119,7 +126,7 @@ public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.s
 
   @Override
   public Command zeroGyroCommand() {
-    Command cmd = runOnce(() -> gyro.reset());
+    Command cmd = runOnce(() -> zeroGyro());
     return cmd;
   }
 
@@ -138,7 +145,11 @@ public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.s
 
   @Override
   public ChassisSpeeds getRobotRelativeSpeeds() {
-    throw new UnsupportedOperationException("Unimplemented method 'getRobotRelativeSpeeds'");
+    return kinematics.toChassisSpeeds(
+        frontLeft.getState(),
+        frontRight.getState(),
+        backLeft.getState(),
+        backRight.getState());
   }
 
   @Override
