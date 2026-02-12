@@ -27,7 +27,7 @@ public class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int shooterMotorID = 32;
+    public static final int shooterMotorID = 33;
     public static final double shooterMotorSpeed = 0.6;
     public static final double feedforwardKs = 0.2;
     public static final double feedforwardKv = 0.0028;
@@ -38,7 +38,7 @@ public class Constants {
   }
 
   public static class TransportConstants {
-    public static final int transportMotorID = 33;
+    public static final int transportMotorID = 32;
     public static final double transportMotorIn = 0.2;
     public static final double transportMotorOut = 0.2;
   }
