@@ -114,8 +114,6 @@ public class SwerveModule extends SubsystemBase {
     desiredState.optimize(currentAngle);
     SwerveModuleState optimized = desiredState;
 
-    SmartDashboard.putNumber("optimize", desiredState.angle.getRadians());
-
     double turnOutput = rotPIDController.calculate(
         currentAngle.getRadians(),
         optimized.angle.getRadians());
