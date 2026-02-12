@@ -37,7 +37,7 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 
-     Auto.configureAutoBuilder(swerveDrive);
+    Auto.configureAutoBuilder(swerveDrive);
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("autoChooser", autoChooser);
@@ -52,21 +52,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
-
   }
 
-
-
   private void configureBindings() {
-    //swerve drive
+    // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
-    //shooter
+    // shooter
     mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    //transport
+    // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
-    //intake
+    // intake
     mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
