@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -19,13 +18,9 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /** Add your docs here. */
 public class Auto {
-
-  RobotConfig config;
-
   public static void configureAutoBuilder(SwerveDrive swerveDrive) {
 
     try {
-
       RobotConfig config = RobotConfig.fromGUISettings();
 
       AutoBuilder.configure(
@@ -51,29 +46,4 @@ public class Auto {
       e.printStackTrace();
     }
   }
-
-  // public Command followPathCommand(SwerveDrive swerveDrive, String pathName) {
-  // try{
-  // PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-
-  // return new FollowPathCommand(
-  // path,
-  // swerveDrive::getPose2d,
-  // swerveDrive::getRobotRelativeSpeeds,
-  // swerveDrive::drive(ChassisSpeeds speeds),
-  // new PPHolonomicDriveController(
-  // new PIDConstants(5.0, 0.0, 0.0),
-  // new PIDConstants(5.0, 0.0, 0.0)
-  // ),
-  // Constants.robotConfig,
-  // () -> {
-  // var alliance = DriverStation.getAlliance();
-  // if(alliance.isPresent() ){
-  // return alliance.get() == DriverStation.Alliance.Red;
-  // }
-
-  // }
-
-  //
-
 }
