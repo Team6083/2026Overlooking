@@ -4,6 +4,8 @@
 
 package frc.robot.drivebase;
 
+import java.util.function.Supplier;
+
 import com.studica.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SwerveDrive extends SubsystemBase {
+public class SwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
   private final SwerveDriveKinematics kinematics;
   private SwerveDriveOdometry odometry;
@@ -73,6 +75,13 @@ public class SwerveDrive extends SubsystemBase {
     };
   }
 
+  private void updateOdometry() {
+    odometry.update(
+        gyro.getRotation2d(),
+        getSwerveModulePosition());
+  }
+
+  @Override
   public void drive(double vx, double vy, double omega, boolean feildRelative) {
     ChassisSpeeds speeds = feildRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega,
         gyro.getRotation2d()) : new ChassisSpeeds(vx, vy, omega);
@@ -86,6 +95,40 @@ public class SwerveDrive extends SubsystemBase {
     backRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  @Override
+  public void drive(ChassisSpeeds speeds) {
+    throw new UnsupportedOperationException("Unimplemented method 'drive'");
+  }
+
+  @Override
+  public void zeroGyro() {
+    throw new UnsupportedOperationException("Unimplemented method 'zeroGyro'");
+  }
+
+  @Override
+  public Command driveCommand(double translationX, double translationY, double angularRotationX,
+      boolean fieldRelative) {
+    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
+  }
+
+  @Override
+  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
+      Supplier<Double> angularRotationX, boolean fieldRelative) {
+    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
+  }
+
+  @Override
+  public Command zeroGyroCommand() {
+    Command cmd = runOnce(() -> gyro.reset());
+    return cmd;
+  }
+
+  @Override
+  public Pose2d getPose2d() {
+    return odometry.getPoseMeters();
+  }
+
+  @Override
   public void resetPose(Pose2d pose) {
     odometry.resetPosition(
         gyro.getRotation2d(),
@@ -93,19 +136,9 @@ public class SwerveDrive extends SubsystemBase {
         pose);
   }
 
-  public Pose2d getPose2d() {
-    return odometry.getPoseMeters();
-  }
-
-  private void updateOdometry() {
-    odometry.update(
-        gyro.getRotation2d(),
-        getSwerveModulePosition());
-  }
-
-  public Command resetGyroCmd() {
-    Command cmd = runOnce(() -> gyro.reset());
-    return cmd;
+  @Override
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    throw new UnsupportedOperationException("Unimplemented method 'getRobotRelativeSpeeds'");
   }
 
   @Override
