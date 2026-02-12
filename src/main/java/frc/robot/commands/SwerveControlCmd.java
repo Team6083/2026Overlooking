@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -44,11 +45,11 @@ public class SwerveControlCmd extends Command {
     magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
     rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
 
-    speedX = limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
+    speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
         * magnification;
-    speedY = limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
+    speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
         * magnification;
-    rotSpeed = rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
+    rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * 4 * rotMagnification;
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
