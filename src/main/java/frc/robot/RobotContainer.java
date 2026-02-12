@@ -57,7 +57,7 @@ public class RobotContainer {
 
   }
 
-  
+
 
   private void configureBindings() {
     //swerve drive
@@ -77,6 +77,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected()
+    ;
   }
 }
