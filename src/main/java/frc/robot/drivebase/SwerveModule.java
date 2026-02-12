@@ -50,7 +50,7 @@ public class SwerveModule extends SubsystemBase {
     driveMotorConfig.smartCurrentLimit(40)
         .idleMode(IdleMode.kBrake)
         .inverted(driveInverted);
-    driveMotor.configure(driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    driveMotor.configure(driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     driveEncoder = driveMotor.getEncoder();
 
