@@ -24,8 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
       IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotRightExpectedZero);
 
-  private final PIDController pivotPIDController = new PIDController(0.1, 0, 0);
-  private double pivotRightSpeed = 0;
+  private final PIDController pivotFollowPIDController = new PIDController(0.01, 0, 0);
 
   public IntakeSubsystem() {
     pivotLeft.setInverted(false);
@@ -36,12 +35,20 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.intakeSpeed);
   }
 
-  public void leftPivot() {
+  public void leftPivotDeploy() {
     pivotLeft.set(ControlMode.PercentOutput, 0.1);
   }
 
-  public void rightPivot(){
+  public void rightPivotDeploy() {
     pivotRight.set(ControlMode.PercentOutput, 0.1);
+  }
+
+  public void leftPivotRetract() {
+    pivotLeft.set(ControlMode.PercentOutput, -0.1);
+  }
+
+  public void rightPivotRetract() {
+    pivotRight.set(ControlMode.PercentOutput, -0.1);
   }
 
   public void reverseIntake() {
@@ -54,26 +61,21 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void retract() {
     pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
+        pivotLeftEncoder.get());
+    pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
   }
 
   public void deployintake() {
     pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-    pivotRightSpeed = pivotPIDController.calculate(getPivotRightAbsolutePosition(), getPivotLeftAbsolutePosition());
+    double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
+        pivotLeftEncoder.get());
     pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
   }
 
   public void stopRotate() {
     pivotLeft.set(ControlMode.PercentOutput, 0);
     pivotRight.set(ControlMode.PercentOutput, 0);
-  }
-
-  public double getPivotLeftAbsolutePosition() {
-    return pivotLeftEncoder.get();
-  }
-
-  public double getPivotRightAbsolutePosition() {
-    return pivotRightEncoder.get();
   }
 
   public Command intakeCmd() {
@@ -102,14 +104,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command deployIntakeCmd() {
     Command cmd = manualDeployIntakeCmd()
-        .until(() -> getPivotLeftAbsolutePosition() > IntakeConstants.pivotDeployStopPosition||getPivotLeftAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
+        .until(() -> pivotRightEncoder.get() >= IntakeConstants.pivotDeployStopPosition
+            && pivotLeftEncoder.get() >= IntakeConstants.pivotDeployStopPosition);
     cmd.setName("deployIntakeCmd");
     return cmd;
   }
 
   public Command retractIntakeCmd() {
     Command cmd = manualRetractCmd()
-        .until(() -> getPivotLeftAbsolutePosition() < IntakeConstants.pivotRetractPosition);
+        .until(() -> pivotLeftEncoder.get() <= IntakeConstants.pivotRetractPosition
+            && pivotRightEncoder.get() <= IntakeConstants.pivotRetractPosition);
     cmd.setName("retractIntakeCmd");
     return cmd;
   }
@@ -120,9 +124,9 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
 
-    SmartDashboard.putNumber("pivotLeftAbsolutePosition", getPivotLeftAbsolutePosition());
-    SmartDashboard.putNumber("pivotRightAbsolutePosition", getPivotRightAbsolutePosition());
+    SmartDashboard.putNumber("pivotLeftAbsolutePosition", pivotLeftEncoder.get());
+    SmartDashboard.putNumber("pivotRightAbsolutePosition", pivotRightEncoder.get());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotLeftEncoder.isConnected());
-    SmartDashboard.putData(pivotPIDController);
+    SmartDashboard.putData(pivotFollowPIDController);
   }
 }
