@@ -5,27 +5,41 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "middle_ depot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "middle_ depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "depot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeStop"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -38,24 +52,6 @@
           "type": "named",
           "data": {
             "name": "shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootStop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "hub_tower"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbLevel 1"
           }
         }
       ]

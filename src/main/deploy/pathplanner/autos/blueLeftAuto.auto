@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "intakeStop"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "neutrol zone_starting line"
@@ -44,30 +38,6 @@
           "type": "named",
           "data": {
             "name": "shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootStop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "hub_tower"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbLevel 1"
           }
         }
       ]
