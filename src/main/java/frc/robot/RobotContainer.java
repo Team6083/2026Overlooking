@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -21,6 +19,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
+import java.io.File;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
