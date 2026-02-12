@@ -37,11 +37,15 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    //swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+    //shooter
     mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    //transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    //intake
     mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
