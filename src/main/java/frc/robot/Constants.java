@@ -15,7 +15,7 @@ public class Constants {
     public static final int pivotLeftId = 31;
     public static final int pivotRightId = 30;
 
-    public static final int pivotEncoderId = 4;
+    public static final int pivotEncoderId = 2;
     public static final double pivotFullRange = 360;
     public static final double pivotExpectedZero = 0;
 
@@ -33,7 +33,7 @@ public class Constants {
     public static final double feedforwardKv = 0.0028;
     public static final double feedforwardKa = 0;
     public static final int encoderChannelA = 0;
-    public static final int encoderChannelB = 0;
+    public static final int encoderChannelB = 1;
     public static final double targetVelocity = 4000;
   }
 
