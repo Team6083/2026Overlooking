@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.107384351732681,
-        "y": 4.683156235433673
+        "x": 3.827999999994648,
+        "y": 4.023371794877736
       },
       "isLocked": false,
       "linkedName": "hub"
     },
     {
       "anchor": {
-        "x": 1.5605256410256425,
-        "y": 3.6396410256410254
+        "x": 0.5023589743589756,
+        "y": 7.314153846153846
       },
       "prevControl": {
-        "x": 1.803724792408067,
-        "y": 4.427710557532621
+        "x": 2.4907820512820535,
+        "y": 6.732743589743589
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "tower"
+      "linkedName": "depot"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "blueLeft",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -8.363793784693347e-10
