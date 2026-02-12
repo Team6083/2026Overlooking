@@ -4,35 +4,55 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
+import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
-import frc.robot.lib.TagTracking;
 import java.io.File;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
+  private final SendableChooser<Command> autoChooser;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-
+  
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
     swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
+
+    intakeSubsystem = new IntakeSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
-    intakeSubsystem = new IntakeSubsystem();
+
+    Auto.configureAutoBuilder(swerveDrive);
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("autoChooser", autoChooser);
+
+    registerCommand();
+
     configureBindings();
+
+  }
+
+  private void registerCommand() {
+    NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
+    NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
+    NamedCommands.registerCommand("shoot", shooterSubsystem.shootCmd());
 
   }
 
@@ -50,6 +70,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected();
   }
 }

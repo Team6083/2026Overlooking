@@ -1,0 +1,45 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
+
+/** Add your docs here. */
+public class Auto {
+  public static void configureAutoBuilder(SwerveDrive swerveDrive) {
+
+    try {
+      RobotConfig config = RobotConfig.fromGUISettings();
+
+      AutoBuilder.configure(
+          swerveDrive::getPose2d, // 現在位置
+          swerveDrive::resetPose, // 重設位置
+          swerveDrive::getRobotRelativeSpeeds, // 現在速度
+
+          (speeds, feedforwards) -> swerveDrive.drive(speeds),
+
+          new PPHolonomicDriveController(
+              new PIDConstants(AutoConstants.kpTranslation, AutoConstants.kiTranslation, AutoConstants.kdTranslation),
+              new PIDConstants(AutoConstants.kpRotation, AutoConstants.kiRotation, AutoConstants.kdRotation)),
+          config,
+          () -> {
+            var alliance = DriverStation.getAlliance();
+            return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+          },
+          swerveDrive
+
+      );
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
