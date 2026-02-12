@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,8 +18,14 @@ public class IntakeSubsystem extends SubsystemBase {
   private final VictorSPX intakeMotor = new VictorSPX(IntakeConstants.intakeMotorId);
   private final VictorSPX pivotLeft = new VictorSPX(IntakeConstants.pivotLeftId);
   private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
-  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId,
-      IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
+
+  private final DutyCycleEncoder pivotLeftEncoder = new DutyCycleEncoder(IntakeConstants.pivotLeftEncoderId,
+      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotLeftExpectedZero);
+  private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
+      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotRightExpectedZero);
+
+  private final PIDController pivotPIDController = new PIDController(0.1, 0, 0);
+  private double pivotRightSpeed = 0;
 
   public IntakeSubsystem() {
     pivotLeft.setInverted(false);
@@ -27,6 +34,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void intake() {
     intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.intakeSpeed);
+  }
+
+  public void leftPivot() {
+    pivotLeft.set(ControlMode.PercentOutput, 0.1);
+  }
+
+  public void rightPivot(){
+    pivotRight.set(ControlMode.PercentOutput, 0.1);
   }
 
   public void reverseIntake() {
@@ -38,13 +53,14 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void retract() {
-    pivotLeft.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
   }
 
   public void deployintake() {
-    pivotLeft.set(ControlMode.PercentOutput,IntakeConstants.pivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    pivotRightSpeed = pivotPIDController.calculate(getPivotRightAbsolutePosition(), getPivotLeftAbsolutePosition());
+    pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
   }
 
   public void stopRotate() {
@@ -52,8 +68,12 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
-  public double getPivotAbsolutePosition() {
-    return pivotEncoder.get();
+  public double getPivotLeftAbsolutePosition() {
+    return pivotLeftEncoder.get();
+  }
+
+  public double getPivotRightAbsolutePosition() {
+    return pivotRightEncoder.get();
   }
 
   public Command intakeCmd() {
@@ -82,14 +102,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command deployIntakeCmd() {
     Command cmd = manualDeployIntakeCmd()
-        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
+        .until(() -> getPivotLeftAbsolutePosition() > IntakeConstants.pivotDeployStopPosition||getPivotLeftAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
     cmd.setName("deployIntakeCmd");
     return cmd;
   }
 
   public Command retractIntakeCmd() {
     Command cmd = manualRetractCmd()
-        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition);
+        .until(() -> getPivotLeftAbsolutePosition() < IntakeConstants.pivotRetractPosition);
     cmd.setName("retractIntakeCmd");
     return cmd;
   }
@@ -97,9 +117,12 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("intakeMotorVoltage", intakeMotor.getMotorOutputVoltage());
-    SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
-    SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
     SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
+
+    SmartDashboard.putNumber("pivotLeftAbsolutePosition", getPivotLeftAbsolutePosition());
+    SmartDashboard.putNumber("pivotRightAbsolutePosition", getPivotRightAbsolutePosition());
+    SmartDashboard.putBoolean("intakeEncoderConnected", pivotLeftEncoder.isConnected());
+    SmartDashboard.putData(pivotPIDController);
   }
 }
