@@ -4,12 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,56 +14,42 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorId, MotorType.kBrushless);
-  private final SparkMax pivotLeft = new SparkMax(IntakeConstants.pivotLeftId, MotorType.kBrushless);
-  private final SparkMax pivotRight = new SparkMax(IntakeConstants.pivotRightId, MotorType.kBrushless);
+  private final VictorSPX intakeMotor = new VictorSPX(IntakeConstants.intakeMotorId);
+  private final VictorSPX pivotLeft = new VictorSPX(IntakeConstants.pivotLeftId);
+  private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
   private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId,
       IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
 
   public IntakeSubsystem() {
-    SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-    intakeMotorConfig
-        .idleMode(IdleMode.kBrake);
-
-    SparkMaxConfig pivotLeftConfig = new SparkMaxConfig();
-    pivotLeftConfig
-        .idleMode(IdleMode.kBrake);
-
-    SparkMaxConfig pivotRightConfig = new SparkMaxConfig();
-    pivotRightConfig
-        .idleMode(IdleMode.kBrake)
-        .inverted(true);
-
-    intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotLeft.configure(pivotLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    pivotRight.configure(pivotRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotLeft.setInverted(false);
+    pivotRight.setInverted(true);
   }
 
   public void intake() {
-    intakeMotor.set(IntakeConstants.intakeSpeed);
+    intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.intakeSpeed);
   }
 
   public void reverseIntake() {
-    intakeMotor.set(IntakeConstants.reverseIntakeSpeed);
+    intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.reverseIntakeSpeed);
   }
 
   public void stopIntake() {
-    intakeMotor.set(0);
+    intakeMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public void retract() {
-    pivotLeft.set(IntakeConstants.pivotSpeed);
-    pivotRight.set(IntakeConstants.pivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
   }
 
   public void deployintake() {
-    pivotLeft.set(IntakeConstants.reversePivotSpeed);
-    pivotRight.set(IntakeConstants.reversePivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput,IntakeConstants.pivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
   }
 
   public void stopRotate() {
-    pivotLeft.set(0);
-    pivotRight.set(0);
+    pivotLeft.set(ControlMode.PercentOutput, 0);
+    pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
   public double getPivotAbsolutePosition() {
@@ -114,8 +96,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("intakeMotorSpeed", intakeMotor.get());
+    SmartDashboard.putNumber("intakeMotorVoltage", intakeMotor.getMotorOutputVoltage());
     SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
+    SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
+    SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
   }
 }
