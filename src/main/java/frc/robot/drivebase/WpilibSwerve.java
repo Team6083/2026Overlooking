@@ -99,12 +99,12 @@ public class WpilibSwerve extends SubsystemBase implements frc.robot.subsystems.
   public void drive(ChassisSpeeds speeds) {
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
 
-  SwerveDriveKinematics.desaturateWheelSpeeds(states, 4.0); 
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 4.0);
 
-  frontLeft.setDesiredState(states[0]);
-  frontRight.setDesiredState(states[1]);
-  backLeft.setDesiredState(states[2]);
-  backRight.setDesiredState(states[3]);
+    frontLeft.setDesiredState(states[0]);
+    frontRight.setDesiredState(states[1]);
+    backLeft.setDesiredState(states[2]);
+    backRight.setDesiredState(states[3]);
   }
 
   @Override
