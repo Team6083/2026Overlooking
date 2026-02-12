@@ -11,13 +11,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
+import frc.robot.lib.TagTracking;
 import java.io.File;
 
 public class RobotContainer {
+  private final TagTracking shooterTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
 
   public RobotContainer() {
+    shooterTracker = new TagTracking("limelight-shooter");
     swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
     configureBindings();
   }
