@@ -4,11 +4,7 @@
 
 package frc.robot.drivebase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.studica.frc.AHRS;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -29,7 +25,7 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveDriveOdometry odometry;
 
   public SwerveModule frontLeft = new SwerveModule(
-      21, 26, 13, 0.329102 , true, true, "FrontLeft");
+      21, 26, 13, 0.329102, true, true, "FrontLeft");
   public SwerveModule backLeft = new SwerveModule(
       22, 18, 14, 0.245850, true, true, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
@@ -47,10 +43,6 @@ public class SwerveDrive extends SubsystemBase {
 
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
-  private final StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("poseHistory", Pose2d.struct).publish();
-
-  private final List<Pose2d> poseHistory = new ArrayList<>();
 
   public SwerveDrive() {
     kinematics = new SwerveDriveKinematics(
@@ -131,13 +123,6 @@ public class SwerveDrive extends SubsystemBase {
             backRight.getState()
         });
 
-    Pose2d currentPose = getPose2d();
-    poseHistory.add(currentPose);
     currentPosePublisher.set(getPose2d());
-  
-  //   if (poseHistory.size() > 500) {
-  //     poseHistory.remove(0);
-  //   }
-  //   arrayPublisher.set(poseHistory.toArray(new Pose2d[0]));
   }
 }
