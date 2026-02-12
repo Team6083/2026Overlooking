@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -71,6 +72,44 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public double getPivotAbsolutePosition() {
     return pivotEncoder.get();
+  }
+
+  public Command intakeCmd() {
+    Command cmd = runEnd(this::intake, this::stopIntake);
+    cmd.setName("startIntakeCmd");
+    return cmd;
+  }
+
+  public Command reverseIntakeCmd() {
+    Command cmd = runEnd(this::reverseIntake, this::stopIntake);
+    cmd.setName("startReverseIntakeCmd");
+    return cmd;
+  }
+
+  public Command manualRetractCmd() {
+    Command cmd = runEnd(this::retract, this::stopRotate);
+    cmd.setName("manualRetractCmd");
+    return cmd;
+  }
+
+  public Command manualDeployIntakeCmd() {
+    Command cmd = runEnd(this::deployintake, this::stopRotate);
+    cmd.setName("manualDeployIntakeCmd");
+    return cmd;
+  }
+
+  public Command deployIntakeCmd() {
+    Command cmd = manualDeployIntakeCmd()
+        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
+    cmd.setName("deployIntakeCmd");
+    return cmd;
+  }
+
+  public Command retractIntakeCmd() {
+    Command cmd = manualRetractCmd()
+        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition);
+    cmd.setName("retractIntakeCmd");
+    return cmd;
   }
 
   @Override
