@@ -26,8 +26,8 @@ public class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
 
-    public static final double intakeSpeed = 0.75;
-    public static final double reverseIntakeSpeed = -0.5;
+    public static final double intakeSpeed = 0.6;
+    public static final double reverseIntakeSpeed = -0.6;
 
     public static final int pivotLeftId = 31;
     public static final int pivotRightId = 30;
