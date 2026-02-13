@@ -42,8 +42,10 @@ public class SwerveControlCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
-    rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
+    // magnification = mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
+    // rotMagnification = mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
+    magnification = 0.6;
+    rotMagnification = 0.6;
 
     speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
         * magnification;
