@@ -68,8 +68,4 @@ public class Constants {
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 }
