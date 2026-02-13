@@ -74,4 +74,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
+  public void autoInit() {
+    swerveDrive.zeroGyro();
+  }
 }
