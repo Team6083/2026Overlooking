@@ -40,9 +40,10 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 
+    Auto.configureAutoBuilder(swerveDrive);
+
     registerCommand();
 
-    Auto.configureAutoBuilder(swerveDrive);
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("autoChooser", autoChooser);
