@@ -101,5 +101,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
     SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
+    SmartDashboard.putData("IntakeSubsystem", this);
   }
 }
