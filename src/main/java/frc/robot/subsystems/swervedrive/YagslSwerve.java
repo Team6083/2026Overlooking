@@ -35,7 +35,7 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       throw new RuntimeException(e);
     }
 
-    swerveDrive.setHeadingCorrection(true);
+    swerveDrive.setHeadingCorrection(false);
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
