@@ -55,7 +55,7 @@ public class RobotContainer {
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
-    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
   }
 
   private void configureBindings() {
