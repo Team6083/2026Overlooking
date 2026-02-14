@@ -7,25 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "New Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "bunp"
+            "pathName": "bump"
           }
         }
       ]
