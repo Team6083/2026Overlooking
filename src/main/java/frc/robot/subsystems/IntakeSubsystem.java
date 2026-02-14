@@ -20,9 +20,9 @@ public class IntakeSubsystem extends SubsystemBase {
   private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
 
   private final DutyCycleEncoder pivotLeftEncoder = new DutyCycleEncoder(IntakeConstants.pivotLeftEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 327);
+      IntakeConstants.pivotEncoderFullRange, 0);
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 132);
+      IntakeConstants.pivotEncoderFullRange, 241);
 
   private final PIDController pivotFollowPIDController = new PIDController(0.05, 0, 0);
 
@@ -152,8 +152,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
 
-    SmartDashboard.putNumber("pivotLeftAbsolutePosition", getLeftPos());
-    SmartDashboard.putNumber("pivotRightAbsolutePosition", getRightPos());
+    SmartDashboard.putNumber("pivotLeftAbsolutePosition", pivotLeftEncoder.get());
+    SmartDashboard.putNumber("pivotRightAbsolutePosition", pivotRightEncoder.get());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotLeftEncoder.isConnected());
     SmartDashboard.putData(pivotFollowPIDController);
   }
