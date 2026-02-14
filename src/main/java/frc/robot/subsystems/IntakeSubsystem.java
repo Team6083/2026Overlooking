@@ -4,39 +4,118 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
+  private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorId, MotorType.kBrushless);
+  private final SparkMax pivotLeft = new SparkMax(IntakeConstants.pivotLeftId, MotorType.kBrushless);
+  private final SparkMax pivotRight = new SparkMax(IntakeConstants.pivotRightId, MotorType.kBrushless);
+  private final DutyCycleEncoder pivotEncoder = new DutyCycleEncoder(IntakeConstants.pivotEncoderId,
+      IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
+
   public IntakeSubsystem() {
+    SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
+    intakeMotorConfig
+        .idleMode(IdleMode.kBrake);
+
+    SparkMaxConfig pivotLeftConfig = new SparkMaxConfig();
+    pivotLeftConfig
+        .idleMode(IdleMode.kBrake);
+
+    SparkMaxConfig pivotRightConfig = new SparkMaxConfig();
+    pivotRightConfig
+        .idleMode(IdleMode.kBrake)
+        .inverted(true);
+
+    intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotLeft.configure(pivotLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    pivotRight.configure(pivotRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  private void intake() {
-
+  public void intake() {
+    intakeMotor.set(IntakeConstants.intakeSpeed);
   }
 
-  private void reverseIntake() {
-
+  public void reverseIntake() {
+    intakeMotor.set(IntakeConstants.reverseIntakeSpeed);
   }
 
-  private void stopIntake() {
-
+  public void stopIntake() {
+    intakeMotor.set(0);
   }
 
-  private void rotateUp() {
-
+  public void retract() {
+    pivotLeft.set(IntakeConstants.pivotSpeed);
+    pivotRight.set(IntakeConstants.pivotSpeed);
   }
 
-  private void rotateDown() {
-
+  public void deployintake() {
+    pivotLeft.set(IntakeConstants.reversePivotSpeed);
+    pivotRight.set(IntakeConstants.reversePivotSpeed);
   }
 
-  private void stopRotate() {
+  public void stopRotate() {
+    pivotLeft.set(0);
+    pivotRight.set(0);
+  }
 
+  public double getPivotAbsolutePosition() {
+    return pivotEncoder.get();
+  }
+
+  public Command intakeCmd() {
+    Command cmd = runEnd(this::intake, this::stopIntake);
+    cmd.setName("startIntakeCmd");
+    return cmd;
+  }
+
+  public Command reverseIntakeCmd() {
+    Command cmd = runEnd(this::reverseIntake, this::stopIntake);
+    cmd.setName("startReverseIntakeCmd");
+    return cmd;
+  }
+
+  public Command manualRetractCmd() {
+    Command cmd = runEnd(this::retract, this::stopRotate);
+    cmd.setName("manualRetractCmd");
+    return cmd;
+  }
+
+  public Command manualDeployIntakeCmd() {
+    Command cmd = runEnd(this::deployintake, this::stopRotate);
+    cmd.setName("manualDeployIntakeCmd");
+    return cmd;
+  }
+
+  public Command deployIntakeCmd() {
+    Command cmd = manualDeployIntakeCmd()
+        .until(() -> getPivotAbsolutePosition() > IntakeConstants.pivotDeployStopPosition);
+    cmd.setName("deployIntakeCmd");
+    return cmd;
+  }
+
+  public Command retractIntakeCmd() {
+    Command cmd = manualRetractCmd()
+        .until(() -> getPivotAbsolutePosition() < IntakeConstants.pivotRetractPosition);
+    cmd.setName("retractIntakeCmd");
+    return cmd;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("intakeMotorSpeed", intakeMotor.get());
+    SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
+    SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
   }
 }

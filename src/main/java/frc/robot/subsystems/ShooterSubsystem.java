@@ -4,26 +4,60 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {}
+  private final VictorSPX shooterMotor = new VictorSPX(ShooterConstants.shooterMotorID);
+  private final Encoder shooterEncoder = new Encoder(ShooterConstants.encoderChannelA,
+      ShooterConstants.encoderChannelB);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
+      ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
-  private void shoot() {
-
+  public ShooterSubsystem() {
+    shooterEncoder.setDistancePerPulse((double) 1 / 2048);
   }
 
-  private void feed() {
-
+  private void setShooterVoltage(double voltage) {
+    shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
   }
-  
+
+  public void shoot() {
+    double targetVelocity = ShooterConstants.targetVelocity;
+    double feedforwardVoltage = feedforward.calculate(targetVelocity);
+    setShooterVoltage(feedforwardVoltage);
+  }
+
   private void stopShooter() {
+    shooterMotor.set(ControlMode.PercentOutput, 0);
+  }
 
+  private double getShooterVelocity() {
+    return shooterEncoder.getRate() * 60;
+  }
+
+  public boolean isShooterAtSpeed() {
+    return getShooterVelocity() >= ShooterConstants.targetVelocity;
+  }
+
+  public Command shootCmd() {
+    Command cmd = runEnd(this::shoot, this::stopShooter);
+    cmd.setName("shootCmd");
+    return cmd;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
+    SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
+    SmartDashboard.putNumber("shooterMotorSpeed", shooterMotor.getMotorOutputPercent());
     // This method will be called once per scheduler run
   }
 }
