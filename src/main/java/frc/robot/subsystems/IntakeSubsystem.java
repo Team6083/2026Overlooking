@@ -38,12 +38,12 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void retract() {
-    pivotLeft.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput,  IntakeConstants.reversePivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
   }
 
   public void deployintake() {
-    pivotLeft.set(ControlMode.PercentOutput,IntakeConstants.pivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
     pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
   }
 
