@@ -26,7 +26,7 @@ public class Constants {
     public static final double pivotDeployStopPosition = 100;
     public static final double pivotRetractPosition = 0;
 
-    public static final double pivotSpeed = 0.8;
+    public static final double pivotSpeed = 0.35;
     public static final double reversePivotSpeed = -0.3;
   }
 
