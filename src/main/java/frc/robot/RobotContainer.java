@@ -37,20 +37,20 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    //swerve drive
+    // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
-    //shooter
+    // shooter
     mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    //transport
+    // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
-    //intake
+    // intake
     mainController.y().whileTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.deployRightintakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.deployLeftintakeCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.retractIntakeCmd());
-    mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    mainController.leftTrigger().whileTrue(intakeSubsystem.intakeCmd());
   }
 
   public Command getAutonomousCommand() {

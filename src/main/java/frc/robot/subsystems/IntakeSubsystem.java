@@ -20,19 +20,20 @@ public class IntakeSubsystem extends SubsystemBase {
   private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
 
   private final DutyCycleEncoder pivotLeftEncoder = new DutyCycleEncoder(IntakeConstants.pivotLeftEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 0);
+      IntakeConstants.pivotEncoderFullRange, 219.5);//
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 241);
-
+      IntakeConstants.pivotEncoderFullRange, 329.5);
   private final PIDController pivotFollowPIDController = new PIDController(0.05, 0, 0);
 
   public IntakeSubsystem() {
     pivotLeft.setInverted(false);
     pivotRight.setInverted(true);
+    pivotRightEncoder.setInverted(true);
+    pivotFollowPIDController.enableContinuousInput(0, 360);
   }
 
   public double getRightPos() {
-    return 360.0 - pivotRightEncoder.get(); 
+    return pivotRightEncoder.get(); 
   }
 
   public double getLeftPos() {
@@ -98,7 +99,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void deployLeftintake() {
-    pivotLeft.set(ControlMode.PercentOutput, -IntakeConstants.pivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
   }
 
   public void stopRotate() {
