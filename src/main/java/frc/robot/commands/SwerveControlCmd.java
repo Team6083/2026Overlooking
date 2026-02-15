@@ -51,7 +51,7 @@ public class SwerveControlCmd extends Command {
         * magnification;
     rotSpeed = rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * 4 * rotMagnification;
-    swerveDrive.drive(speedX, speedY, rotSpeed, true);
+    swerveDrive.drive(speedX, speedY, -rotSpeed, true);
   }
 
   // Called once the command ends or is interrupted.
