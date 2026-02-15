@@ -18,7 +18,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 // import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
 import java.io.File;
@@ -34,7 +33,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
-    swerveDrive = new WpilibSwerveDrive();
+    swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
     // swerveDrive = new WpilibSwerveDrive();
 
     shooterSubsystem = new ShooterSubsystem();

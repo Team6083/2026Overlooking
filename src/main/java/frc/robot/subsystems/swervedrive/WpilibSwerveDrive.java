@@ -26,13 +26,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private SwerveDriveOdometry odometry;
 
   public SwerveModule frontLeft = new SwerveModule(
-      21, 26, 13, 0.646729, true, false, "FrontLeft");
+      21, 26, 13, 0.9955358, true, false, "FrontLeft");
   public SwerveModule backLeft = new SwerveModule(
-      22, 18, 14, 0.718994, true, true, "BackLeft");
+      22, 18, 14, 1.63659523, true, false, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
-      25, 27, 11, 0.993164, true, true, "FrontRight");
+      25, 27, 11, 0.1884955, true, false, "FrontRight");
   public SwerveModule backRight = new SwerveModule(
-      23, 24, 12, 0.730469, true, false, "BackRight");
+      23, 24, 12, 4.67852959, true, false, "BackRight");
 
   private final AHRS gyro;
 
