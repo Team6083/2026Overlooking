@@ -18,6 +18,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
+// import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
 import java.io.File;
 
@@ -25,25 +26,27 @@ public class RobotContainer {
   private final TagTracking shooterTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
-  private final SendableChooser<Command> autoChooser;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  
+  private final SendableChooser<Command> autoChooser;
+
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
     swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
+    // swerveDrive = new WpilibSwerveDrive();
 
-    intakeSubsystem = new IntakeSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
+    intakeSubsystem = new IntakeSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
+
+    registerCommand();
+
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("autoChooser", autoChooser);
-
-    registerCommand();
 
     configureBindings();
 
@@ -52,16 +55,19 @@ public class RobotContainer {
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
-    NamedCommands.registerCommand("shoot", shooterSubsystem.shootCmd());
-
+    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
   }
 
   private void configureBindings() {
+    // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+    // shooter
     mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // intake
     mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
@@ -71,5 +77,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public void autoInit() {
+    swerveDrive.zeroGyro();
   }
 }

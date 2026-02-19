@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -37,7 +35,7 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       throw new RuntimeException(e);
     }
 
-    swerveDrive.setHeadingCorrection(true);
+    swerveDrive.setHeadingCorrection(false);
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);

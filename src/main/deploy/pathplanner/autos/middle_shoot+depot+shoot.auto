@@ -5,19 +5,31 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Middle shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "middle_ depot"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "deployIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "shoot_depot"
                 }
               }
             ]
@@ -45,7 +57,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "depot_ hub"
+            "pathName": "depot_hub"
           }
         },
         {
