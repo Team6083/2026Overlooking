@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "-starting line_neutrol zone "
+            "pathName": "starting line_depot"
           }
         },
         {
@@ -25,19 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "-neutrol zone"
+            "pathName": "depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "-neutrol_ starting line"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "-starting line_ hub"
+            "pathName": "depot_hub"
           }
         },
         {
