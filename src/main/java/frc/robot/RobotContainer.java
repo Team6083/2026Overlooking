@@ -4,18 +4,22 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
+import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
+// import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 import frc.robot.subsystems.swervedrive.YagslSwerve;
-import frc.robot.lib.TagTracking;
 import java.io.File;
 
 public class RobotContainer {
@@ -25,15 +29,33 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
     swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
+    // swerveDrive = new WpilibSwerveDrive();
+
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+
+    Auto.configureAutoBuilder(swerveDrive);
+
+    registerCommand();
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("autoChooser", autoChooser);
+
     configureBindings();
 
+  }
+
+  private void registerCommand() {
+    NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
+    NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
+    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
   }
 
   private void configureBindings() {
@@ -46,8 +68,7 @@ public class RobotContainer {
     // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
-    mainController.y().whileTrue(intakeSubsystem.deployIntakeCmd());
-
+    mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.deployRightintakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.deployLeftintakeCmd());
     mainController.povLeft().whileTrue(intakeSubsystem.restractLeftintakeCmd());
@@ -56,9 +77,14 @@ public class RobotContainer {
     mainController.rightTrigger().whileTrue(intakeSubsystem.deployIntakeCmd());
     mainController.rightBumper().whileTrue(intakeSubsystem.retractIntakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.intakeCmd());
+
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected();
+  }
+
+  public void autoInit() {
+    swerveDrive.zeroGyro();
   }
 }

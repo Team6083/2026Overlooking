@@ -184,7 +184,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("intakeMotorVoltage", intakeMotor.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
-
     SmartDashboard.putNumber("pivotLeftAbsolutePosition", pivotLeftEncoder.get());
     SmartDashboard.putNumber("pivotRightAbsolutePosition", pivotRightEncoder.get());
     SmartDashboard.putBoolean("intakeEncoderConnected", pivotLeftEncoder.isConnected());
