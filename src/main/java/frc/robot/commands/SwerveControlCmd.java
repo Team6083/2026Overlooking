@@ -47,9 +47,9 @@ public class SwerveControlCmd extends Command {
 
     speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
         * magnification;
-    speedY = - limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
+    speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
         * magnification;
-    rotSpeed = rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
+    rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * 4 * rotMagnification;
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
