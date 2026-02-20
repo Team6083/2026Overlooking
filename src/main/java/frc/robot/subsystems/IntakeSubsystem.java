@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
 
   private final DutyCycleEncoder pivotLeftEncoder = new DutyCycleEncoder(IntakeConstants.pivotLeftEncoderId,
-      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotLeftExpectedZero);//
+      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotLeftExpectedZero);
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
       IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotRightExpectedZero);
   private final PIDController pivotFollowPIDController = new PIDController(0.25, 0, 0);
