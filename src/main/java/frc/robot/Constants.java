@@ -16,18 +16,17 @@ public class Constants {
     public static final int pivotRightId = 30;
 
     public static final int pivotLeftEncoderId = 2;
-    public static final double pivotLeftExpectedZero = 152.5;
-
     public static final int pivotRightEncoderId = 3;
-    public static final double pivotRightExpectedZero = 0;
+    public static final double pivotLeftExpectedZero = 214;
+    public static final double pivotRightExpectedZero = 340;
 
     public static final double pivotEncoderFullRange = 360;
 
-    public static final double pivotDeployStopPosition = 100;
-    public static final double pivotRetractPosition = 0;
+    public static final double pivotDeployStopPosition = 103;
+    public static final double pivotRetractPosition = 3;
 
-    public static final double pivotSpeed = 0.35;
-    public static final double reversePivotSpeed = -0.3;
+    public static final double pivotSpeed = 0.4;
+    public static final double reversePivotSpeed = -0.6;
   }
 
   public static final class ShooterConstants {

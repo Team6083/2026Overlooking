@@ -20,24 +20,25 @@ public class IntakeSubsystem extends SubsystemBase {
   private final VictorSPX pivotRight = new VictorSPX(IntakeConstants.pivotRightId);
 
   private final DutyCycleEncoder pivotLeftEncoder = new DutyCycleEncoder(IntakeConstants.pivotLeftEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 219.5);//
+      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotLeftExpectedZero);//
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
-      IntakeConstants.pivotEncoderFullRange, 329.5);
+      IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotRightExpectedZero);
   private final PIDController pivotFollowPIDController = new PIDController(0.05, 0, 0);
 
   public IntakeSubsystem() {
     pivotLeft.setInverted(false);
     pivotRight.setInverted(true);
     pivotRightEncoder.setInverted(true);
+    pivotLeftEncoder.setInverted(false);
     pivotFollowPIDController.enableContinuousInput(0, 360);
   }
 
   public double getRightPos() {
-    return pivotRightEncoder.get(); 
+    return pivotRightEncoder.get();
   }
 
   public double getLeftPos() {
-    return pivotLeftEncoder.get(); 
+    return pivotLeftEncoder.get();
   }
 
   public void intake() {
@@ -45,19 +46,19 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void leftPivotDeploy() {
-    pivotLeft.set(ControlMode.PercentOutput, 0.1);
+    pivotLeft.set(ControlMode.PercentOutput, 0.3);
   }
 
   public void rightPivotDeploy() {
-    pivotRight.set(ControlMode.PercentOutput, 0.1);
+    pivotRight.set(ControlMode.PercentOutput, 0.3);
   }
 
   public void leftPivotRetract() {
-    pivotLeft.set(ControlMode.PercentOutput, -0.1);
+    pivotLeft.set(ControlMode.PercentOutput, -0.3);
   }
 
   public void rightPivotRetract() {
-    pivotRight.set(ControlMode.PercentOutput, -0.1);
+    pivotRight.set(ControlMode.PercentOutput, -0.3);
   }
 
   public void reverseIntake() {
@@ -69,22 +70,39 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void retract() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-    double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
-        pivotLeftEncoder.get());
-    pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
+    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= 5) {
+      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
+          pivotLeftEncoder.get());
+      pivotRight.set(ControlMode.PercentOutput, -pivotRightSpeed);
+    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= 5) {
+      pivotLeft.set(ControlMode.PercentOutput, 0);
+      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    }
+
   }
 
-  public void deployintake() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-    double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
-        pivotLeftEncoder.get());
-    pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
+  public void deploy() {
+    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= 5) {
+      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotLeftEncoder.get(),
+          pivotRightEncoder.get());
+      pivotRight.set(ControlMode.PercentOutput, -pivotRightSpeed);
+    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= 5) {
+      pivotLeft.set(ControlMode.PercentOutput, 0);
+      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    }
   }
 
   public Command deployRightintakeCmd() {
-    Command cmd = runEnd(this::deployRightintake, this::stopRotate);
+    Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
     cmd.setName("deployRightIntakeCmd");
+    return cmd;
+  }
+
+  public Command retractRightintaleCmd() {
+    Command cmd = runEnd(this::rightPivotRetract, this::stopRotate);
+    cmd.setName("restractrightCmd");
     return cmd;
   }
 
@@ -93,8 +111,14 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command deployLeftintakeCmd() {
-    Command cmd = runEnd(this::deployLeftintake, this::stopRotate);
+    Command cmd = runEnd(this::leftPivotDeploy, this::stopRotate);
     cmd.setName("deployLeftIntakeCmd");
+    return cmd;
+  }
+
+  public Command restractLeftintakeCmd() {
+    Command cmd = runEnd(this::leftPivotRetract, this::stopRotate);
+    cmd.setName("restractLeftIntakeCmd");
     return cmd;
   }
 
@@ -126,7 +150,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command manualDeployIntakeCmd() {
-    Command cmd = runEnd(this::deployintake, this::stopRotate);
+    Command cmd = runEnd(this::deploy, this::stopRotate);
     cmd.setName("manualDeployIntakeCmd");
     return cmd;
   }
