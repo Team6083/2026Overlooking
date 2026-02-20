@@ -6,6 +6,7 @@ package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -26,13 +27,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private SwerveDriveOdometry odometry;
 
   public SwerveModule frontLeft = new SwerveModule(
-      21, 26, 13, 0.9955358, true, false, "FrontLeft");
+      21, 26, 13, -0.164062, true, true, "FrontLeft");
   public SwerveModule backLeft = new SwerveModule(
-      22, 18, 14, 1.63659523, true, false, "BackLeft");
+      22, 18, 14, -0.254395, true, true, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
-      25, 27, 11, 0.1884955, true, false, "FrontRight");
+      25, 27, 11, -0.016602, true, true, "FrontRight");
   public SwerveModule backRight = new SwerveModule(
-      23, 24, 12, 4.67852959, true, false, "BackRight");
+      23, 24, 12, 0.260986, true, true, "BackRight");
 
   private final AHRS gyro;
 
@@ -82,16 +83,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public void drive(double vx, double vy, double omega, boolean feildRelative) {
-    ChassisSpeeds speeds = feildRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega,
-        gyro.getRotation2d()) : new ChassisSpeeds(vx, vy, omega);
+    ChassisSpeeds inputChassisSpeeds = new ChassisSpeeds(vx, vy, omega);
 
-    swerveModuleStates = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, 4);
-    frontLeft.setDesiredState(swerveModuleStates[0]);
-    frontRight.setDesiredState(swerveModuleStates[1]);
-    backLeft.setDesiredState(swerveModuleStates[2]);
-    backRight.setDesiredState(swerveModuleStates[3]);
+    ChassisSpeeds speeds = feildRelative
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(inputChassisSpeeds, gyro.getRotation2d())
+        : inputChassisSpeeds;
+
+    drive(speeds);
   }
 
   @Override
