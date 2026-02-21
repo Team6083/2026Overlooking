@@ -73,6 +73,9 @@ public class RobotContainer {
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+
+    mainController.rightBumper()
+        .whileTrue(new AutoShootCommandGroup(shooterTracker, swerveDrive, shooterSubsystem, transportSubsystem));
   }
 
   public Command getAutonomousCommand() {
