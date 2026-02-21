@@ -76,22 +76,6 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
-  public void retract() {
-    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= IntakeConstants.pivotDeployTolerance
-        && pivotLeftEncoder.get() - pivotRightEncoder.get() <= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
-          pivotLeftEncoder.get());
-      pivotRight.set(ControlMode.PercentOutput, -pivotRightSpeed);
-    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, 0);
-      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-    } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-      pivotRight.set(ControlMode.PercentOutput, 0);
-    }
-  }
-
   public void deploy() {
     if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= IntakeConstants.pivotDeployTolerance
         && pivotLeftEncoder.get() - pivotRightEncoder.get() <= IntakeConstants.pivotDeployTolerance) {
@@ -105,6 +89,22 @@ public class IntakeSubsystem extends SubsystemBase {
     } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
       pivotLeft.set(ControlMode.PercentOutput, 0);
       pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    }
+  }
+
+  public void retract() {
+    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= IntakeConstants.pivotDeployTolerance
+        && pivotLeftEncoder.get() - pivotRightEncoder.get() <= IntakeConstants.pivotDeployTolerance) {
+      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
+          pivotLeftEncoder.get());
+      pivotRight.set(ControlMode.PercentOutput, -pivotRightSpeed);
+    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
+      pivotLeft.set(ControlMode.PercentOutput, 0);
+      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
+      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+      pivotRight.set(ControlMode.PercentOutput, 0);
     }
   }
 
