@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRightEncoder.setInverted(true);
     pivotFollowPIDController.enableContinuousInput(0, 360);
   }
-  
+
   public double getRightPos() {
     return pivotRightEncoder.get();
   }
@@ -87,8 +87,8 @@ public class IntakeSubsystem extends SubsystemBase {
       pivotLeft.set(ControlMode.PercentOutput, 0);
       pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
     } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotRight.set(ControlMode.PercentOutput, 0);
       pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+      pivotRight.set(ControlMode.PercentOutput, 0);
     }
   }
 
@@ -100,8 +100,8 @@ public class IntakeSubsystem extends SubsystemBase {
           pivotRightEncoder.get());
       pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
     } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotRight.set(ControlMode.PercentOutput, 0);
       pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+      pivotRight.set(ControlMode.PercentOutput, 0);
     } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
       pivotLeft.set(ControlMode.PercentOutput, 0);
       pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
@@ -109,18 +109,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   // Commands
-  public Command deployRightintakeCmd() {
-    Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
-    cmd.setName("deployRightIntakeCmd");
-    return cmd;
-  }
-
-  public Command retractRightintaleCmd() {
-    Command cmd = runEnd(this::rightPivotRetract, this::stopRotate);
-    cmd.setName("retractRightIntakeCmd");
-    return cmd;
-  }
-
   public Command deployLeftintakeCmd() {
     Command cmd = runEnd(this::leftPivotDeploy, this::stopRotate);
     cmd.setName("deployLeftIntakeCmd");
@@ -130,6 +118,18 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command restractLeftintakeCmd() {
     Command cmd = runEnd(this::leftPivotRetract, this::stopRotate);
     cmd.setName("restractLeftIntakeCmd");
+    return cmd;
+  }
+
+  public Command deployRightintakeCmd() {
+    Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
+    cmd.setName("deployRightIntakeCmd");
+    return cmd;
+  }
+
+  public Command retractRightintaleCmd() {
+    Command cmd = runEnd(this::rightPivotRetract, this::stopRotate);
+    cmd.setName("retractRightIntakeCmd");
     return cmd;
   }
 
