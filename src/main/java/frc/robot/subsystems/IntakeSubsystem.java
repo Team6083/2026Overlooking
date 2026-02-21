@@ -28,8 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     pivotLeft.setInverted(false);
     pivotRight.setInverted(true);
-    pivotRightEncoder.setInverted(true);
     pivotLeftEncoder.setInverted(false);
+    pivotRightEncoder.setInverted(true);
     pivotFollowPIDController.enableContinuousInput(0, 360);
   }
 
@@ -102,6 +102,19 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
+  public void deployLeftintake() {
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+  }
+
+  public void deployRightintake() {
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+  }
+
+  public void stopRotate() {
+    pivotLeft.set(ControlMode.PercentOutput, 0);
+    pivotRight.set(ControlMode.PercentOutput, 0);
+  }
+
   public Command deployRightintakeCmd() {
     Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
     cmd.setName("deployRightIntakeCmd");
@@ -110,12 +123,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command retractRightintaleCmd() {
     Command cmd = runEnd(this::rightPivotRetract, this::stopRotate);
-    cmd.setName("restractrightCmd");
+    cmd.setName("retractRightIntakeCmd");
     return cmd;
-  }
-
-  public void deployRightintake() {
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
   }
 
   public Command deployLeftintakeCmd() {
@@ -128,15 +137,6 @@ public class IntakeSubsystem extends SubsystemBase {
     Command cmd = runEnd(this::leftPivotRetract, this::stopRotate);
     cmd.setName("restractLeftIntakeCmd");
     return cmd;
-  }
-
-  public void deployLeftintake() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-  }
-
-  public void stopRotate() {
-    pivotLeft.set(ControlMode.PercentOutput, 0);
-    pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
   public Command intakeCmd() {
@@ -186,7 +186,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
     SmartDashboard.putNumber("pivotLeftAbsolutePosition", pivotLeftEncoder.get());
     SmartDashboard.putNumber("pivotRightAbsolutePosition", pivotRightEncoder.get());
-    SmartDashboard.putBoolean("intakeEncoderConnected", pivotLeftEncoder.isConnected());
+    SmartDashboard.putBoolean("pivotLeftEncoderConnected", pivotLeftEncoder.isConnected());
+    SmartDashboard.putBoolean("pivotRightEncoderConnected", pivotRightEncoder.isConnected());
     SmartDashboard.putData(pivotFollowPIDController);
   }
 }
