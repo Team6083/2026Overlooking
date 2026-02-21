@@ -30,4 +30,6 @@ public interface SwerveDrive extends Subsystem {
   void resetPose(Pose2d pose);
 
   ChassisSpeeds getRobotRelativeSpeeds();
+
+  void addVisionMeasurement(Pose2d visionRobotPose, double timestamp);
 }

@@ -46,6 +46,11 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  @Override
   public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
     swerveDrive.drive(new Translation2d(
         translationX,

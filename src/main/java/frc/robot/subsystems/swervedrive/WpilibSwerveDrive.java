@@ -5,11 +5,13 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,7 +25,7 @@ import java.util.function.Supplier;
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
   private final SwerveDriveKinematics kinematics;
-  private SwerveDriveOdometry odometry;
+  private final SwerveDrivePoseEstimator poseEstimator;
 
   public SwerveModule frontLeft = new SwerveModule(
       21, 26, 13, 0.9955358, true, false, "FrontLeft");
@@ -54,10 +56,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
     gyro.reset();
 
-    odometry = new SwerveDriveOdometry(
-        kinematics,
-        gyro.getRotation2d(),
-        getSwerveModulePosition());
+    poseEstimator = new SwerveDrivePoseEstimator(
+      kinematics,
+      gyro.getRotation2d(),
+      getSwerveModulePosition(),
+      new Pose2d(),
+      VecBuilder.fill(0.1, 0.1, 0.1), 
+      VecBuilder.fill(0.7, 0.7, 0.7)); 
 
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();
@@ -72,12 +77,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         backLeft.getPosition(),
         backRight.getPosition()
     };
-  }
-
-  private void updateOdometry() {
-    odometry.update(
-        gyro.getRotation2d(),
-        getSwerveModulePosition());
   }
 
   @Override
@@ -112,6 +111,11 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  @Override
   public Command driveCommand(double translationX, double translationY, double angularRotationX,
       boolean fieldRelative) {
     throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
@@ -131,15 +135,12 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public Pose2d getPose2d() {
-    return odometry.getPoseMeters();
+    return poseEstimator.getEstimatedPosition();
   }
 
   @Override
   public void resetPose(Pose2d pose) {
-    odometry.resetPosition(
-        gyro.getRotation2d(),
-        getSwerveModulePosition(),
-        pose);
+    poseEstimator.resetPosition(gyro.getRotation2d(), getSwerveModulePosition(), pose);
   }
 
   @Override
@@ -154,7 +155,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updateOdometry();
+    poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
     SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
     swerveDesiredStatePublisher.set(swerveModuleStates);
