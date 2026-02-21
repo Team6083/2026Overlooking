@@ -25,26 +25,24 @@ public class Constants {
 
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
-
-    public static final double intakeSpeed = 0.6;
-    public static final double reverseIntakeSpeed = -0.6;
-
     public static final int pivotLeftId = 31;
     public static final int pivotRightId = 30;
-
     public static final int pivotLeftEncoderId = 2;
     public static final int pivotRightEncoderId = 3;
+
     public static final double pivotLeftExpectedZero = 215;
     public static final double pivotRightExpectedZero = 332;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 103;
     public static final double pivotRetractPosition = 3;
+    public static final double pivotDeployTolerance = 10;
+
+    public static final double intakeSpeed = 0.6;
+    public static final double reverseIntakeSpeed = -0.6;
 
     public static final double pivotSpeed = 0.4;
-    public static final double reversePivotSpeed = -1;
-
-    public static final double pivotDeployTolerance = 10;
+    public static final double reversePivotSpeed = -0.8;
   }
 
   public static final class ShooterConstants {

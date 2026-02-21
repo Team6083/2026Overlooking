@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRightEncoder.setInverted(true);
     pivotFollowPIDController.enableContinuousInput(0, 360);
   }
-
+  
   public double getRightPos() {
     return pivotRightEncoder.get();
   }
@@ -41,10 +41,20 @@ public class IntakeSubsystem extends SubsystemBase {
     return pivotLeftEncoder.get();
   }
 
+  // Intake
   public void intake() {
     intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.intakeSpeed);
   }
 
+  public void reverseIntake() {
+    intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.reverseIntakeSpeed);
+  }
+
+  public void stopIntake() {
+    intakeMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  // Pivot
   public void leftPivotDeploy() {
     pivotLeft.set(ControlMode.PercentOutput, 0.3);
   }
@@ -61,12 +71,9 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(ControlMode.PercentOutput, -0.3);
   }
 
-  public void reverseIntake() {
-    intakeMotor.set(ControlMode.PercentOutput, IntakeConstants.reverseIntakeSpeed);
-  }
-
-  public void stopIntake() {
-    intakeMotor.set(ControlMode.PercentOutput, 0);
+  public void stopRotate() {
+    pivotLeft.set(ControlMode.PercentOutput, 0);
+    pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
   public void retract() {
@@ -83,7 +90,6 @@ public class IntakeSubsystem extends SubsystemBase {
       pivotRight.set(ControlMode.PercentOutput, 0);
       pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
     }
-
   }
 
   public void deploy() {
@@ -102,19 +108,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  public void deployLeftintake() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-  }
-
-  public void deployRightintake() {
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-  }
-
-  public void stopRotate() {
-    pivotLeft.set(ControlMode.PercentOutput, 0);
-    pivotRight.set(ControlMode.PercentOutput, 0);
-  }
-
+  // Commands
   public Command deployRightintakeCmd() {
     Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
     cmd.setName("deployRightIntakeCmd");
