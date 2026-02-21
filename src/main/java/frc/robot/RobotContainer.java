@@ -35,7 +35,7 @@ public class RobotContainer {
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
     swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
-    new PositioningCmd(swerveDrive, shooterTracker).schedule();
+    new PositioningCmd(swerveDrive, shooterTracker).ignoringDisable(true).schedule();
     // swerveDrive = new WpilibSwerveDrive();
 
     shooterSubsystem = new ShooterSubsystem();
