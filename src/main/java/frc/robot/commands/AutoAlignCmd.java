@@ -56,7 +56,7 @@ public class AutoAlignCmd extends Command {
       yawOutput = -yawPID.calculate(tagTracking.get3dYaw(), 0);
       yawOutput = MathUtil.clamp(yawOutput, -1, 1);
 
-      tzOutput = -tzPID.calculate(tagTracking.get3dTz(), 1.7);
+      tzOutput = -tzPID.calculate(tagTracking.get3dTz(), 1.6);
       tzOutput = MathUtil.clamp(tzOutput, -1.5, 1.5);
 
       txOutput = txPID.calculate(tagTracking.get3dTx(), 0);
