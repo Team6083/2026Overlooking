@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,11 +16,12 @@ import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
-  private final WpilibSwerveDrive swerveDrive;
+  private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
