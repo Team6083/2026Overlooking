@@ -23,22 +23,16 @@ public class IntakeSubsystem extends SubsystemBase {
       IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotLeftExpectedZero);
   private final DutyCycleEncoder pivotRightEncoder = new DutyCycleEncoder(IntakeConstants.pivotRightEncoderId,
       IntakeConstants.pivotEncoderFullRange, IntakeConstants.pivotRightExpectedZero);
-  private final PIDController pivotFollowPIDController = new PIDController(0.25, 0, 0);
+  private final PIDController pivotFollowPIDController = new PIDController(IntakeConstants.pivotFollowKp,
+      IntakeConstants.pivotFollowKi, IntakeConstants.pivotFollowKd);
 
   public IntakeSubsystem() {
-    pivotLeft.setInverted(false);
-    pivotRight.setInverted(true);
-    pivotLeftEncoder.setInverted(false);
-    pivotRightEncoder.setInverted(true);
-    pivotFollowPIDController.enableContinuousInput(0, 360);
-  }
-
-  public double getRightPos() {
-    return pivotRightEncoder.get();
-  }
-
-  public double getLeftPos() {
-    return pivotLeftEncoder.get();
+    pivotLeft.setInverted(IntakeConstants.motorLeftInverted);
+    pivotRight.setInverted(IntakeConstants.motorRightInverted);
+    pivotLeftEncoder.setInverted(IntakeConstants.encoderLeftInverted);
+    pivotRightEncoder.setInverted(IntakeConstants.encoderRightInverted);
+    pivotFollowPIDController.enableContinuousInput(IntakeConstants.pivotFollowMinInput,
+        IntakeConstants.pivotFollowMaxInput);
   }
 
   // Intake
@@ -77,57 +71,60 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void deploy() {
-    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= IntakeConstants.pivotDeployTolerance
-        && pivotLeftEncoder.get() - pivotRightEncoder.get() <= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotLeftEncoder.get(),
-          pivotRightEncoder.get());
-      pivotRight.set(ControlMode.PercentOutput, pivotRightSpeed);
-    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-      pivotRight.set(ControlMode.PercentOutput, 0);
-    } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, 0);
-      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-    }
+    runSyncPivot(IntakeConstants.pivotSpeed, true);
   }
 
   public void retract() {
-    if (pivotRightEncoder.get() - pivotLeftEncoder.get() <= IntakeConstants.pivotDeployTolerance
-        && pivotLeftEncoder.get() - pivotRightEncoder.get() <= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-      double pivotRightSpeed = pivotFollowPIDController.calculate(pivotRightEncoder.get(),
-          pivotLeftEncoder.get());
-      pivotRight.set(ControlMode.PercentOutput, -pivotRightSpeed);
-    } else if (pivotRightEncoder.get() - pivotLeftEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, 0);
-      pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-    } else if (pivotLeftEncoder.get() - pivotRightEncoder.get() >= IntakeConstants.pivotDeployTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-      pivotRight.set(ControlMode.PercentOutput, 0);
+    runSyncPivot(IntakeConstants.reversePivotSpeed, false);
+  }
+  
+  private void runSyncPivot(double targetSpeed, boolean isDeploy) {
+    double leftPos = pivotLeftEncoder.get();
+    double rightPos = pivotRightEncoder.get();  
+    double diff = leftPos - rightPos; 
+    if (Math.abs(diff) <= IntakeConstants.pivotFollowTolerance) {
+      pivotLeft.set(ControlMode.PercentOutput, targetSpeed);
+      double pidOut = isDeploy
+          ? pivotFollowPIDController.calculate(leftPos, rightPos)
+          : -pivotFollowPIDController.calculate(rightPos, leftPos);
+      pivotRight.set(ControlMode.PercentOutput, pidOut);
+    } else if (rightPos - leftPos > IntakeConstants.pivotFollowTolerance) {
+      pivotLeft.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
+      pivotRight.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
+    } else {
+      pivotLeft.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
+      pivotRight.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
     }
   }
 
+  public double getRightPos() {
+    return pivotRightEncoder.get();
+  }
+
+  public double getLeftPos() {
+    return pivotLeftEncoder.get();
+  }
+
   // Commands
-  public Command deployLeftintakeCmd() {
+  public Command deployLeftIntakeCmd() {
     Command cmd = runEnd(this::leftPivotDeploy, this::stopRotate);
     cmd.setName("deployLeftIntakeCmd");
     return cmd;
   }
 
-  public Command restractLeftintakeCmd() {
+  public Command retractLeftIntakeCmd() {
     Command cmd = runEnd(this::leftPivotRetract, this::stopRotate);
-    cmd.setName("restractLeftIntakeCmd");
+    cmd.setName("retractLeftIntakeCmd");
     return cmd;
   }
 
-  public Command deployRightintakeCmd() {
+  public Command deployRightIntakeCmd() {
     Command cmd = runEnd(this::rightPivotDeploy, this::stopRotate);
     cmd.setName("deployRightIntakeCmd");
     return cmd;
   }
 
-  public Command retractRightintaleCmd() {
+  public Command retractRightIntakeCmd() {
     Command cmd = runEnd(this::rightPivotRetract, this::stopRotate);
     cmd.setName("retractRightIntakeCmd");
     return cmd;
@@ -145,20 +142,20 @@ public class IntakeSubsystem extends SubsystemBase {
     return cmd;
   }
 
-  public Command manualRetractCmd() {
+  public Command syncRetractCmd() {
     Command cmd = runEnd(this::retract, this::stopRotate);
-    cmd.setName("manualRetractCmd");
+    cmd.setName("syncRetractCmd");
     return cmd;
   }
 
-  public Command manualDeployIntakeCmd() {
+  public Command syncDeployIntakeCmd() {
     Command cmd = runEnd(this::deploy, this::stopRotate);
-    cmd.setName("manualDeployIntakeCmd");
+    cmd.setName("syncDeployIntakeCmd");
     return cmd;
   }
 
   public Command deployIntakeCmd() {
-    Command cmd = manualDeployIntakeCmd()
+    Command cmd = syncDeployIntakeCmd()
         .until(() -> getRightPos() >= IntakeConstants.pivotDeployStopPosition
             && getLeftPos() >= IntakeConstants.pivotDeployStopPosition);
     cmd.setName("deployIntakeCmd");
@@ -166,9 +163,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command retractIntakeCmd() {
-    Command cmd = manualRetractCmd()
-        .until(() -> getLeftPos() <= IntakeConstants.pivotRetractPosition
-            && getRightPos() <= IntakeConstants.pivotRetractPosition);
+    Command cmd = syncRetractCmd()
+        .until(() -> getLeftPos() <= IntakeConstants.pivotRetractStopPosition
+            && getRightPos() <= IntakeConstants.pivotRetractStopPosition);
     cmd.setName("retractIntakeCmd");
     return cmd;
   }
