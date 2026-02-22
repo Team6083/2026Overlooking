@@ -60,8 +60,8 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
       gyro.getRotation2d(),
       getSwerveModulePosition(),
         new Pose2d(),
-      VisionConstants.stateStdDevs, 
-      VisionConstants.visionStdDevs);
+        VisionConstants.stateStdDevs, 
+        VisionConstants.visionStdDevs);
 
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();
