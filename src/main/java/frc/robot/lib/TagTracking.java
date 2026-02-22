@@ -80,24 +80,7 @@ public class TagTracking {
     this.disabled = disabled;
   }
 
-  public Pose2d getBotPoseAsPose2d() {
-    double[] poseArray = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
-    if (!hasTarget() || poseArray.length < 7) {
-      return null; 
-    }
-    return new Pose2d(
-        poseArray[0], 
-        poseArray[1], 
-        Rotation2d.fromDegrees(poseArray[5])
-    );
-  }
-
-  public double getTimestampSeconds() {
-    double[] poseArray = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
-    if (poseArray.length < 7) {
-      return Timer.getFPGATimestamp();
-    }
-    double latencyMs = (poseArray.length >= 7) ? poseArray[6] : 0;
-    return Timer.getFPGATimestamp() - (latencyMs / 1000.0);
+  public double[] getBotPoseArray() {
+    return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
   }
 }
