@@ -5,7 +5,6 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -60,7 +59,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
       kinematics,
       gyro.getRotation2d(),
       getSwerveModulePosition(),
-      new Pose2d(),
+        new Pose2d(),
       VecBuilder.fill(0.1, 0.1, 0.1), 
       VecBuilder.fill(0.7, 0.7, 0.7)); 
 
