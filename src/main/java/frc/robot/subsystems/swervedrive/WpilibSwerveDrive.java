@@ -5,7 +5,6 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,6 +18,8 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.VisionConstants;
+
 import java.util.function.Supplier;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
@@ -60,8 +61,8 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
       gyro.getRotation2d(),
       getSwerveModulePosition(),
         new Pose2d(),
-      VecBuilder.fill(0.1, 0.1, 0.1), 
-      VecBuilder.fill(0.7, 0.7, 0.7)); 
+      VisionConstants.stateStdDevs, 
+      VisionConstants.visionStdDevs);
 
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();

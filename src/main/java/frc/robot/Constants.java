@@ -6,6 +6,9 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Distance;
 
 /** Add your docs here. */
@@ -67,5 +70,12 @@ public class Constants {
     public static final double kpRotation = 4.5;
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
+  }
+
+  public static final class VisionConstants {
+    // 底盤里程計的不信任度 (X, Y, Theta)
+    public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+    // 視覺數據的不信任度 (X, Y, Theta)
+    public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.7, 0.7, 0.7);
   }
 }
