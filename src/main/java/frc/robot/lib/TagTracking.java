@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
+  private final String tableName;
   private boolean disabled = false;
 
   public TagTracking() {
@@ -19,7 +20,8 @@ public class TagTracking {
   }
 
   public TagTracking(String name) {
-    limelightTable = NetworkTableInstance.getDefault().getTable(name);
+    this.tableName = name;
+    this.limelightTable = NetworkTableInstance.getDefault().getTable(name);
   }
 
   public double getTv() {
@@ -82,5 +84,9 @@ public class TagTracking {
 
   public double[] getBotPoseArray() {
     return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
+  }
+
+  public String getName() {
+    return tableName;
   }
 }
