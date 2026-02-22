@@ -29,7 +29,7 @@ public class Constants {
     public static final int pivotRightId = 30;
     public static final int pivotLeftEncoderId = 2;
     public static final int pivotRightEncoderId = 3;
-
+    
     public static final double pivotLeftExpectedZero = 215;
     public static final double pivotRightExpectedZero = 332;
 

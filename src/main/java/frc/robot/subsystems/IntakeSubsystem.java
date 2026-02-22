@@ -70,6 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(ControlMode.PercentOutput, 0);
   }
 
+  // Sync Pivot
   public void deploy() {
     runSyncPivot(IntakeConstants.pivotSpeed, true);
   }
