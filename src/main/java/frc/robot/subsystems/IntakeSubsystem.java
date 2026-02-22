@@ -89,21 +89,21 @@ public class IntakeSubsystem extends SubsystemBase {
           ? pivotFollowPIDController.calculate(leftPos, rightPos)
           : -pivotFollowPIDController.calculate(rightPos, leftPos);
       pivotRight.set(ControlMode.PercentOutput, pidOut);
-    } else if (rightPos - leftPos > IntakeConstants.pivotFollowTolerance) {
+    } else if (leftPos - rightPos < -IntakeConstants.pivotFollowTolerance) {
       pivotLeft.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
       pivotRight.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
-    } else {
+    } else if (leftPos - rightPos > IntakeConstants.pivotFollowTolerance) {
       pivotLeft.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
       pivotRight.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
     }
   }
 
-  public double getRightPos() {
-    return pivotRightEncoder.get();
-  }
-
   public double getLeftPos() {
     return pivotLeftEncoder.get();
+  }
+
+  public double getRightPos() {
+    return pivotRightEncoder.get();
   }
 
   // Commands
