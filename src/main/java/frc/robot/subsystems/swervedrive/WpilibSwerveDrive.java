@@ -56,7 +56,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     gyro.reset();
 
     poseEstimator = new SwerveDrivePoseEstimator(
-      kinematics,
+        kinematics,
       gyro.getRotation2d(),
       getSwerveModulePosition(),
         new Pose2d(),
