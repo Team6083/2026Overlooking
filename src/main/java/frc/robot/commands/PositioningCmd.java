@@ -4,8 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.lib.TagTracking;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 public class PositioningCmd extends Command {
   private final SwerveDrive drive;
@@ -22,9 +22,9 @@ public class PositioningCmd extends Command {
       double[] poseArray = limelight.getBotPoseArray();
       if (poseArray.length >= 7) {
         Pose2d visionPose = new Pose2d(
-          poseArray[0],
-          poseArray[1],
-          Rotation2d.fromDegrees(poseArray[5])
+            poseArray[0],
+            poseArray[1],
+            Rotation2d.fromDegrees(poseArray[5])
         );
         double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
         drive.addVisionMeasurement(visionPose, timestamp);

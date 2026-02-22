@@ -79,5 +79,5 @@ public class TagTracking {
 
   public double[] getBotPoseArray() {
     return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
-}
+  }
 }
