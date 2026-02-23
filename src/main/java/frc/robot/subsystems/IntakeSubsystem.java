@@ -72,30 +72,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Sync Pivot
   public void deploy() {
-    runSyncPivot(IntakeConstants.pivotSpeed, true);
+    runSyncPivot(IntakeConstants.pivotSpeed);
   }
 
   public void retract() {
-    runSyncPivot(IntakeConstants.reversePivotSpeed, false);
+    runSyncPivot(IntakeConstants.reversePivotSpeed);
   }
 
-  private void runSyncPivot(double targetSpeed, boolean isDeploy) {
+  private void runSyncPivot(double baseSpeed) {
     double leftPos = pivotLeftEncoder.get();
     double rightPos = pivotRightEncoder.get();
-    double diff = leftPos - rightPos;
-    if (Math.abs(diff) <= IntakeConstants.pivotFollowTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, targetSpeed);
-      double pidOut = isDeploy
-          ? pivotFollowPIDController.calculate(leftPos, rightPos)
-          : -pivotFollowPIDController.calculate(rightPos, leftPos);
-      pivotRight.set(ControlMode.PercentOutput, pidOut);
-    } else if (leftPos - rightPos < -IntakeConstants.pivotFollowTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
-      pivotRight.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
-    } else if (leftPos - rightPos > IntakeConstants.pivotFollowTolerance) {
-      pivotLeft.set(ControlMode.PercentOutput, isDeploy ? 0 : targetSpeed);
-      pivotRight.set(ControlMode.PercentOutput, isDeploy ? targetSpeed : 0);
-    }
+    double syncCorrection = pivotFollowPIDController.calculate(rightPos, leftPos);
+    pivotLeft.set(ControlMode.PercentOutput, baseSpeed);
+    pivotRight.set(ControlMode.PercentOutput, baseSpeed + syncCorrection);
   }
 
   public double getLeftPos() {
