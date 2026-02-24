@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commandgroups.AutoShootCommandGroup;
+import frc.robot.commands.AutoAlignCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
@@ -76,7 +78,9 @@ public class RobotContainer {
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
     mainController.rightBumper()
-        .whileTrue(new AutoShootCommandGroup(shooterTracker, swerveDrive, shooterSubsystem, transportSubsystem));
+        .whileTrue(Commands.either(new SequentialCommandGroup(new AutoAlignCmd(shooterTracker, swerveDrive),
+            new ShooterComboCmd(shooterSubsystem, transportSubsystem)), Commands.none(),
+            () -> shooterTracker.isHubTag()));
   }
 
   public Command getAutonomousCommand() {
