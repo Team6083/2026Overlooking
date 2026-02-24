@@ -72,14 +72,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Sync Pivot
   public void deploy() {
-    runSyncPivot(IntakeConstants.pivotSpeed, 1);
+    runSyncPivot(IntakeConstants.pivotSpeed);
   }
 
   public void retract() {
-    runSyncPivot(IntakeConstants.reversePivotSpeed, -1);
+    runSyncPivot(IntakeConstants.reversePivotSpeed);
   }
 
-  private void runSyncPivot(double baseSpeed, double PIDCorrection) {
+  private void runSyncPivot(double baseSpeed) {
     double leftPos = pivotLeftEncoder.get();
     double rightPos = pivotRightEncoder.get();
     double syncCorrection = pivotFollowPIDController.calculate(rightPos, leftPos);
