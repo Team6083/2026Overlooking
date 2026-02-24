@@ -19,14 +19,14 @@ public class SwerveDriveFactory {
   }
 
   public static SwerveDrive createSwerveDrive(SwerveImplementation type, RobotVariant variant) {
-    String swerveConfigFileName = switch (variant) {
+    String swerveConfigDirName = switch (variant) {
       case COMPETITION -> "swerve/competition";
       case CHASSIS -> "swerve/chassis";
     };
 
     return switch (type) {
-      case YAGSL -> new YagslSwerve(new File(Filesystem.getDeployDirectory(), swerveConfigFileName));
-      case WPILIB -> new WpilibSwerveDrive(variant);
+      case YAGSL -> new YagslSwerve(new File(Filesystem.getDeployDirectory(), swerveConfigDirName));
+      case WPILIB -> new WpilibSwerveDrive();
     };
   }
 }

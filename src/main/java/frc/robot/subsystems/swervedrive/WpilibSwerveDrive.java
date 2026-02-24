@@ -45,7 +45,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
 
-  public WpilibSwerveDrive(SwerveDriveFactory.RobotVariant variant) {
+  public WpilibSwerveDrive() {
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
         new Translation2d(+0.27, -0.27),

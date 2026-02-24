@@ -12,7 +12,8 @@ import edu.wpi.first.units.measure.Distance;
 public class Constants {
   public static final class DriveBaseConstant {
     // turningMotor ID
-    public static final int leftFrontTurningMotorId = 23;
+    public static final int frontLeftTurningMotorId = 23;
+    public static final int backLeftTurningMotorId = 22;
 
     // driveMotor ID
     public static final int leftFrontDriveMotorId = 24;
