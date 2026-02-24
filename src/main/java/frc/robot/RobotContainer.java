@@ -78,8 +78,10 @@ public class RobotContainer {
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
     mainController.rightBumper()
-        .whileTrue(Commands.either(new SequentialCommandGroup(new AutoAlignCmd(shooterTracker, swerveDrive),
-            new ShooterComboCmd(shooterSubsystem, transportSubsystem)), Commands.none(),
+        .whileTrue(Commands.either(
+            new AutoAlignCmd(shooterTracker, swerveDrive)
+                .andThen(new ShooterComboCmd(shooterSubsystem, transportSubsystem)),
+            Commands.none(),
             () -> shooterTracker.isHubTag()));
   }
 
