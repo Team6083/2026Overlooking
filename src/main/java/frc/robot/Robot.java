@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,11 +18,12 @@ public class Robot extends TimedRobot {
   private boolean savelog = false;
 
   public Robot() {
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer(); 
+    CameraServer.startAutomaticCapture();
   }
 
   @Override
-  public void robotInit() {
+  public void robotInit()   {
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
