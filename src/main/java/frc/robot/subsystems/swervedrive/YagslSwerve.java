@@ -52,9 +52,13 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       inverted = -1;
     }
 
-    swerveDrive.drive(new Translation2d(
-        translationX * inverted,
-        translationY * inverted),
+    var directionMultiplier = fieldRelative ? inverted : 1;
+    Translation2d finalTranslation = new Translation2d(
+        translationX * directionMultiplier,
+        translationY * directionMultiplier);
+
+    swerveDrive.drive(
+        finalTranslation,
         angularRotationX,
         fieldRelative, false);
   }
