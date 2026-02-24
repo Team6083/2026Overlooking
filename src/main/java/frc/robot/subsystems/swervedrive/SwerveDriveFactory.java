@@ -20,8 +20,8 @@ public class SwerveDriveFactory {
 
   public static SwerveDrive createSwerveDrive(SwerveImplementation type, RobotVariant variant) {
     String swerveConfigFileName = switch (variant) {
-      case COMPETITION -> "swerve";
-      case CHASSIS -> "swerveConfig-chassis.json";
+      case COMPETITION -> "swerve/competition";
+      case CHASSIS -> "swerve/chassis";
     };
 
     return switch (type) {
