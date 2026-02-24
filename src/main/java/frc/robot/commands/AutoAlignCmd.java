@@ -53,13 +53,13 @@ public class AutoAlignCmd extends Command {
     double txOutput = 0;
 
     if (isTargetValid) {
-      yawOutput = -yawPID.calculate(tagTracking.get3dYaw(), 0);
+      yawOutput = yawPID.calculate(tagTracking.get3dYaw(), 0);
       yawOutput = MathUtil.clamp(yawOutput, -1, 1);
 
-      tzOutput = -tzPID.calculate(tagTracking.get3dTz(), 1.6);
-      tzOutput = MathUtil.clamp(tzOutput, -1.5, 1.5);
+      tzOutput = tzPID.calculate(tagTracking.get3dTz(), 1.6);
+      tzOutput = MathUtil.clamp(tzOutput, -1.7, 1.5);
 
-      txOutput = txPID.calculate(tagTracking.get3dTx(), 0);
+      txOutput = -txPID.calculate(tagTracking.get3dTx(), 0);
       txOutput = MathUtil.clamp(txOutput, -1.5, 1.5);
 
       drive.drive(tzOutput, txOutput, yawOutput, false);
