@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,7 +54,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         new Translation2d(-0.27, +0.27),
         new Translation2d(-0.27, -0.27));
     gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    gyro.reset();
 
     odometry = new SwerveDriveOdometry(
         kinematics,
@@ -82,7 +83,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public void drive(double vx, double vy, double omega, boolean feildRelative) {
-    ChassisSpeeds inputChassisSpeeds = new ChassisSpeeds(vx, vy, omega);
+    var alliance = DriverStation.getAlliance();
+    var inverted = 1;
+    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+      inverted = -1;
+    }
+
+    ChassisSpeeds inputChassisSpeeds = new ChassisSpeeds(vx * inverted, vy * inverted, omega);
 
     ChassisSpeeds speeds = feildRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(inputChassisSpeeds, gyro.getRotation2d())

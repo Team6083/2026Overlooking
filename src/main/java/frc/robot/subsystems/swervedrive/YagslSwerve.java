@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,15 +42,19 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
     swerveDrive.setChassisDiscretization(true, 0.02);
     swerveDrive.setMotorIdleMode(true);
-
-    swerveDrive.zeroGyro();
   }
 
   @Override
   public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
+    var alliance = DriverStation.getAlliance();
+    var inverted = 1;
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      inverted = -1;
+    }
+
     swerveDrive.drive(new Translation2d(
-        translationX,
-        translationY),
+        translationX * inverted,
+        translationY * inverted),
         angularRotationX,
         fieldRelative, false);
   }
