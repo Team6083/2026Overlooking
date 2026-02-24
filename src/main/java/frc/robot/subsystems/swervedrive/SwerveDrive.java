@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 /** Add your docs here. */
 public interface SwerveDrive extends Subsystem {
+  void addVisionMeasurement(Pose2d visionRobotPose, double timestamp);
+  
   void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
   void drive(ChassisSpeeds speeds);
@@ -30,6 +32,4 @@ public interface SwerveDrive extends Subsystem {
   void resetPose(Pose2d pose);
 
   ChassisSpeeds getRobotRelativeSpeeds();
-
-  void addVisionMeasurement(Pose2d visionRobotPose, double timestamp);
 }

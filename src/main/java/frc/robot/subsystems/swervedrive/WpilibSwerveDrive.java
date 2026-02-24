@@ -69,6 +69,11 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     swerveModuleStates[3] = new SwerveModuleState();
   }
 
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
   public SwerveModulePosition[] getSwerveModulePosition() {
     return new SwerveModulePosition[] {
         frontLeft.getPosition(),
@@ -107,11 +112,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void zeroGyro() {
     gyro.reset();
-  }
-
-  @Override
-  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
-    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
   }
 
   @Override
