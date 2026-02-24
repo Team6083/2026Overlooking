@@ -73,9 +73,9 @@ public class Constants {
   }
 
   public static final class VisionConstants {
-    // 底盤里程計的不信任度 (X, Y, Theta)
+    // 底盤里程計的預期誤差大小 (X, Y, Theta)
     public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
-    // 視覺數據的不信任度 (X, Y, Theta)
+    // 視覺數據的預期誤差大小 (X, Y, Theta)
     public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.7, 0.7, 0.7);
   }
 }
