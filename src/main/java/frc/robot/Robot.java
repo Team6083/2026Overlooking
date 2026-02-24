@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,6 +16,7 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
   private boolean savelog = false;
+  private Timer gcTimer;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -31,6 +33,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    if (gcTimer.advanceIfElapsed(5)) {
+      System.gc();
+    }
   }
 
   @Override
