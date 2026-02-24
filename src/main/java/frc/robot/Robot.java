@@ -16,10 +16,11 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
   private boolean savelog = false;
-  private Timer gcTimer;
+  private Timer gcTimer = new Timer();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    gcTimer.start();
   }
 
   @Override
