@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -84,12 +86,18 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   @Override
-  public void drive(double vx, double vy, double omega, boolean feildRelative) {
-    ChassisSpeeds inputChassisSpeeds = new ChassisSpeeds(vx, vy, omega);
+  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
+    var alliance = DriverStation.getAlliance();
+    var inverted = 1;
+    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+      inverted = -1;
+    }
 
-    ChassisSpeeds speeds = feildRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(inputChassisSpeeds, gyro.getRotation2d())
-        : inputChassisSpeeds;
+    ChassisSpeeds speeds = fieldRelative
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(
+            new ChassisSpeeds(vx * inverted, vy * inverted, omega),
+            gyro.getRotation2d())
+        : new ChassisSpeeds(vx, vy, omega);
 
     drive(speeds);
   }
@@ -109,18 +117,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void zeroGyro() {
     gyro.reset();
-  }
-
-  @Override
-  public Command driveCommand(double translationX, double translationY, double angularRotationX,
-      boolean fieldRelative) {
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
-  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative) {
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
   }
 
   @Override
