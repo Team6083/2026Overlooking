@@ -77,7 +77,7 @@ public class RobotContainer {
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
     mainController.rightBumper().whileTrue(
-      Commands.either(
+        Commands.either(
             new AutoAlignCmd(shooterTracker, swerveDrive)
                 .andThen(new ShooterComboCmd(shooterSubsystem, transportSubsystem)),
             Commands.none(),
