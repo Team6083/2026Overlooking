@@ -18,14 +18,14 @@ public class Constants {
       boolean turningInverted,
       boolean driveInverted,
       String name) {
-  };
+  }
 
   public record DriveBaseConstant(
       SwerveModuleConstant frontLeft,
       SwerveModuleConstant frontRight,
       SwerveModuleConstant backLeft,
       SwerveModuleConstant backRight) {
-  };
+  }
 
   public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
