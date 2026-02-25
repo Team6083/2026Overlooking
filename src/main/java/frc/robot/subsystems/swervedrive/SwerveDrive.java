@@ -18,11 +18,6 @@ public interface SwerveDrive extends Subsystem {
 
   void zeroGyro();
 
-  Command driveCommand(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
-
-  Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative);
-
   Command zeroGyroCommand();
 
   Pose2d getPose2d();
