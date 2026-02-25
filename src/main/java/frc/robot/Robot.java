@@ -17,7 +17,7 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
   private boolean savelog = false;
-
+  private final NetworkTableInstance ntInstance = NetworkTableInstance.getDefault();
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
@@ -28,18 +28,17 @@ public class Robot extends TimedRobot {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
     }
-
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/BuildDate").publish()
+    ntInstance.getStringTopic("/Metadata/BuildDate").publish()
         .set(BuildConstants.BUILD_DATE);
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/GitBranch").publish()
+    ntInstance.getStringTopic("/Metadata/GitBranch").publish()
         .set(BuildConstants.GIT_BRANCH);
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/GitDate").publish()
+    ntInstance.getStringTopic("/Metadata/GitDate").publish()
         .set(BuildConstants.GIT_DATE);
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/GitDirty").publish()
+    ntInstance.getStringTopic("/Metadata/GitDirty").publish()
         .set(BuildConstants.DIRTY == 1 ? "Dirty!" : "Clean! Good job!");
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/GitSHA").publish()
+    ntInstance.getStringTopic("/Metadata/GitSHA").publish()
         .set(BuildConstants.GIT_SHA);
-    NetworkTableInstance.getDefault().getStringTopic("/Metadata/GitBranch").publish()
+    ntInstance.getStringTopic("/Metadata/GitBranch").publish()
         .set(BuildConstants.GIT_BRANCH);
 
     SmartDashboard.putString("GitInfo", String.format("%s (%s), %s",
