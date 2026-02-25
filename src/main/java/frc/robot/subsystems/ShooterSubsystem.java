@@ -27,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void setShooterVoltage(double voltage) {
-    shooterMotor.set(voltage / shooterMotor.getBusVoltage());
+    shooterMotor.setVoltage(voltage);;
   }
 
   public void shoot() {
@@ -37,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void stopShooter() {
-    shooterMotor.set(0);
+    shooterMotor.setVoltage(0);
   }
 
   private double getShooterVelocity() {
@@ -58,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
     SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
-    SmartDashboard.putNumber("shooterMotorSpeed", shooterMotor.getOutputCurrent());
+    SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
     SmartDashboard.putData("ShooterSubsystem", this);
   }
 }
