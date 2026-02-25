@@ -31,8 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.setInverted(IntakeConstants.motorRightInverted);
     pivotLeftEncoder.setInverted(IntakeConstants.encoderLeftInverted);
     pivotRightEncoder.setInverted(IntakeConstants.encoderRightInverted);
-    pivotFollowPIDController.enableContinuousInput(IntakeConstants.pivotFollowMinInput,
-        IntakeConstants.pivotFollowMaxInput);
+    pivotFollowPIDController.enableContinuousInput(0, IntakeConstants.pivotEncoderFullRange);
   }
 
   // Intake
