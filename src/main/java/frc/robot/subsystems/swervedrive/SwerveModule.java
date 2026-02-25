@@ -24,6 +24,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstant;
+import frc.robot.Constants.SwerveModuleConstant;
 
 public class SwerveModule extends SubsystemBase {
   private final SparkMax turningMotor;
@@ -35,28 +36,26 @@ public class SwerveModule extends SubsystemBase {
   private double turningMotorVoltage;
   private double driveMotorVoltage;
 
-  public SwerveModule(int turningMotorId, int driveMotorId,
-      int canCoderId, double canCoderOffset,
-      boolean turningInverted, boolean driveInverted, String name) {
-    turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
+  public SwerveModule(SwerveModuleConstant swerveModuleConstant) {
+    turningMotor = new SparkMax(swerveModuleConstant.turningMotorId(), MotorType.kBrushless);
     SparkMaxConfig turningMotorConfig = new SparkMaxConfig();
     turningMotorConfig.smartCurrentLimit(40)
         .idleMode(IdleMode.kCoast)
-        .inverted(turningInverted);
+        .inverted(swerveModuleConstant.turningInverted());
     turningMotor.configure(turningMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
+    driveMotor = new SparkMax(swerveModuleConstant.driveMotorId(), MotorType.kBrushless);
     SparkMaxConfig driveMotorConfig = new SparkMaxConfig();
     driveMotorConfig.smartCurrentLimit(40)
         .idleMode(IdleMode.kBrake)
-        .inverted(driveInverted);
+        .inverted(swerveModuleConstant.driveInverted());
     driveMotor.configure(driveMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     driveEncoder = driveMotor.getEncoder();
 
-    turningEncoder = new CANcoder(canCoderId);
+    turningEncoder = new CANcoder(swerveModuleConstant.canCoderId());
     CANcoderConfiguration turningEncoderConfiguration = new CANcoderConfiguration();
-    turningEncoderConfiguration.MagnetSensor.MagnetOffset = canCoderOffset;
+    turningEncoderConfiguration.MagnetSensor.MagnetOffset = swerveModuleConstant.canCoderOffset();
     turningEncoder.getConfigurator().apply(turningEncoderConfiguration);
 
     rotPIDController = new PIDController(0.5, 0, 0);
@@ -65,7 +64,7 @@ public class SwerveModule extends SubsystemBase {
     driveMotorVoltage = 0;
     turningMotorVoltage = 0;
 
-    setName(name + "Module");
+    setName(swerveModuleConstant.name() + "Module");
   }
 
   public double getAngleRadians() {
