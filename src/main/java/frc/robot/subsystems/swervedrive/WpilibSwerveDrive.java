@@ -27,10 +27,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   public SwerveModule frontLeft = new SwerveModule(
       21, 26, 13, -0.164062, true, true, "FrontLeft");
-  public SwerveModule backLeft = new SwerveModule(
-      22, 18, 14, -0.254395, true, true, "BackLeft");
   public SwerveModule frontRight = new SwerveModule(
       25, 27, 11, -0.016602, true, true, "FrontRight");
+  public SwerveModule backLeft = new SwerveModule(
+      22, 18, 14, -0.254395, true, true, "BackLeft");
   public SwerveModule backRight = new SwerveModule(
       23, 24, 12, 0.260986, true, true, "BackRight");
 
