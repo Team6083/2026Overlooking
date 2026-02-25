@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,9 +17,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-// import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
-import frc.robot.subsystems.swervedrive.YagslSwerve;
-import java.io.File;
+import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -33,8 +30,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
-    swerveDrive = new YagslSwerve(new File(Filesystem.getDeployDirectory(), "swerve"));
-    // swerveDrive = new WpilibSwerveDrive();
+    swerveDrive = SwerveDriveFactory.createSwerveDrive(
+        SwerveDriveFactory.SwerveImplementation.WPILIB,
+        SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
