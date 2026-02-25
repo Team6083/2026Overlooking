@@ -82,14 +82,14 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   @Override
-  public void drive(double vx, double vy, double omega, boolean feildRelative) {
+  public void drive(double vx, double vy, double omega, boolean fieldRelative) {
     var alliance = DriverStation.getAlliance();
     var inverted = 1;
     if (alliance.isPresent() && alliance.get() == Alliance.Red) {
       inverted = -1;
     }
 
-    ChassisSpeeds speeds = feildRelative
+    ChassisSpeeds speeds = fieldRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(
             new ChassisSpeeds(vx * inverted, vy * inverted, omega),
             gyro.getRotation2d())
