@@ -18,23 +18,21 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveBaseConstant;
+
 import java.util.function.Supplier;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
-  private final SwerveDriveKinematics kinematics;
-  private SwerveDriveOdometry odometry;
-
-  public SwerveModule frontLeft = new SwerveModule(
-      21, 26, 13, -0.164062, true, true, "FrontLeft");
-  public SwerveModule frontRight = new SwerveModule(
-      25, 27, 11, -0.016602, true, true, "FrontRight");
-  public SwerveModule backLeft = new SwerveModule(
-      22, 18, 14, -0.254395, true, true, "BackLeft");
-  public SwerveModule backRight = new SwerveModule(
-      23, 24, 12, 0.260986, true, true, "BackRight");
+  public SwerveModule frontLeft;
+  public SwerveModule frontRight;
+  public SwerveModule backLeft;
+  public SwerveModule backRight;
 
   private final AHRS gyro;
+
+  private final SwerveDriveKinematics kinematics;
+  private SwerveDriveOdometry odometry;
 
   private SwerveModuleState[] swerveModuleStates = new SwerveModuleState[4];
   private final StructArrayPublisher<SwerveModuleState> swerveDesiredStatePublisher = NetworkTableInstance
@@ -45,14 +43,20 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
 
-  public WpilibSwerveDrive() {
+  public WpilibSwerveDrive(DriveBaseConstant driveBaseConstant) {
+    frontLeft = new SwerveModule(driveBaseConstant.frontLeft());
+    frontRight = new SwerveModule(driveBaseConstant.frontRight());
+    backLeft = new SwerveModule(driveBaseConstant.backLeft());
+    backRight = new SwerveModule(driveBaseConstant.backRight());
+
+    gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+    gyro.reset();
+
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
         new Translation2d(+0.27, -0.27),
         new Translation2d(-0.27, +0.27),
         new Translation2d(-0.27, -0.27));
-    gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    gyro.reset();
 
     odometry = new SwerveDriveOdometry(
         kinematics,

@@ -10,14 +10,42 @@ import edu.wpi.first.units.measure.Distance;
 
 /** Add your docs here. */
 public class Constants {
-  public static final class DriveBaseConstant {
-    // turningMotor ID
-    public static final int frontLeftTurningMotorId = 23;
-    public static final int backLeftTurningMotorId = 22;
+  public record SwerveModuleConstant(
+      int turningMotorId,
+      int driveMotorId,
+      int canCoderId,
+      double canCoderOffset,
+      boolean turningInverted,
+      boolean driveInverted,
+      String name) {
+  };
 
-    // driveMotor ID
-    public static final int leftFrontDriveMotorId = 24;
-  }
+  public record DriveBaseConstant(
+      SwerveModuleConstant frontLeft,
+      SwerveModuleConstant frontRight,
+      SwerveModuleConstant backLeft,
+      SwerveModuleConstant backRight) {
+  };
+
+  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
+      new SwerveModuleConstant(
+          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+      new SwerveModuleConstant(
+          25, 27, 11, -0.016602, true, true, "FrontRight"),
+      new SwerveModuleConstant(
+          22, 18, 14, -0.254395, true, true, "BackLeft"),
+      new SwerveModuleConstant(
+          23, 24, 12, 0.260986, true, true, "BackRight"));
+
+  public static final DriveBaseConstant CHASSIS_CONFIG = new DriveBaseConstant(
+      new SwerveModuleConstant(
+          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+      new SwerveModuleConstant(
+          25, 27, 11, -0.016602, true, true, "FrontRight"),
+      new SwerveModuleConstant(
+          22, 18, 14, -0.254395, true, true, "BackLeft"),
+      new SwerveModuleConstant(
+          23, 24, 12, 0.260986, true, true, "BackRight"));
 
   public static final class ModuleConstant {
     // define the radius of the wheel in meters

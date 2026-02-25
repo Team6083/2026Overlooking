@@ -6,7 +6,8 @@ package frc.robot.subsystems.swervedrive;
 
 import java.io.File;
 import edu.wpi.first.wpilibj.Filesystem;
-
+import frc.robot.Constants;
+import frc.robot.Constants.DriveBaseConstant;
 public class SwerveDriveFactory {
   public enum SwerveImplementation {
     YAGSL,
@@ -24,9 +25,14 @@ public class SwerveDriveFactory {
       case CHASSIS -> "swerve/chassis";
     };
 
+    DriveBaseConstant driveBaseConstant = switch (variant) {
+      case COMPETITION -> Constants.COMPETITION_CONFIG;
+      case CHASSIS -> Constants.CHASSIS_CONFIG;
+    };
+
     return switch (type) {
       case YAGSL -> new YagslSwerve(new File(Filesystem.getDeployDirectory(), swerveConfigDirName));
-      case WPILIB -> new WpilibSwerveDrive();
+      case WPILIB -> new WpilibSwerveDrive(driveBaseConstant);
     };
   }
 }
