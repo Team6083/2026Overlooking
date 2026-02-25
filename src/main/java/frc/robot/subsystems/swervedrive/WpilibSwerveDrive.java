@@ -109,18 +109,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   @Override
-  public Command driveCommand(double translationX, double translationY, double angularRotationX,
-      boolean fieldRelative) {
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
-  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative) {
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
   public Command zeroGyroCommand() {
     Command cmd = runOnce(() -> zeroGyro());
     return cmd;

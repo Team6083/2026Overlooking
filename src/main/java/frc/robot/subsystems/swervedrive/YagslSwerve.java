@@ -60,20 +60,6 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
-  public Command driveCommand(double translationX, double translationY, double angularRotationX,
-      boolean fieldRelative) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
-  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
   public void zeroGyro() {
     swerveDrive.zeroGyro();
   }
