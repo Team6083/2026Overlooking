@@ -18,9 +18,9 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.function.Supplier;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N3;
+import java.util.function.Supplier;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
@@ -74,7 +74,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
-  poseEstimator.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
+    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
 
   public SwerveModulePosition[] getSwerveModulePosition() {
