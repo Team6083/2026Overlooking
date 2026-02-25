@@ -18,8 +18,9 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.VisionConstants;
 import java.util.function.Supplier;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N3;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
@@ -59,10 +60,8 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         kinematics,
       gyro.getRotation2d(),
       getSwerveModulePosition(),
-        new Pose2d(),
-        VisionConstants.stateStdDevs, 
-        VisionConstants.visionStdDevs);
-
+        new Pose2d());
+        
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();
     swerveModuleStates[2] = new SwerveModuleState();
@@ -72,6 +71,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
     poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
+  poseEstimator.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
 
   public SwerveModulePosition[] getSwerveModulePosition() {
