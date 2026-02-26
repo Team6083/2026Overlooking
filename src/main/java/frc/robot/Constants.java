@@ -5,10 +5,6 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Distance;
 
 /** Add your docs here. */
