@@ -24,10 +24,10 @@ import frc.robot.Constants.DriveBaseConstant;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
-  public SwerveModule frontLeft;
-  public SwerveModule frontRight;
-  public SwerveModule backLeft;
-  public SwerveModule backRight;
+  public final SwerveModule frontLeft;
+  public final SwerveModule frontRight;
+  public final SwerveModule backLeft;
+  public final SwerveModule backRight;
 
   private final AHRS gyro;
 
