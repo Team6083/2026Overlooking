@@ -76,11 +76,11 @@ public class Constants {
     public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
     public static final double feedforwardKs = 0.2;
-    public static final double feedforwardKv = 0.0028;
+    public static final double feedforwardKv = 0.002;
     public static final double feedforwardKa = 0;
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 4000;
+    public static final double targetVelocity = 5700;
   }
 
   public static class TransportConstants {
