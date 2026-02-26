@@ -27,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void setShooterVoltage(double voltage) {
-    shooterMotor.setVoltage(voltage);;
+    shooterMotor.setVoltage(voltage);
   }
 
   public void shoot() {
