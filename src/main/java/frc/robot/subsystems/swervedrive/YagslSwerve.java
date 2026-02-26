@@ -1,8 +1,10 @@
 package frc.robot.subsystems.swervedrive;
 
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -46,6 +48,10 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   @Override
   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
     swerveDrive.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
 
   @Override
