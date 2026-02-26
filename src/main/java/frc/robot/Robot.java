@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.revrobotics.util.StatusLogger;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -33,7 +35,10 @@ public class Robot extends TimedRobot {
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
+    } else {
+      StatusLogger.disableAutoLogging();
     }
+
     ntInstance.getStringTopic("/Metadata/BuildDate").publish()
         .set(BuildConstants.BUILD_DATE);
     ntInstance.getStringTopic("/Metadata/GitBranch").publish()
