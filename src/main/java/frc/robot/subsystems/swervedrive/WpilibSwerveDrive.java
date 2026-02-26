@@ -77,6 +77,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
   }
 
+  @Override
   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
     poseEstimator.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
