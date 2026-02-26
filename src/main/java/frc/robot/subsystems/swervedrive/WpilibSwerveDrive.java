@@ -157,14 +157,12 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
     SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
     swerveDesiredStatePublisher.set(swerveModuleStates);
-    swerveCurrentStatePublisher
-        .set(new SwerveModuleState[] {
-            frontLeft.getState(),
-            frontRight.getState(),
-            backLeft.getState(),
-            backRight.getState()
-        });
-
+    swerveCurrentStatePublisher.set(new SwerveModuleState[] {
+        frontLeft.getState(),
+        frontRight.getState(),
+        backLeft.getState(),
+        backRight.getState()
+    });
     currentPosePublisher.set(getPose2d());
   }
 }
