@@ -38,18 +38,7 @@ public class PositioningCmd extends Command {
         }
       }
     }
-
-    @Override
-    public void execute() {
-        if (limelight.hasTarget()) {
-            Pose2d visionPose = limelight.getBotPoseAsPose2d();
-            double timestamp = limelight.getTimestampSeconds();
-            if (visionPose != null) {
-                drive.addVisionMeasurement(visionPose, timestamp);
-            }
-        }
-    }
-
+  }
     @Override
     public boolean runsWhenDisabled() {
         return true;
