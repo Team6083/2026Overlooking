@@ -1,8 +1,13 @@
 package frc.robot.commands;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.TagTracking;
@@ -12,6 +17,9 @@ public class PositioningCmd extends Command {
   private final SwerveDrive drive;
   private final TagTracking[] limelights;
 
+  private final StructArrayPublisher<Pose2d> visionPoseArrayPublisher = NetworkTableInstance
+      .getDefault().getStructArrayTopic("visionPose", Pose2d.struct).publish();
+
   public PositioningCmd(SwerveDrive driveSubsystem, TagTracking... limelights) {
     this.drive = driveSubsystem;
     this.limelights = limelights;
@@ -19,29 +27,38 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
-    for (TagTracking limelight : limelights) {  
+    ArrayList<Pose2d> visionPoses = new ArrayList<>();
+
+    for (TagTracking limelight : limelights) {
+      Pose2d visionPose = new Pose2d();
+
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
           double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[1], 2));
-        
-          double trustValue = 0.4 + (distance * 0.6); 
-          trustValue = Math.min(trustValue, 5.0); 
 
-          Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+          double trustValue = 0.4 + (distance * 0.6);
+          trustValue = Math.min(trustValue, 5.0);
+
+           visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
-        
-          // drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
-          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(1, 1, 1));
+
+          // drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue,
+          // trustValue, trustValue));
+          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(3, 3, 3));
         }
       }
+
+      visionPoses.add(visionPose);
     }
-  }    
-  
+
+    visionPoseArrayPublisher.set(visionPoses.toArray(new Pose2d[0]));
+  }
+
   @Override
   public boolean runsWhenDisabled() {
-      return true;
+    return true;
   }
 }
