@@ -4,11 +4,8 @@
 
 package frc.robot.lib;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Timer;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
