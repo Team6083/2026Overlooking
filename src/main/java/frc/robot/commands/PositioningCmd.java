@@ -41,6 +41,6 @@ public class PositioningCmd extends Command {
 
   @Override
   public boolean runsWhenDisabled() {
-      return true;
+    return true;
   }
 }
