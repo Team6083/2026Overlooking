@@ -25,7 +25,7 @@ public class PositioningCmd extends Command {
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
-          double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[1], 2));
+          double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[2], 2));
         
           double trustValue = 0.4 + (distance * 0.6); 
           trustValue = Math.min(trustValue, 5.0); 
@@ -38,7 +38,7 @@ public class PositioningCmd extends Command {
       }
     }
   }    
-  
+
   @Override
   public boolean runsWhenDisabled() {
       return true;
