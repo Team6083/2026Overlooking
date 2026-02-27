@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +15,7 @@ import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  private final VictorSPX shooterMotor = new VictorSPX(ShooterConstants.shooterMotorID);
+  private final SparkMax shooterMotor = new SparkMax(ShooterConstants.shooterMotorID, MotorType.kBrushless);
   private final Encoder shooterEncoder = new Encoder(ShooterConstants.encoderChannelA,
       ShooterConstants.encoderChannelB);
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
@@ -26,7 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void setShooterVoltage(double voltage) {
-    shooterMotor.set(ControlMode.PercentOutput, voltage / shooterMotor.getBusVoltage());
+    shooterMotor.setVoltage(voltage);
   }
 
   public void shoot() {
@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void stopShooter() {
-    shooterMotor.set(ControlMode.PercentOutput, 0);
+    shooterMotor.setVoltage(0);
   }
 
   private double getShooterVelocity() {
@@ -57,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
     SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
-    SmartDashboard.putNumber("shooterMotorSpeed", shooterMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
     SmartDashboard.putData("ShooterSubsystem", this);
   }
 }
