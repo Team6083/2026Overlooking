@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
@@ -22,25 +22,25 @@ public class PositioningCmd extends Command {
     for (TagTracking limelight : limelights) {
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
-        
-        if (poseArray.length >= 7) {
-          Pose2d visionPose = new Pose2d(
-              poseArray[0],
-              poseArray[1],
-              Rotation2d.fromDegrees(poseArray[5])
-          );
-          
-          double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
-          drive.addVisionMeasurement(visionPose, timestamp);
+        double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
-          SmartDashboard.putNumber(limelight.getName() + "/X", poseArray[0]);
-          SmartDashboard.putNumber(limelight.getName() + "/Y", poseArray[1]);
+        if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
+          double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[1], 2));
+        
+          if (poseArray[0] == 0 && poseArray[1] == 0) continue;
+          double trustValue = 0.4 + (distance * 0.6); 
+          trustValue = Math.min(trustValue, 5.0); 
+
+          Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+          double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
+        
+          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
         }
       }
     }
+  }    
+  @Override
+  public boolean runsWhenDisabled() {
+      return true;
   }
-    @Override
-    public boolean runsWhenDisabled() {
-        return true;
-    }
 }
