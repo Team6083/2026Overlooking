@@ -66,7 +66,7 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
-    mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());

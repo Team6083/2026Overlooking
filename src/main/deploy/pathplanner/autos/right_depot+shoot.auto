@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "intake"
           }
         },

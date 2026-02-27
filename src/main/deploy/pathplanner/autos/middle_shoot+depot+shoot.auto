@@ -21,12 +21,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "deployIntake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "shoot_depot"
