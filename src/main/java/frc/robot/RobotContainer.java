@@ -63,8 +63,13 @@ public class RobotContainer {
     // position tracking
     new PositioningCmd(swerveDrive, shooterTracker, backTracker).schedule();
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
+    SwerveControlCmd swerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shooterTracker);
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+
+    mainController.rightBumper()
+        .and(swerveControlCmd::isAlignedToHub)
+        .whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+
     // shooter
     mainController.a().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
