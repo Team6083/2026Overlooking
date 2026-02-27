@@ -55,7 +55,7 @@ public class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
 
-    public static final double intakeSpeed = 0.6;
+    public static final double intakeSpeed = 0.4;
     public static final double reverseIntakeSpeed = -0.6;
 
     public static final int pivotLeftId = 31;
@@ -80,7 +80,7 @@ public class Constants {
     public static final double feedforwardKa = 0;
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 5700;
+    public static final double targetVelocity = 3500;
   }
 
   public static class TransportConstants {

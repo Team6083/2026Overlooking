@@ -34,7 +34,7 @@ public class RobotContainer {
     shooterTracker = new TagTracking("limelight-shooter");
     backTracker = new TagTracking("limelight-back");
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
-        SwerveDriveFactory.SwerveImplementation.WPILIB,
+        SwerveDriveFactory.SwerveImplementation.YAGSL,
         SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();

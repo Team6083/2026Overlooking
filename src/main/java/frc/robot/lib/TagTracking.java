@@ -80,7 +80,7 @@ public class TagTracking {
   }
 
   public double[] getBotPoseArray() {
-    return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
+    return limelightTable.getEntry("botpose_orb_wpiblue").getDoubleArray(new double[7]);
   }
 
   public String getName() {

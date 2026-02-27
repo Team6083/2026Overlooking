@@ -19,7 +19,7 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
-    for (TagTracking limelight : limelights) {
+    for (TagTracking limelight : limelights) {  
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
@@ -33,7 +33,8 @@ public class PositioningCmd extends Command {
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
         
-          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
+          // drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
+          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(1, 1, 1));
         }
       }
     }
