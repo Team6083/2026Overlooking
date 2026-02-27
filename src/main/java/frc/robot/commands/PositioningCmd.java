@@ -27,7 +27,6 @@ public class PositioningCmd extends Command {
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
           double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[1], 2));
         
-          if (poseArray[0] == 0 && poseArray[1] == 0) continue;
           double trustValue = 0.4 + (distance * 0.6); 
           trustValue = Math.min(trustValue, 5.0); 
 
@@ -39,6 +38,7 @@ public class PositioningCmd extends Command {
       }
     }
   }    
+  
   @Override
   public boolean runsWhenDisabled() {
       return true;
