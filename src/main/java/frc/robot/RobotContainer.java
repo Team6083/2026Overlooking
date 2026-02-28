@@ -61,8 +61,14 @@ public class RobotContainer {
   }
 
   public void updateVision() {
-    Pose2d[] poses = positioningCmd.updatePoses();
-    visionPosePublisher.set(poses);
+    Pose2d[] visionPoses = positioningCmd.updatePoses();
+    visionPosePublisher.set(visionPoses);
+
+    boolean shouldCorrect = SmartDashboard.getBoolean("Use Vision Update", true);
+    
+    if (shouldCorrect) {
+        positioningCmd.applyToDrive();
+    }
   }
 
   private void registerCommand() {

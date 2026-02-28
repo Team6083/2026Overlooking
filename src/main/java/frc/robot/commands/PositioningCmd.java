@@ -11,18 +11,26 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 public class PositioningCmd extends Command {
   private final SwerveDrive drive;
   private final TagTracking[] limelights;
+  private final Pose2d[] visionPoses;
+  private final double[] lastTimestamps;
+  private final double[] lastTrustValues;
+  private final boolean[] lastHasTarget;
 
   public PositioningCmd(SwerveDrive driveSubsystem, TagTracking... limelights) {
     this.drive = driveSubsystem;
     this.limelights = limelights;
+
+    int len = limelights.length;
+    this.visionPoses = new Pose2d[len];
+    this.lastTimestamps = new double[len];
+    this.lastTrustValues = new double[len];
+    this.lastHasTarget = new boolean[len];
   }
 
   public Pose2d[] updatePoses() {
-    Pose2d[] visionPoses = new Pose2d[limelights.length];
-
     for (int i = 0; i < limelights.length; i++) {
       TagTracking limelight = limelights[i];
-      visionPoses[i] = new Pose2d();
+      lastHasTarget[i] = false; // 預設重置
 
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
@@ -30,23 +38,32 @@ public class PositioningCmd extends Command {
 
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
           double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[2], 2));
-          double trustValue = Math.min(0.4 + (distance * 0.6), 5.0); 
-
-          Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
-          double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
-
-          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
           
-          visionPoses[i] = visionPose;
+          lastTrustValues[i] = Math.min(0.4 + (distance * 0.6), 5.0);
+          visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+          lastTimestamps[i] = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
+          lastHasTarget[i] = true;
         }
       }
+
+      if (!lastHasTarget[i]) visionPoses[i] = new Pose2d();
     }
     return visionPoses;
+  }
+
+  public void applyToDrive() {
+    for (int i = 0; i < limelights.length; i++) {
+      if (lastHasTarget[i]) {
+        double trust = lastTrustValues[i];
+        drive.addVisionMeasurement(visionPoses[i], lastTimestamps[i], VecBuilder.fill(trust, trust, trust));
+      }
+    }
   }
 
   @Override
   public void execute() {
     updatePoses();
+    applyToDrive();
   }
 
   @Override
