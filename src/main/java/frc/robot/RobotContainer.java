@@ -68,7 +68,7 @@ public class RobotContainer {
     boolean shouldCorrect = SmartDashboard.getBoolean("Use Vision Update", true);
     
     if (shouldCorrect) {
-        positioningCmd.applyToDrive();
+      positioningCmd.applyToDrive();
     }
   }
 

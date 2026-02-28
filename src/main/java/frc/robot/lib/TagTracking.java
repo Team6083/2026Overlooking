@@ -5,8 +5,8 @@
 package frc.robot.lib;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
@@ -24,7 +24,8 @@ public class TagTracking {
     this.orientationEntry = limelightTable.getEntry("robot_orientation_set");
   }
 
-  public void setRobotOrientation(double yaw, double yawRate, double pitch, double pitchRate, double roll, double rollRate) {
+  public void setRobotOrientation(double yaw, double yawRate, 
+double pitch, double pitchRate, double roll, double rollRate) {
     double[] orientation = new double[]{yaw, yawRate, pitch, pitchRate, roll, rollRate};
     orientationEntry.setDoubleArray(orientation);
   }
