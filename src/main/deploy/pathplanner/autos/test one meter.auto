@@ -9,6 +9,18 @@
           "data": {
             "pathName": "test one meter"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New New Path"
+          }
         }
       ]
     }
