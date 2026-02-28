@@ -11,12 +11,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "depot"
