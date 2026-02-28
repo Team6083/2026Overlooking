@@ -17,27 +17,37 @@ public class PositioningCmd extends Command {
     this.limelights = limelights;
   }
 
-  @Override
-  public void execute() {
-    for (TagTracking limelight : limelights) {
+  public Pose2d[] updatePoses() {
+    Pose2d[] visionPoses = new Pose2d[limelights.length];
+
+    for (int i = 0; i < limelights.length; i++) {
+      TagTracking limelight = limelights[i];
+      visionPoses[i] = new Pose2d();
+
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
           double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[2], 2));
-        
-          double trustValue = 0.4 + (distance * 0.6); 
-          trustValue = Math.min(trustValue, 5.0); 
+          double trustValue = Math.min(0.4 + (distance * 0.6), 5.0); 
 
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
-        
+
           drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
+          
+          visionPoses[i] = visionPose;
         }
       }
     }
-  }    
+    return visionPoses;
+  }
+
+  @Override
+  public void execute() {
+    updatePoses();
+  }
 
   @Override
   public boolean runsWhenDisabled() {
