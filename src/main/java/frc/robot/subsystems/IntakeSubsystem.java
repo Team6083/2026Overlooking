@@ -49,19 +49,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Pivot
   public void leftPivotDeploy() {
-    pivotLeft.set(ControlMode.PercentOutput, 0.3);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotTestSpeed);
   }
 
   public void rightPivotDeploy() {
-    pivotRight.set(ControlMode.PercentOutput, 0.3);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotTestSpeed);
   }
 
   public void leftPivotRetract() {
-    pivotLeft.set(ControlMode.PercentOutput, -0.3);
+    pivotLeft.set(ControlMode.PercentOutput, -IntakeConstants.pivotTestSpeed);
   }
 
   public void rightPivotRetract() {
-    pivotRight.set(ControlMode.PercentOutput, -0.3);
+    pivotRight.set(ControlMode.PercentOutput, -IntakeConstants.pivotTestSpeed);
   }
 
   public void stopRotate() {

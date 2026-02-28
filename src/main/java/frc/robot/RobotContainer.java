@@ -67,13 +67,9 @@ public class RobotContainer {
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povUp().whileTrue(intakeSubsystem.deployLeftIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.deployRightIntakeCmd());
-    mainController.povLeft().whileTrue(intakeSubsystem.retractLeftIntakeCmd());
-    mainController.povRight().whileTrue(intakeSubsystem.retractRightIntakeCmd());
 
-    mainController.rightTrigger().whileTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.rightBumper().whileTrue(intakeSubsystem.retractIntakeCmd());
+    mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.intakeCmd());
 
   }

@@ -63,14 +63,16 @@ public class Constants {
     public static final double pivotRightExpectedZero = 88;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 107;
-    public static final double pivotRetractStopPosition = 8;
+    public static final double pivotDeployStopPosition = 104;
+    public static final double pivotRetractStopPosition = 4;
 
     public static final double intakeSpeed = 0.6;
     public static final double reverseIntakeSpeed = -0.6;
 
     public static final double pivotSpeed = -0.3;
     public static final double reversePivotSpeed = 0.85;
+
+    public static final double pivotTestSpeed = 0.4;
 
     public static final double pivotFollowKp = 0.25;
     public static final double pivotFollowKi = 0;
