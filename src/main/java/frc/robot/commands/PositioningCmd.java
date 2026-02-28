@@ -46,7 +46,9 @@ public class PositioningCmd extends Command {
         }
       }
 
-      if (!lastHasTarget[i]) visionPoses[i] = new Pose2d();
+      if (!lastHasTarget[i]) {
+        visionPoses[i] = new Pose2d();
+      }
     }
     return visionPoses;
   }

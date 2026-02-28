@@ -19,9 +19,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -67,7 +67,7 @@ public class RobotContainer {
     boolean shouldCorrect = SmartDashboard.getBoolean("Use Vision Update", true);
     
     if (shouldCorrect) {
-        positioningCmd.applyToDrive();
+      positioningCmd.applyToDrive();
     }
   }
 
