@@ -19,6 +19,7 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
+    Rotation2d currentRotation = drive.getPose2d().getRotation();
     for (TagTracking limelight : limelights) {
       if (limelight.hasTarget()) {
         double[] poseArray = limelight.getBotPoseArray();
