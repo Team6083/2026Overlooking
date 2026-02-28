@@ -70,6 +70,8 @@ public class Constants {
 
     public static final double pivotSpeed = 0.4;
     public static final double reversePivotSpeed = -0.8;
+
+    public static final boolean intakeInverted = true;
   }
 
   public static final class ShooterConstants {

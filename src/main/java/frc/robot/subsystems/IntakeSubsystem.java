@@ -21,7 +21,7 @@ public class IntakeSubsystem extends SubsystemBase {
       IntakeConstants.pivotFullRange, IntakeConstants.pivotExpectedZero);
 
   public IntakeSubsystem() {
-    intakeMotor.setInverted(true);
+    intakeMotor.setInverted(IntakeConstants.intakeInverted);
     pivotLeft.setInverted(false);
     pivotRight.setInverted(true);
   }
