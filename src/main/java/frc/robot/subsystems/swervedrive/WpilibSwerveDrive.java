@@ -5,13 +5,15 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -24,15 +26,15 @@ import frc.robot.Constants.DriveBaseConstant;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
-  public SwerveModule frontLeft;
-  public SwerveModule frontRight;
-  public SwerveModule backLeft;
-  public SwerveModule backRight;
+  public final SwerveModule frontLeft;
+  public final SwerveModule frontRight;
+  public final SwerveModule backLeft;
+  public final SwerveModule backRight;
 
   private final AHRS gyro;
 
   private final SwerveDriveKinematics kinematics;
-  private SwerveDriveOdometry odometry;
+  private final SwerveDrivePoseEstimator poseEstimator;
 
   private SwerveModuleState[] swerveModuleStates = new SwerveModuleState[4];
   private final StructArrayPublisher<SwerveModuleState> swerveDesiredStatePublisher = NetworkTableInstance
@@ -58,15 +60,26 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         new Translation2d(-0.27, +0.27),
         new Translation2d(-0.27, -0.27));
 
-    odometry = new SwerveDriveOdometry(
+    poseEstimator = new SwerveDrivePoseEstimator(
         kinematics,
         gyro.getRotation2d(),
-        getSwerveModulePosition());
+        getSwerveModulePosition(),
+        new Pose2d());
 
     swerveModuleStates[0] = new SwerveModuleState();
     swerveModuleStates[1] = new SwerveModuleState();
     swerveModuleStates[2] = new SwerveModuleState();
     swerveModuleStates[3] = new SwerveModuleState();
+  }
+
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
+    poseEstimator.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
 
   public SwerveModulePosition[] getSwerveModulePosition() {
@@ -76,12 +89,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         backLeft.getPosition(),
         backRight.getPosition()
     };
-  }
-
-  private void updateOdometry() {
-    odometry.update(
-        gyro.getRotation2d(),
-        getSwerveModulePosition());
   }
 
   @Override
@@ -126,15 +133,12 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public Pose2d getPose2d() {
-    return odometry.getPoseMeters();
+    return poseEstimator.getEstimatedPosition();
   }
 
   @Override
   public void resetPose(Pose2d pose) {
-    odometry.resetPosition(
-        gyro.getRotation2d(),
-        getSwerveModulePosition(),
-        pose);
+    poseEstimator.resetPosition(gyro.getRotation2d(), getSwerveModulePosition(), pose);
   }
 
   @Override
@@ -149,18 +153,16 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updateOdometry();
+    poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
     SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
     swerveDesiredStatePublisher.set(swerveModuleStates);
-    swerveCurrentStatePublisher
-        .set(new SwerveModuleState[] {
-            frontLeft.getState(),
-            frontRight.getState(),
-            backLeft.getState(),
-            backRight.getState()
-        });
-
+    swerveCurrentStatePublisher.set(new SwerveModuleState[] {
+        frontLeft.getState(),
+        frontRight.getState(),
+        backLeft.getState(),
+        backRight.getState()
+    });
     currentPosePublisher.set(getPose2d());
   }
 }
