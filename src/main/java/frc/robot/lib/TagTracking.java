@@ -6,17 +6,31 @@ package frc.robot.lib;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
+  private final String tableName;
   private boolean disabled = false;
+  private final NetworkTableEntry orientationEntry;
 
   public TagTracking() {
     this("limelight");
   }
 
   public TagTracking(String name) {
-    limelightTable = NetworkTableInstance.getDefault().getTable(name);
+    this.tableName = name;
+    this.limelightTable = NetworkTableInstance.getDefault().getTable(name);
+    this.orientationEntry = limelightTable.getEntry("robot_orientation_set");
+  }
+
+  public void setRobotOrientation(double yaw, double yawRate, double pitch, double pitchRate, double roll, double rollRate) {
+    double[] orientation = new double[]{yaw, yawRate, pitch, pitchRate, roll, rollRate};
+    orientationEntry.setDoubleArray(orientation);
+  }
+
+  public double[] getBotPoseArrayMegaTag2() {
+    return limelightTable.getEntry("botpose_orb_wpiblue").getDoubleArray(new double[11]);
   }
 
   public double getTv() {
@@ -75,5 +89,13 @@ public class TagTracking {
 
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
+  }
+
+  public double[] getBotPoseArray() {
+    return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
+  }
+
+  public String getName() {
+    return tableName;
   }
 }
