@@ -9,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.lib.TagTracking;
@@ -38,8 +39,8 @@ public class SwerveControlCmd extends Command {
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    this.yawPID = new PIDController(0.05, 0, 0);
-    yawPID.setTolerance(1.5);
+    this.yawPID = new PIDController(0, 0, 0);
+    yawPID.setTolerance(3);
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
   }
@@ -57,6 +58,9 @@ public class SwerveControlCmd extends Command {
     speedY = calcSpeedY();
     rotSpeed = calcRotSpeed();
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
+    SmartDashboard.putBoolean("isAligning", isAligning);
+    SmartDashboard.putBoolean("isAlignedToHub", isAlignedToHub());
+    SmartDashboard.putNumber("3dYaw", vision.get3dYaw());
   }
 
   private double getMagnification() {
@@ -80,7 +84,7 @@ public class SwerveControlCmd extends Command {
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      return MathUtil.clamp(yawPID.calculate(vision.get3dYaw(), 0), -0.5, 0.5);
+      return MathUtil.clamp(-(yawPID.calculate(vision.get3dYaw(), 0)), -0.5, 0.5);
     } else {
       yawPID.reset();
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();

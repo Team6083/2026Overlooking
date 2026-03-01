@@ -64,6 +64,7 @@ public class RobotContainer {
     new PositioningCmd(swerveDrive, shooterTracker, backTracker).schedule();
     // swerve drive
     SwerveControlCmd swerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shooterTracker);
+    swerveDrive.setDefaultCommand(swerveControlCmd);
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
 
     mainController.rightBumper()
