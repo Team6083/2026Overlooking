@@ -39,7 +39,7 @@ public class SwerveControlCmd extends Command {
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    this.yawPID = new PIDController(0, 0, 0);
+    this.yawPID = new PIDController(0.05, 0, 0);
     yawPID.setTolerance(3);
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
