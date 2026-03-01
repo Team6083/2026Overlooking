@@ -61,7 +61,7 @@ public class PositioningCmd extends Command {
     for (int i = 0; i < limelights.length; i++) {
       if (lastHasTarget[i]) {
         double trust = lastTrustValues[i];
-        drive.addVisionMeasurement(visionPoses[i], lastTimestamps[i], VecBuilder.fill(trust, trust, trust));
+        drive.addVisionMeasurement(visionPoses[i], lastTimestamps[i], VecBuilder.fill(trust, trust, 9999999));
       }
     }
   }
