@@ -71,8 +71,8 @@ public class Robot extends TimedRobot {
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
-    
-    field.setRobotPose(m_robotContainer.swerveDrive.getPose2d());
+
+    field.setRobotPose(m_robotContainer.getPose2d());
 
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
   }
