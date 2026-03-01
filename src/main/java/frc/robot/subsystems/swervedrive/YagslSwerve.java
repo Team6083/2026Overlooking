@@ -1,17 +1,19 @@
 package frc.robot.subsystems.swervedrive;
 
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
 import java.util.Arrays;
-import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -41,15 +43,33 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
     swerveDrive.setChassisDiscretization(true, 0.02);
     swerveDrive.setMotorIdleMode(true);
+  }
 
-    swerveDrive.zeroGyro();
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp);
+  }
+
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
   }
 
   @Override
   public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
-    swerveDrive.drive(new Translation2d(
-        translationX,
-        translationY),
+    var alliance = DriverStation.getAlliance();
+    var inverted = 1;
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      inverted = -1;
+    }
+
+    var directionMultiplier = fieldRelative ? inverted : 1;
+    Translation2d finalTranslation = new Translation2d(
+        translationX * directionMultiplier,
+        translationY * directionMultiplier);
+
+    swerveDrive.drive(
+        finalTranslation,
         angularRotationX,
         fieldRelative, false);
   }
@@ -57,20 +77,6 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   @Override
   public void drive(ChassisSpeeds speeds) {
     swerveDrive.drive(speeds);
-  }
-
-  @Override
-  public Command driveCommand(double translationX, double translationY, double angularRotationX,
-      boolean fieldRelative) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
-  }
-
-  @Override
-  public Command driveCommand(Supplier<Double> translationX, Supplier<Double> translationY,
-      Supplier<Double> angularRotationX, boolean fieldRelative) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveCommand'");
   }
 
   @Override

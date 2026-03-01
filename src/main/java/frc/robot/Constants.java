@@ -10,13 +10,42 @@ import edu.wpi.first.units.measure.Distance;
 
 /** Add your docs here. */
 public class Constants {
-  public static final class DriveBaseConstant {
-    // turningMotor ID
-    public static final int leftFrontTurningMotorId = 23;
-
-    // driveMotor ID
-    public static final int leftFrontDriveMotorId = 24;
+  public record SwerveModuleConstant(
+      int turningMotorId,
+      int driveMotorId,
+      int canCoderId,
+      double canCoderOffset,
+      boolean turningInverted,
+      boolean driveInverted,
+      String name) {
   }
+
+  public record DriveBaseConstant(
+      SwerveModuleConstant frontLeft,
+      SwerveModuleConstant frontRight,
+      SwerveModuleConstant backLeft,
+      SwerveModuleConstant backRight) {
+  }
+
+  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
+      new SwerveModuleConstant(
+          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+      new SwerveModuleConstant(
+          25, 27, 11, -0.016602, true, true, "FrontRight"),
+      new SwerveModuleConstant(
+          22, 18, 14, -0.111328, true, true, "BackLeft"),
+      new SwerveModuleConstant(
+          23, 24, 12, 0.260986, true, true, "BackRight"));
+
+  public static final DriveBaseConstant CHASSIS_CONFIG = new DriveBaseConstant(
+      new SwerveModuleConstant(
+          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+      new SwerveModuleConstant(
+          25, 27, 11, -0.016602, true, true, "FrontRight"),
+      new SwerveModuleConstant(
+          22, 18, 14, -0.254395, true, true, "BackLeft"),
+      new SwerveModuleConstant(
+          23, 24, 12, 0.260986, true, true, "BackRight"));
 
   public static final class ModuleConstant {
     // define the radius of the wheel in meters
@@ -26,7 +55,10 @@ public class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
 
+    public static final boolean intakeInverted = true;
+
     public static final double intakeSpeed = 0.6;
+
     public static final double reverseIntakeSpeed = -0.6;
 
     public static final int pivotLeftId = 31;
@@ -44,14 +76,14 @@ public class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int shooterMotorID = 33;
+    public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
     public static final double feedforwardKs = 0.2;
-    public static final double feedforwardKv = 0.0028;
+    public static final double feedforwardKv = 0.002;
     public static final double feedforwardKa = 0;
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 4000;
+    public static final double targetVelocity = 5700;
   }
 
   public static class TransportConstants {

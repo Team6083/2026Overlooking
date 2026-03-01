@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.97020033982082,
-        "y": 4.637425084955204
+        "x": 2.9686272354283716,
+        "y": 4.5893335151738786
       },
       "isLocked": false,
       "linkedName": "hub"
     },
     {
       "anchor": {
-        "x": 3.024698795180723,
-        "y": 5.641373493975904
+        "x": 2.959132530120482,
+        "y": 5.654258600237247
       },
       "prevControl": {
-        "x": 3.068549737411181,
-        "y": 5.237048192771084
+        "x": 2.949379449294169,
+        "y": 5.119485587424017
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
