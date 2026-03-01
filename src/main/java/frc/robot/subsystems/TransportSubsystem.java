@@ -13,22 +13,27 @@ import frc.robot.Constants.TransportConstants;
 
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
-  VictorSPX transportMotor = new VictorSPX(TransportConstants.transportMotorID);
+  VictorSPX transportLeftMotor = new VictorSPX(TransportConstants.transportMotorLeftID);
+  VictorSPX transportRightMotor = new VictorSPX(TransportConstants.transportMotorRightID);
 
   public TransportSubsystem() {
-    transportMotor.setInverted(true);
+    transportLeftMotor.setInverted(true);
+    transportRightMotor.setInverted(true);
   }
 
   public void transportIn() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);;
+    transportLeftMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
+    transportRightMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
   }
 
   private void transportOut() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
+    transportLeftMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
+    transportRightMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
   }
 
   private void stopTransport() {
-    transportMotor.set(ControlMode.PercentOutput, 0);
+    transportLeftMotor.set(ControlMode.PercentOutput, 0);
+    transportRightMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public Command transportInCmd() {
@@ -39,7 +44,8 @@ public class TransportSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("transportSpeed", transportMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("transportLeftMotorSpeed", transportLeftMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("transportRightMotorSpeed", transportRightMotor.getMotorOutputPercent());
     SmartDashboard.putData("TransportSubsystem", this);
     // This method will be called once per scheduler run
   }
