@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "test one meter"
+            "pathName": "test_forward and spin"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New New Path"
+            "pathName": "test_backward and spin"
           }
         }
       ]

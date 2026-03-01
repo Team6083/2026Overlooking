@@ -89,13 +89,13 @@ public class SwerveModule extends SubsystemBase {
   // to get the drive distance
   public Distance getDriveDistance() {
     return ModuleConstant.kWheelRadius.times(2.0 * Math.PI)
-        .times(driveEncoder.getPosition() / 6.75).times(0.966);
+        .times(driveEncoder.getPosition() / 6.75);
   }
 
   // calculate the rate of the drive
   public LinearVelocity getDriveRate() {
     return Meters.per(Minutes).of(driveEncoder.getVelocity() / 6.75 * 2.0 * Math.PI
-        * ModuleConstant.kWheelRadius.in(Meters)).times(0.966);
+        * ModuleConstant.kWheelRadius.in(Meters));
   }
 
   // to get rotation of turning motor
