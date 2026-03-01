@@ -66,7 +66,10 @@ public class Constants {
     public static final double pivotDeployStopPosition = 104;
     public static final double pivotRetractStopPosition = 4;
 
+    public static final boolean intakeInverted = true;
+
     public static final double intakeSpeed = 0.6;
+
     public static final double reverseIntakeSpeed = -0.6;
 
     public static final double pivotSpeed = -0.3;
