@@ -25,6 +25,10 @@ public class Robot extends TimedRobot {
   private Timer gcTimer = new Timer();
 
   public Robot() {
+    if (!savelog) {
+      StatusLogger.disableAutoLogging();
+    }
+
     m_robotContainer = new RobotContainer();
     gcTimer.start();
   }
@@ -34,8 +38,6 @@ public class Robot extends TimedRobot {
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
-    } else {
-      StatusLogger.disableAutoLogging();
     }
 
     ntInstance.getStringTopic("/Metadata/BuildDate").publish()
