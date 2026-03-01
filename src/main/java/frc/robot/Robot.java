@@ -5,11 +5,13 @@
 package frc.robot;
 
 import com.revrobotics.util.StatusLogger;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,6 +26,8 @@ public class Robot extends TimedRobot {
 
   private Timer gcTimer = new Timer();
 
+  private final Field2d field = new Field2d();
+
   public Robot() {
     m_robotContainer = new RobotContainer();
     gcTimer.start();
@@ -37,6 +41,8 @@ public class Robot extends TimedRobot {
     } else {
       StatusLogger.disableAutoLogging();
     }
+
+    SmartDashboard.putData("Field", field);
 
     ntInstance.getStringTopic("/Metadata/BuildDate").publish()
         .set(BuildConstants.BUILD_DATE);
@@ -65,6 +71,10 @@ public class Robot extends TimedRobot {
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
+    
+    field.setRobotPose(m_robotContainer.swerveDrive.getPose2d());
+
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
   }
 
   @Override
