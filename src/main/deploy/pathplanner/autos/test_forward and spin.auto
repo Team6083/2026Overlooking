@@ -9,18 +9,6 @@
           "data": {
             "pathName": "test_forward and spin"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "test_backward and spin"
-          }
         }
       ]
     }
