@@ -67,7 +67,7 @@ double pitch, double pitchRate, double roll, double rollRate) {
   }
 
   public double get3dYaw() {
-    return hasTarget() ? getTargetPoseRobotSpace()[4] : 0;
+    return hasTarget() ? getTargetPoseRobotSpace()[5] : 0;
   }
 
   public boolean isHubTag() {

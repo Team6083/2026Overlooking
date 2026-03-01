@@ -28,12 +28,16 @@ public class PositioningCmd extends Command {
   }
 
   public Pose2d[] updatePoses() {
+    double yaw = drive.getPose2d().getRotation().getDegrees();
+    double yawRate = Math.toDegrees(drive.getRobotRelativeSpeeds().omegaRadiansPerSecond);
+
     for (int i = 0; i < limelights.length; i++) {
       TagTracking limelight = limelights[i];
-      lastHasTarget[i] = false; // 預設重置
+      limelight.setRobotOrientation(yaw, yawRate, 0, 0, 0, 0);
+      lastHasTarget[i] = false; 
 
       if (limelight.hasTarget()) {
-        double[] poseArray = limelight.getBotPoseArray();
+        double[] poseArray = limelight.getBotPoseArrayMegaTag2();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
         if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
