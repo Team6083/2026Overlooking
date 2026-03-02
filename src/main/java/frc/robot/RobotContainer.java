@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
@@ -23,6 +24,7 @@ public class RobotContainer {
   private final TagTracking shooterTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
+  private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -34,6 +36,7 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
 
+    climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
@@ -71,6 +74,9 @@ public class RobotContainer {
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    // climber
+    mainController.povLeft().whileTrue(climberSubsystem.manualClimbCmd(0.2));
+    mainController.povRight().whileTrue(climberSubsystem.manualClimbCmd(-0.2));
   }
 
   public Command getAutonomousCommand() {

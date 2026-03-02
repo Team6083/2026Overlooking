@@ -51,6 +51,20 @@ public class Constants {
     // define the radius of the wheel in meters
     public static final Distance kWheelRadius = Inches.of(2);
   }
+  public static final class ClimberConstants {
+    public static final int climbMotorId = 33;
+
+    public static final double climbUpSpeed = 0.4;
+    public static final double climbDownSpeed = -0.4;
+
+    public static final int climbEncoderIdA = 3;
+    public static final int climbEncoderIdB = 4;
+
+
+    public static final double climberKp = 0.1;
+    public static final double climberKi = 0.0;
+    public static final double climberKd = 0.0;
+  }
 
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
