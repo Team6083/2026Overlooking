@@ -42,21 +42,21 @@ public class AutoAlignCmd extends Command {
   public void execute() {
     isTargetValid = targetDebouncer.calculate(tagTracking.hasTarget() && tagTracking.isHubTag());
 
-    double yawOutput = 0;
-    double tzOutput = 0;
-    double txOutput = 0;
+    double rotOutput = 0;
+    double OutputX = 0;
+    double OutputY = 0;
 
     if (isTargetValid) {
-      yawOutput = yawPID.calculate(tagTracking.get3dYaw(), 0);
-      yawOutput = MathUtil.clamp(yawOutput, -1, 1);
+      rotOutput = yawPID.calculate(tagTracking.get3dYaw(), 0);
+      rotOutput = MathUtil.clamp(rotOutput, -1, 1);
 
-      tzOutput = tzPID.calculate(tagTracking.get3dTz(), 1.6);
-      tzOutput = MathUtil.clamp(tzOutput, -1.7, 1.5);
+      OutputX = tzPID.calculate(tagTracking.get3dTz(), 1.6);
+      OutputX = MathUtil.clamp(OutputX, -1.7, 1.5);
 
-      txOutput = -txPID.calculate(tagTracking.get3dTx(), 0);
-      txOutput = MathUtil.clamp(txOutput, -1.5, 1.5);
+      OutputY = -txPID.calculate(tagTracking.get3dTx(), 0);
+      OutputY = MathUtil.clamp(OutputY, -1.5, 1.5);
 
-      drive.drive(tzOutput, txOutput, yawOutput, false);
+      drive.drive(OutputX, OutputY, rotOutput, false);
     }
 
     SmartDashboard.putBoolean("TagTrackingHasTag", tagTracking.hasTarget());
