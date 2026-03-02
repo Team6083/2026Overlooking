@@ -93,7 +93,7 @@ public class Constants {
     public static final double kpTranslation = 0.02;
     public static final double kiTranslation = 0.0;
     public static final double kdTranslation = 0;
-    public static final double kpRotation = 4;
+    public static final double kpRotation = 4.02;
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
