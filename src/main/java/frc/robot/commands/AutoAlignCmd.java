@@ -36,6 +36,7 @@ public class AutoAlignCmd extends Command {
   public void initialize() {
     yawPID.reset();
     tzPID.reset();
+    txPID.reset();
   }
 
   @Override
@@ -71,7 +72,7 @@ public class AutoAlignCmd extends Command {
     if (!isTargetValid) {
       return true;
     }
-    return yawPID.atSetpoint() && tzPID.atSetpoint();
+    return yawPID.atSetpoint() && tzPID.atSetpoint() && txPID.atSetpoint();
 
   }
 
