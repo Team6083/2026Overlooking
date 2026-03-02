@@ -21,6 +21,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstant;
@@ -35,6 +37,9 @@ public class SwerveModule extends SubsystemBase {
 
   private double turningMotorVoltage;
   private double driveMotorVoltage;
+
+  private final Alert activeFaultAlert = new Alert("rev active faults!", AlertType.kError);
+  private final Alert stickyFaultAlert = new Alert("rev sticky faults!", AlertType.kWarning);
 
   public SwerveModule(SwerveModuleConstant swerveModuleConstant) {
     turningMotor = new SparkMax(swerveModuleConstant.turningMotorId(), MotorType.kBrushless);
@@ -142,6 +147,11 @@ public class SwerveModule extends SubsystemBase {
     driveMotorVoltage = 0;
   }
 
+  private void setFaultAlerts() {
+    activeFaultAlert.set(driveMotor.hasActiveFault() || turningMotor.hasActiveFault());
+    stickyFaultAlert.set(driveMotor.hasStickyFault() || turningMotor.hasStickyFault());
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putData(this.getName() + "AnglePID", rotPIDController);
@@ -157,5 +167,7 @@ public class SwerveModule extends SubsystemBase {
         turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
     SmartDashboard.putNumber(this.getName() + "TurningMotorCurrent", turningMotor.getOutputCurrent());
     SmartDashboard.putNumber(this.getName() + "DriveDistance", getDriveDistance().in(Meters));
+
+    setFaultAlerts();
   }
 }
