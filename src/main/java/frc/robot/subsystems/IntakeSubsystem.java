@@ -81,7 +81,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private void runSyncPivot(double baseSpeed) {
     double leftPos = pivotLeftEncoder.get();
     double rightPos = pivotRightEncoder.get();
-    double syncCorrection = pivotFollowPIDController.calculate(leftPos, rightPos);
+    double syncCorrection = pivotFollowPIDController.calculate(rightPos, leftPos);
     pivotLeft.set(ControlMode.PercentOutput, baseSpeed);
     pivotRight.set(ControlMode.PercentOutput, baseSpeed + syncCorrection);
   }

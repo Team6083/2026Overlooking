@@ -68,8 +68,8 @@ public class RobotContainer {
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
-    mainController.leftTrigger().whileTrue(intakeSubsystem.intakeCmd());
-
+    mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
   }
 
   public Command getAutonomousCommand() {

@@ -56,8 +56,8 @@ public class Constants {
     public static final int intakeMotorId = 34;
     public static final int pivotLeftId = 30;
     public static final int pivotRightId = 31;
-    public static final int pivotLeftEncoderId = 2;
-    public static final int pivotRightEncoderId = 3;
+    public static final int pivotLeftEncoderId = 3;
+    public static final int pivotRightEncoderId = 2;
     
     public static final double pivotLeftExpectedZero = 283;
     public static final double pivotRightExpectedZero = 88;
