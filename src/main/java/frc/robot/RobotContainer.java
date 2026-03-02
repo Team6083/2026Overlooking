@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -61,14 +62,22 @@ public class RobotContainer {
   }
 
   public void updateVision() {
-    Pose2d[] visionPoses = positioningCmd.updatePoses();
-    visionPosePublisher.set(visionPoses);
-
-    boolean shouldCorrect = SmartDashboard.getBoolean("Use Vision Update", true);
+    TagTracking[] trackers = {shooterTracker, backTracker};
+    Pose2d[] visionPoses = new Pose2d[trackers.length];
     
-    if (shouldCorrect) {
-      positioningCmd.applyToDrive();
+    for (int i = 0; i < trackers.length; i++) {
+      if (trackers[i].hasTarget()) {
+        double[] poseArray = trackers[i].getBotPoseArray();
+        if (poseArray.length >= 6) {
+          visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+        } else {
+          visionPoses[i] = new Pose2d();
+        }
+      } else {
+        visionPoses[i] = new Pose2d();
+      }
     }
+    visionPosePublisher.set(visionPoses);
   }
 
   private void registerCommand() {
@@ -79,7 +88,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    positioningCmd.schedule();
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
