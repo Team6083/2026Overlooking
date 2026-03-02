@@ -87,8 +87,8 @@ public class Constants {
   }
 
   public static class TransportConstants {
-    public static final int transportMotorLeftID = 32;
-    public static final int transportMotorRightID = 0;
+    public static final int transportMotorUpperID = 32;
+    public static final int transportMotorLowerID = 0;
     public static final double transportMotorIn = 0.2;
     public static final double transportMotorOut = 0.2;
   }
