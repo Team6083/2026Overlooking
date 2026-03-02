@@ -59,8 +59,8 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
     
-    public static final double pivotLeftExpectedZero = 283;
-    public static final double pivotRightExpectedZero = 88;
+    public static final double pivotLeftExpectedZero = 360-290;
+    public static final double pivotRightExpectedZero = 279;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 104;
@@ -72,19 +72,19 @@ public class Constants {
 
     public static final double reverseIntakeSpeed = -0.6;
 
-    public static final double pivotSpeed = -0.3;
-    public static final double reversePivotSpeed = 0.85;
+    public static final double pivotSpeed = 0.7;
+    public static final double reversePivotSpeed = -0.4;
 
     public static final double pivotTestSpeed = 0.4;
 
-    public static final double pivotFollowKp = 0.25;
+    public static final double pivotFollowKp = 0;
     public static final double pivotFollowKi = 0;
     public static final double pivotFollowKd = 0;
     
     public static final boolean motorLeftInverted = false;
     public static final boolean motorRightInverted = true;
-    public static final boolean encoderLeftInverted = false;
-    public static final boolean encoderRightInverted = true;
+    public static final boolean encoderLeftInverted = true;
+    public static final boolean encoderRightInverted = false;
   }
 
   public static final class ShooterConstants {
