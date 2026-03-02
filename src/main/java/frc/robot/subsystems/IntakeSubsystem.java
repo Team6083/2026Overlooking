@@ -98,11 +98,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("intakeMotorVoltage", intakeMotor.getMotorOutputVoltage());
-    SmartDashboard.putNumber("intakeAbsolutePosition", getPivotAbsolutePosition());
-    SmartDashboard.putBoolean("intakeEncoderConnected", pivotEncoder.isConnected());
-    SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
-    SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
-    SmartDashboard.putData("IntakeSubsystem", this);
+    SmartDashboard.putNumber("Intake/MotorVoltage", intakeMotor.getMotorOutputVoltage());
+    SmartDashboard.putNumber("Intake/PivotPosition", getPivotAbsolutePosition());
+    SmartDashboard.putBoolean("Intake/EncoderConnected", pivotEncoder.isConnected());
+    SmartDashboard.putNumber("Intake/PivotLeftVoltage", pivotLeft.getMotorOutputVoltage());
+    SmartDashboard.putNumber("Intake/PivotRightVoltage", pivotRight.getMotorOutputVoltage());
+    SmartDashboard.putData("Intake/Subsystem", this);
   }
 }

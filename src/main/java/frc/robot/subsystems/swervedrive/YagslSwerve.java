@@ -139,8 +139,8 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
     }
 
-    SmartDashboard.putNumber("gyroHeading", getGyroHeading());
-    SmartDashboard.putBoolean("gyroIsConnected", gyroIsConnected);
+    SmartDashboard.putNumber("Drive/GyroHeadingDeg", getGyroHeading());
+    SmartDashboard.putBoolean("Drive/GyroConnected", gyroIsConnected);
 
     currentPosePublisher.set(getPose2d());
     SwerveDriveTelemetry.updateData();
