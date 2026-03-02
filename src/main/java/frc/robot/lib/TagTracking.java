@@ -25,7 +25,7 @@ public class TagTracking {
   }
 
   public void setRobotOrientation(double yaw, double yawRate, 
-double pitch, double pitchRate, double roll, double rollRate) {
+      double pitch, double pitchRate, double roll, double rollRate) {
     double[] orientation = new double[]{yaw, yawRate, pitch, pitchRate, roll, rollRate};
     orientationPub.set(orientation);
   }
