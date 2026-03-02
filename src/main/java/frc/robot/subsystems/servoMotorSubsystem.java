@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class servoMotorSubsystem extends SubsystemBase {
@@ -21,6 +22,18 @@ public class servoMotorSubsystem extends SubsystemBase {
 
   public void setAngleTo0() {
     servoMotor.setAngle(0);
+  }
+
+  public Command setAngleTo0Cmd() {
+    Command cmd = runOnce(this::setAngleTo0);
+    cmd.setName("setAngleTo0Cmd");
+    return cmd;
+  }
+
+  public Command setAngleTo90Cmd() {
+    Command cmd = runOnce(this::setAngleTo90);
+    cmd.setName("setAngleTo90Cmd");
+    return cmd;
   }
 
   @Override
