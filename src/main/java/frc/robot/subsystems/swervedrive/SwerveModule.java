@@ -151,10 +151,12 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(prefix + "DriveRateMps", getDriveRate().in(MetersPerSecond));
     SmartDashboard.putNumber(prefix + "DriveDistanceM", getDriveDistance().in(Meters));
     SmartDashboard.putNumber(prefix + "DriveMotorVoltage", driveMotorVoltage);
-    SmartDashboard.putNumber(prefix + "DriveMotorAppliedVoltage", driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
+    SmartDashboard.putNumber(prefix + "DriveMotorAppliedVoltage", 
+        driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
     SmartDashboard.putNumber(prefix + "DriveMotorCurrentAmps", driveMotor.getOutputCurrent());
     SmartDashboard.putNumber(prefix + "TurningMotorVoltage", turningMotorVoltage);
-    SmartDashboard.putNumber(prefix + "TurningMotorAppliedVoltage", turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
+    SmartDashboard.putNumber(prefix + "TurningMotorAppliedVoltage", 
+        turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
     SmartDashboard.putNumber(prefix + "TurningMotorCurrentAmps", turningMotor.getOutputCurrent());
   }
 }
