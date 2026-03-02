@@ -22,13 +22,13 @@ public class AutoAlignCmd extends Command {
   public AutoAlignCmd(TagTracking vision, SwerveDrive drive) {
     this.tagTracking = vision;
     this.drive = drive;
-    this.yawPID = new PIDController(0.05, 0, 0);
+    yawPID = new PIDController(0.05, 0, 0);
     yawPID.setTolerance(1);
-    this.tzPID = new PIDController(1, 0, 0.1);
+    tzPID = new PIDController(1, 0, 0.1);
     tzPID.setTolerance(0.15);
-    this.txPID = new PIDController(1, 0, 0.1);
+    txPID = new PIDController(1, 0, 0.1);
     txPID.setTolerance(0.15);
-    this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
+    targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(drive);
 
     SmartDashboard.putBoolean("TagTrackingHasTag", vision.hasTarget());
