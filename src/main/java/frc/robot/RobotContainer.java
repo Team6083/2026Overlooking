@@ -78,7 +78,8 @@ public class RobotContainer {
 
     mainController.rightBumper().whileTrue(
         Commands.either(
-            new AutoAlignCmd(shooterTracker, swerveDrive)
+            shooterSubsystem.shootCmd()
+                .alongWith(new AutoAlignCmd(shooterTracker, swerveDrive))
                 .andThen(new ShooterComboCmd(shooterSubsystem, transportSubsystem)),
             Commands.none(),
             () -> shooterTracker.isHubTag()));
