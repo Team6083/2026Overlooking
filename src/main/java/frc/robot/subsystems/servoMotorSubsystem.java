@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class servoMotorSubsystem extends SubsystemBase {
+public class ServoMotorSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo servoMotor;
 
-  public servoMotorSubsystem() {
+  public ServoMotorSubsystem() {
     servoMotor = new Servo(0);
   }
 
