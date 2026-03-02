@@ -30,12 +30,6 @@ public class AutoAlignCmd extends Command {
     txPID.setTolerance(0.15);
     targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(drive);
-
-    SmartDashboard.putBoolean("TagTrackingHasTag", vision.hasTarget());
-    SmartDashboard.putBoolean("TagTrackingIsHubTag", vision.isHubTag());
-    SmartDashboard.putData("yawPID", yawPID);
-    SmartDashboard.putData("TzPID", tzPID);
-    SmartDashboard.putData("TxPID", txPID);
   }
 
   @Override
@@ -64,6 +58,12 @@ public class AutoAlignCmd extends Command {
 
       drive.drive(tzOutput, txOutput, yawOutput, false);
     }
+
+    SmartDashboard.putBoolean("TagTrackingHasTag", tagTracking.hasTarget());
+    SmartDashboard.putBoolean("TagTrackingIsHubTag", tagTracking.isHubTag());
+    SmartDashboard.putData("yawPID", yawPID);
+    SmartDashboard.putData("TzPID", tzPID);
+    SmartDashboard.putData("TxPID", txPID);
   }
 
   @Override
@@ -72,6 +72,7 @@ public class AutoAlignCmd extends Command {
       return true;
     }
     return yawPID.atSetpoint() && tzPID.atSetpoint();
+
   }
 
   @Override
