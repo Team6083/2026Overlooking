@@ -62,7 +62,7 @@ public class TagTracking {
       return false;
     }
     int id = (int) getTid();
-    return (id >= 2 && id <= 5) || (id == 10) 
+    return (id >= 2 && id <= 5) || (id >= 9 && id <= 11) 
             || (id >= 18 && id <= 21) || (id >= 24 && id <= 27);
            
   }
