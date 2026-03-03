@@ -40,7 +40,7 @@ public class SwerveControlCmd extends Command {
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
     this.yawPID = new PIDController(0.05, 0, 0);
-    yawPID.setTolerance(3);
+    yawPID.setTolerance(1.0);
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
   }
@@ -61,6 +61,8 @@ public class SwerveControlCmd extends Command {
     SmartDashboard.putBoolean("isAligning", isAligning);
     SmartDashboard.putBoolean("isAlignedToHub", isAlignedToHub());
     SmartDashboard.putNumber("3dYaw", vision.get3dYaw());
+    SmartDashboard.putNumber("normalizeYaw", normalizeYaw(vision.get3dYaw()));
+    SmartDashboard.putNumber("tx", vision.getTx());
   }
 
   private double getMagnification() {
@@ -79,14 +81,22 @@ public class SwerveControlCmd extends Command {
     return -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4 * getMagnification();
   }
 
+  private double normalizeYaw(double yaw) {
+    if (yaw > 90) {
+      return yaw - 180;
+    } else if (yaw < -90) {
+      return yaw + 180;
+    }
+    return yaw;
+  }
+
   private double calcRotSpeed() {
     boolean targetValid = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      return MathUtil.clamp(-(yawPID.calculate(vision.get3dYaw(), 0)), -0.5, 0.5);
+      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -0.5, 0.5);
     } else {
-      yawPID.reset();
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();
     }
   }
