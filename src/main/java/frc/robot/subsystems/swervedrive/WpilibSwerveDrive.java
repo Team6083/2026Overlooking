@@ -5,9 +5,11 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
+
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -22,6 +24,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Mechanism;
 import frc.robot.Constants.DriveBaseConstant;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
@@ -35,6 +40,8 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator poseEstimator;
+
+  private final SysIdRoutine sysIdRoutine;
 
   private SwerveModuleState[] swerveModuleStates = new SwerveModuleState[4];
   private final StructArrayPublisher<SwerveModuleState> swerveDesiredStatePublisher = NetworkTableInstance
@@ -70,6 +77,23 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     swerveModuleStates[1] = new SwerveModuleState();
     swerveModuleStates[2] = new SwerveModuleState();
     swerveModuleStates[3] = new SwerveModuleState();
+
+    sysIdRoutine = new SysIdRoutine(
+        new Config(),
+        new Mechanism(
+            (voltage) -> {
+              frontLeft.voltageDrive(voltage);
+              frontRight.voltageDrive(voltage);
+              backLeft.voltageDrive(voltage);
+              backRight.voltageDrive(voltage);
+            },
+            (log) -> {
+              frontLeft.logDriveMotors(log);
+              frontRight.logDriveMotors(log);
+              backLeft.logDriveMotors(log);
+              backRight.logDriveMotors(log);
+            },
+            this));
   }
 
   @Override
@@ -148,6 +172,38 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         frontRight.getState(),
         backLeft.getState(),
         backRight.getState());
+  }
+
+  public Command sysIdQuasistaticFCmd() {
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command sysIdQuasistaticRCmd() {
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
+  }
+
+  public Command sysIdDynamicFCmd() {
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command sysIdDynamicRCmd() {
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
+  }
+
+  public Command sysIdQuasistaticTurningCmd() {
+    frontLeft.setAngle(new Rotation2d(Math.toDegrees(45)));
+    frontRight.setAngle(new Rotation2d(Math.toDegrees(135)));
+    backLeft.setAngle(new Rotation2d(Math.toDegrees(315)));
+    backRight.setAngle(new Rotation2d(Math.toDegrees(225)));
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command sysIdDynamicTurningCmd() {
+    frontLeft.setAngle(new Rotation2d(Math.toDegrees(45)));
+    frontRight.setAngle(new Rotation2d(Math.toDegrees(135)));
+    backLeft.setAngle(new Rotation2d(Math.toDegrees(315)));
+    backRight.setAngle(new Rotation2d(Math.toDegrees(225)));
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
   }
 
   @Override

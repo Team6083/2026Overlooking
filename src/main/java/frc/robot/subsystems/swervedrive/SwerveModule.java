@@ -18,10 +18,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.VoltageUnit;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstant;
 import frc.robot.Constants.SwerveModuleConstant;
@@ -140,6 +144,31 @@ public class SwerveModule extends SubsystemBase {
 
     turningMotorVoltage = 0;
     driveMotorVoltage = 0;
+  }
+
+  public void voltageDrive(Measure<VoltageUnit> volts) {
+    driveMotor.setVoltage(volts.in(edu.wpi.first.units.Units.Volts));
+  }
+
+  public double getVoltage() {
+    return (driveMotor.getAppliedOutput()) * RobotController.getBatteryVoltage();
+  }
+
+  public void logDriveMotors(SysIdRoutineLog log) {
+    log.motor(this.getName())
+        .voltage(edu.wpi.first.units.Units.Volts.of(getVoltage()))
+        .linearPosition(getDriveDistance())
+        .linearVelocity(getDriveRate());
+
+  }
+
+  public void logTurningMotors(SysIdRoutineLog log) {
+    log.motor(this.getName())
+        .voltage(edu.wpi.first.units.Units.Volts.of(getVoltage()))
+        .angularPosition(edu.wpi.first.units.Units.Radians.of(getRotation2d().getRadians())) // 假設 encoder 值是旋轉圈數
+        .angularVelocity(edu.wpi.first.units.Units.RadiansPerSecond.of(
+            turningMotor.getEncoder().getVelocity() * 2 * Math.PI / 60)); // Convert RPM to radians per second
+
   }
 
   @Override
