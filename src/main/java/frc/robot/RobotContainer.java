@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,6 +29,9 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
+
+  private Supplier<Double> magnification;
+  private Supplier<Double> rotMagnification;
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -58,7 +63,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, magnification, rotMagnification));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
@@ -71,9 +76,13 @@ public class RobotContainer {
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+
+    magnification = () -> mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
+    rotMagnification = () -> mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
 }
