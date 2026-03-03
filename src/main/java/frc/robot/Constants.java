@@ -55,7 +55,10 @@ public class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
 
+    public static final boolean intakeInverted = true;
+
     public static final double intakeSpeed = 0.6;
+
     public static final double reverseIntakeSpeed = -0.6;
 
     public static final int pivotLeftId = 31;
@@ -73,14 +76,14 @@ public class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int shooterMotorID = 33;
+    public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
     public static final double feedforwardKs = 0.2;
-    public static final double feedforwardKv = 0.0028;
+    public static final double feedforwardKv = 0.002;
     public static final double feedforwardKa = 0;
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 4000;
+    public static final double targetVelocity = 5700;
   }
 
   public static class TransportConstants {
