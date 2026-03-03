@@ -6,6 +6,7 @@ package frc.robot.lib;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
@@ -75,5 +76,8 @@ public class TagTracking {
 
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
+  }
+  public void periodic(){
+    SmartDashboard.putBoolean("Target", this.hasTarget());
   }
 }
