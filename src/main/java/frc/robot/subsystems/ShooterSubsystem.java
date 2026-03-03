@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot() {
-    double targetVelocity = SmartDashboard.getNumber("Shooter Target Velocity", ShooterConstants.targetVelocity);
+    double targetVelocity = ShooterConstants.targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
     setShooterVoltage(feedforwardVoltage);
   }
@@ -59,6 +59,5 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
     SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
     SmartDashboard.putData("ShooterSubsystem", this);
-    SmartDashboard.getNumber("Shooter Target Velocity", ShooterConstants.targetVelocity);
   }
 }
