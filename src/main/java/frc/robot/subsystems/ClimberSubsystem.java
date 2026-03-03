@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,11 +64,6 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command manualClimbCmd(double setpoint) {
     Command cmd = run(() -> manualClimbControl(setpoint));
     cmd.setName("Manual Climb Control");
-    return cmd;
-  }
-  public Command stopClimbCmd() {
-    Command cmd = runOnce(this::stopClimb);
-    cmd.setName("Stop Climb");
     return cmd;
   }
   
