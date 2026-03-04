@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "left_trench-neutral zone"
+                  "pathName": "right_trench-neutral zone"
                 }
               },
               {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "left_neutrol zone-center"
+                  "pathName": "right_neutral zone-center"
                 }
               },
               {
@@ -45,19 +45,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "center-neutral zone"
+            "pathName": "right_center-trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "neutral zone- trench"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "trench-hub"
+            "pathName": "right_trench-hub"
           }
         },
         {
