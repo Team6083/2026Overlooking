@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "right_trench-neutral zone"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "deployIntake"
-                }
-              }
-            ]
+            "pathName": "Middle shoot"
           }
         },
         {
@@ -28,9 +15,28 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "right_neutral zone-center"
+                  "pathName": "shoot_depot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "depot"
                 }
               },
               {
@@ -45,7 +51,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "right_center-outpost"
+            "pathName": "depot-outpost"
           }
         },
         {

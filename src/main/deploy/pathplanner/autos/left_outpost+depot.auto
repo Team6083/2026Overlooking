@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle shoot"
+            "pathName": "left_outpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "-outpost"
           }
         },
         {
@@ -21,22 +33,22 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "deployIntake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "shoot_depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
                 }
               }
             ]
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -48,7 +60,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "intake"
+                  "name": "inrake"
                 }
               }
             ]
