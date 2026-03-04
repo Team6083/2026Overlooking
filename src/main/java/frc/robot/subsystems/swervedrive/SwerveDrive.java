@@ -30,4 +30,12 @@ public interface SwerveDrive extends Subsystem {
   void resetPose(Pose2d pose);
 
   ChassisSpeeds getRobotRelativeSpeeds();
+
+  Command sysIdQuasistaticFCmd();
+
+  Command sysIdDynamicFCmd();
+
+  Command sysIdQuasistaticRCmd();
+
+  Command sysIdDynamicRCmd();
 }

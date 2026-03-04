@@ -58,19 +58,26 @@ public class RobotContainer {
 
   private void configureBindings() {
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive,
+    mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
-    // shooter
-    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
-    mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // // shooter
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem,
+    // transportSubsystem));
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
-    mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
+    // mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
+    // mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
-    mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
-    mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    mainController.y().whileTrue(swerveDrive.sysIdDynamicFCmd());
+    mainController.a().whileTrue(swerveDrive.sysIdDynamicRCmd());
+    mainController.x().whileTrue(swerveDrive.sysIdQuasistaticFCmd());
+    mainController.b().whileTrue(swerveDrive.sysIdQuasistaticRCmd());
+
   }
 
   public Command getAutonomousCommand() {

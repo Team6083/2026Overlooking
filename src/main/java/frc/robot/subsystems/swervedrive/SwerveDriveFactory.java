@@ -11,7 +11,6 @@ import java.io.File;
 
 public class SwerveDriveFactory {
   public enum SwerveImplementation {
-    YAGSL,
     WPILIB
   }
 
@@ -32,7 +31,8 @@ public class SwerveDriveFactory {
     };
 
     return switch (type) {
-      case YAGSL -> new YagslSwerve(new File(Filesystem.getDeployDirectory(), swerveConfigDirName));
+      // case YAGSL -> new YagslSwerve(new File(Filesystem.getDeployDirectory(),
+      // swerveConfigDirName));
       case WPILIB -> new WpilibSwerveDrive(driveBaseConstant);
     };
   }
