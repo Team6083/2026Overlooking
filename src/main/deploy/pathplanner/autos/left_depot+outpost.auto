@@ -45,7 +45,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "depot_ hub"
+            "pathName": "depot-outpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "-outpost"
           }
         },
         {
