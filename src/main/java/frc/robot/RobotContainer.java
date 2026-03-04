@@ -34,7 +34,7 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
 
-    shooterSubsystem = new ShooterSubsystem();
+    shooterSubsystem = new ShooterSubsystem(shooterTracker);
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 

@@ -7,11 +7,13 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.lib.TagTracking;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -21,7 +23,13 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
       ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
-  public ShooterSubsystem() {
+  private final TagTracking tagTracking;
+  private final Debouncer targetDebouncer = new Debouncer(0.2);
+  private double distance;
+  private double targetVelocity;
+
+  public ShooterSubsystem(TagTracking tagTracking) {
+    this.tagTracking = tagTracking;
     shooterEncoder.setDistancePerPulse((double) 1 / 2048);
   }
 
@@ -29,8 +37,19 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.setVoltage(voltage);
   }
 
+  private double getShooterTargetSpeed() {
+    boolean isTargetValid = targetDebouncer.calculate(tagTracking.hasTarget() && tagTracking.isHubTag());
+    if (isTargetValid) {
+      distance = Math.sqrt(Math.pow(tagTracking.getTx(), 2) + Math.pow(tagTracking.getTy(), 2));
+      targetVelocity = 2588 * Math.exp(0.00431 * distance);
+      return targetVelocity;
+    } else {
+      return ShooterConstants.targetVelocity;
+    }
+  }
+
   public void shoot() {
-    double targetVelocity = ShooterConstants.targetVelocity;
+    double targetVelocity = getShooterTargetSpeed();
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
     setShooterVoltage(feedforwardVoltage);
   }
@@ -44,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isShooterAtSpeed() {
-    return getShooterVelocity() >= ShooterConstants.targetVelocity;
+    return getShooterVelocity() >= getShooterTargetSpeed();
   }
 
   public Command shootCmd() {
