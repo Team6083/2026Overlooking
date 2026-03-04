@@ -39,13 +39,13 @@ public class Constants {
 
   public static final DriveBaseConstant CHASSIS_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
-          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+          25, 27, 31, 0.352783, true, true, "FrontLeft"),
       new SwerveModuleConstant(
-          25, 27, 11, -0.016602, true, true, "FrontRight"),
+          26, 28, 32, 0.493652, true, true, "FrontRight"),
       new SwerveModuleConstant(
-          22, 18, 14, -0.254395, true, true, "BackLeft"),
+          24, 23, 34, -0.442871, true, true, "BackLeft"),
       new SwerveModuleConstant(
-          23, 24, 12, 0.260986, true, true, "BackRight"));
+          22, 21, 33, 0.299072, true, true, "BackRight"));
 
   public static final class ModuleConstant {
     // define the radius of the wheel in meters
