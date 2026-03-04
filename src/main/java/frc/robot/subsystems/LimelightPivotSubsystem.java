@@ -5,23 +5,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightPivotConstants;
 
-public class ServoMotorSubsystem extends SubsystemBase {
+public class LimelightPivotSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo servoMotor;
 
-  public ServoMotorSubsystem() {
-    servoMotor = new Servo(0);
+  public LimelightPivotSubsystem() {
+    servoMotor = new Servo(LimelightPivotConstants.servoMotorChannel);
   }
 
   public void setAngleTo90() {
-    servoMotor.setAngle(90);
+    servoMotor.setAngle(LimelightPivotConstants.deployAngle);
   }
 
   public void setAngleTo0() {
-    servoMotor.setAngle(0);
+    servoMotor.setAngle(LimelightPivotConstants.retractAngle);
   }
 
   public Command setAngleTo90Cmd() {
@@ -39,5 +41,8 @@ public class ServoMotorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("servoMotorAngle", servoMotor.getAngle());
+    SmartDashboard.putNumber("servoMotorPosition", servoMotor.get());
+    SmartDashboard.putNumber("servoMotorSpeed", servoMotor.getSpeed());
   }
 }
