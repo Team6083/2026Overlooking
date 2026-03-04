@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 public class RobotContainer {
   private final TagTracking shooterTracker;
   private final SwerveDrive swerveDrive;
+  private final CalculateSpeedShooterCmd calculateSpeedShooterCmd;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
@@ -34,9 +36,10 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
 
-    shooterSubsystem = new ShooterSubsystem(shooterTracker);
+    shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, shooterTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
