@@ -156,6 +156,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
     SmartDashboard.putNumber("Drive/GyroHeadingDeg", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putBoolean("Drive/GyroConnected", gyro.isConnected());
     swerveDesiredStatePublisher.set(swerveModuleStates);
     swerveCurrentStatePublisher.set(new SwerveModuleState[] {
         frontLeft.getState(),
