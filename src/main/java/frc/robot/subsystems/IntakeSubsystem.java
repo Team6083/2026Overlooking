@@ -86,6 +86,17 @@ public class IntakeSubsystem extends SubsystemBase {
     pivotRight.set(ControlMode.PercentOutput, baseSpeed + syncCorrection);
   }
 
+  // manual
+  public void manualRetractIntake() {
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+  }
+
+  public void manualDeployIntake() {
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+  }
+
   public double getLeftPos() {
     return pivotLeftEncoder.get();
   }
@@ -101,12 +112,24 @@ public class IntakeSubsystem extends SubsystemBase {
     return cmd;
   }
 
+  public Command manualRetractCmd() {
+    Command cmd = runEnd(this::manualRetractIntake, this::stopRotate);
+    cmd.setName("manualRetractCmd");
+    return cmd;
+  }
+
+  public Command manualDeployCmd() {
+    Command cmd = runEnd(this::manualDeployIntake, this::stopRotate);
+    cmd.setName("manualDeployIntakeCmd");
+    return cmd;
+  }
+
   public Command reverseIntakeCmd() {
     Command cmd = runEnd(this::reverseIntake, this::stopIntake);
     cmd.setName("startReverseIntakeCmd");
     return cmd;
   }
-
+  // test
   public Command deployLeftIntakeCmd() {
     Command cmd = runEnd(this::leftPivotDeploy, this::stopRotate);
     cmd.setName("deployLeftIntakeCmd");
@@ -130,7 +153,7 @@ public class IntakeSubsystem extends SubsystemBase {
     cmd.setName("retractRightIntakeCmd");
     return cmd;
   }
-
+  
   public Command syncDeployIntakeCmd() {
     Command cmd = runEnd(this::deploy, this::stopRotate);
     cmd.setName("syncDeployIntakeCmd");
@@ -143,6 +166,23 @@ public class IntakeSubsystem extends SubsystemBase {
     return cmd;
   }
 
+  // manual
+  public Command manualDeployIntakeCmd() {
+    Command cmd = manualDeployCmd()
+        .until(() -> getRightPos() >= IntakeConstants.pivotDeployStopPosition
+            && getLeftPos() >= IntakeConstants.pivotDeployStopPosition);
+    cmd.setName("manualDeployIntakeCmd");
+    return cmd;
+  }
+
+  public Command manualRetractIntakeCmd() {
+    Command cmd = manualRetractCmd()
+        .until(() -> getRightPos() <= IntakeConstants.pivotRetractStopPosition
+            && getLeftPos() <= IntakeConstants.pivotRetractStopPosition);
+    cmd.setName("manualRetractIntakeCmd");
+    return cmd;
+  }
+  // sync
   public Command deployIntakeCmd() {
     Command cmd = syncDeployIntakeCmd()
         .until(() -> getRightPos() >= IntakeConstants.pivotDeployStopPosition
