@@ -13,8 +13,8 @@ import frc.robot.Constants.TransportConstants;
 
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
-  VictorSPX transportUpperMotor = new VictorSPX(TransportConstants.transportMotorUpperID);
-  VictorSPX transportLowerMotor = new VictorSPX(TransportConstants.transportMotorLowerID);
+  private final VictorSPX transportUpperMotor = new VictorSPX(TransportConstants.transportMotorUpperID);
+  private final VictorSPX transportLowerMotor = new VictorSPX(TransportConstants.transportMotorLowerID);
 
   public TransportSubsystem() {
     transportUpperMotor.setInverted(true);
@@ -22,13 +22,13 @@ public class TransportSubsystem extends SubsystemBase {
   }
 
   public void transportIn() {
-    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
-    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
+    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportUpperMotorIn);
+    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
   }
 
   private void transportOut() {
-    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
-    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
+    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportUpperMotorOut);
+    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorOut);
   }
 
   private void stopTransport() {
