@@ -129,7 +129,8 @@ public class IntakeSubsystem extends SubsystemBase {
     cmd.setName("startReverseIntakeCmd");
     return cmd;
   }
-  // test
+
+  // manual one sight
   public Command deployLeftIntakeCmd() {
     Command cmd = runEnd(this::leftPivotDeploy, this::stopRotate);
     cmd.setName("deployLeftIntakeCmd");
@@ -153,7 +154,8 @@ public class IntakeSubsystem extends SubsystemBase {
     cmd.setName("retractRightIntakeCmd");
     return cmd;
   }
-  
+
+  // sync
   public Command syncDeployIntakeCmd() {
     Command cmd = runEnd(this::deploy, this::stopRotate);
     cmd.setName("syncDeployIntakeCmd");
@@ -182,6 +184,7 @@ public class IntakeSubsystem extends SubsystemBase {
     cmd.setName("manualRetractIntakeCmd");
     return cmd;
   }
+
   // sync
   public Command deployIntakeCmd() {
     Command cmd = syncDeployIntakeCmd()
