@@ -6,6 +6,10 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +33,9 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final PositioningCmd positioningCmd;
+  private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
+      .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -40,6 +47,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -51,6 +59,25 @@ public class RobotContainer {
 
     configureBindings();
 
+  }
+
+  public void updateVision() {
+    TagTracking[] trackers = {shooterTracker, backTracker};
+    Pose2d[] visionPoses = new Pose2d[trackers.length];
+    
+    for (int i = 0; i < trackers.length; i++) {
+      if (trackers[i].hasTarget()) {
+        double[] poseArray = trackers[i].getBotPoseArray();
+        if (poseArray.length >= 6) {
+          visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+        } else {
+          visionPoses[i] = new Pose2d();
+        }
+      } else {
+        visionPoses[i] = new Pose2d();
+      }
+    }
+    visionPosePublisher.set(visionPoses);
   }
 
   private void registerCommand() {

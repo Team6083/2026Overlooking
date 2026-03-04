@@ -33,7 +33,7 @@ public class PositioningCmd extends Command {
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
         
-          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
+          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, 9999999));
         }
       }
     }

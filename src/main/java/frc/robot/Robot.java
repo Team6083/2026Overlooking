@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateVision();
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
