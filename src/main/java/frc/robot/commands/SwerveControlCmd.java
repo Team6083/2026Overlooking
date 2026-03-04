@@ -39,7 +39,7 @@ public class SwerveControlCmd extends Command {
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
     this.yawPID = new PIDController(0.08, 0, 0);
-    yawPID.setTolerance(2.0);
+    yawPID.setTolerance(1.0);
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
   }
@@ -80,7 +80,7 @@ public class SwerveControlCmd extends Command {
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -1.0, 1.0);
+      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -1.5, 1.5);
     } else {
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();
     }
