@@ -88,7 +88,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    new PositioningCmd(swerveDrive, shooterTracker, backTracker);
     positioningCmd.schedule();
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
