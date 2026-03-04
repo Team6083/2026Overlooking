@@ -9,7 +9,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.lib.TagTracking;
@@ -39,7 +38,7 @@ public class SwerveControlCmd extends Command {
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    this.yawPID = new PIDController(0.06, 0, 0);
+    this.yawPID = new PIDController(0.08, 0, 0);
     yawPID.setTolerance(2.0);
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
@@ -81,7 +80,7 @@ public class SwerveControlCmd extends Command {
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -0.7, 0.7);
+      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -1.0, 1.0);
     } else {
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();
     }
