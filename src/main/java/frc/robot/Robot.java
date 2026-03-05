@@ -28,6 +28,10 @@ public class Robot extends TimedRobot {
   private final Field2d field = new Field2d();
 
   public Robot() {
+    if (!savelog) {
+      StatusLogger.disableAutoLogging();
+    }
+
     m_robotContainer = new RobotContainer();
     gcTimer.start();
   }
@@ -37,8 +41,6 @@ public class Robot extends TimedRobot {
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
-    } else {
-      StatusLogger.disableAutoLogging();
     }
 
     SmartDashboard.putData("Field", field);
@@ -67,6 +69,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateVision();
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
