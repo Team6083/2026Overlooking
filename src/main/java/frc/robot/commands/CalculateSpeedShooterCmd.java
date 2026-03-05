@@ -35,8 +35,8 @@ public class CalculateSpeedShooterCmd extends Command {
   public void execute() {
     boolean isTargetValid = targetDebouncer.calculate(tagTracking.hasTarget() && tagTracking.isHubTag());
     if (isTargetValid) {
-      distance = Math.sqrt(Math.pow(tagTracking.get3dTz(), 2) + Math.pow(tagTracking.getTy(), 2));
-      double targetVelocity = 2570.2 * Math.exp(0.0044 * distance);  //2570.2e^0.0044x
+      distance = Math.sqrt(Math.pow(tagTracking.get3dTz(), 2) + Math.pow(tagTracking.get3dTx(), 2)) * 100;
+      double targetVelocity = 2570.3 * Math.exp(0.00436 * distance); // 2570.2e^0.0044x
       CalculateSpeedShooterCmd.targetVelocity = targetVelocity;
       shooterSubsystem.shoot();
     } else {
