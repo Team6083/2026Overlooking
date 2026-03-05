@@ -33,7 +33,8 @@ public class SwerveControlCmd extends Command {
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
-    this.shouldSprint = shouldSprint;    addRequirements(swerveDrive);
+    this.shouldSprint = shouldSprint;    
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
