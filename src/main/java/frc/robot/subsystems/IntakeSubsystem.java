@@ -112,6 +112,12 @@ public class IntakeSubsystem extends SubsystemBase {
     return cmd;
   }
 
+  public Command reverseIntakeCmd() {
+    Command cmd = runEnd(this::reverseIntake, this::stopIntake);
+    cmd.setName("startReverseIntakeCmd");
+    return cmd;
+  }
+  
   public Command manualRetractCmd() {
     Command cmd = runEnd(this::manualRetractIntake, this::stopRotate);
     cmd.setName("manualRetractCmd");
@@ -121,12 +127,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command manualDeployCmd() {
     Command cmd = runEnd(this::manualDeployIntake, this::stopRotate);
     cmd.setName("manualDeployIntakeCmd");
-    return cmd;
-  }
-
-  public Command reverseIntakeCmd() {
-    Command cmd = runEnd(this::reverseIntake, this::stopIntake);
-    cmd.setName("startReverseIntakeCmd");
     return cmd;
   }
 
