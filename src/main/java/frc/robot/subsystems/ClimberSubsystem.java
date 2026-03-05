@@ -8,23 +8,20 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-  private final SparkMax climbMotor;
+  private final SparkMax climbMotor = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
 
-  private final Encoder encoder;
-  private final PIDController pidController;
+  private final Encoder encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
+  private final PIDController pidClimberController = new PIDController(ClimberConstants.climberKp, ClimberConstants.climberKi,
+        ClimberConstants.climberKd);
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
-    climbMotor = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
-
-    encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
-    pidController = new PIDController(ClimberConstants.climberKp, ClimberConstants.climberKi,
-        ClimberConstants.climberKd); // Adjust PID constants as needed
   }
 
   private void climbUp() {
@@ -43,32 +40,34 @@ public class ClimberSubsystem extends SubsystemBase {
     return encoder.getDistance(); // Adjust distance per pulse if necessary
   }
 
-  private double manualClimbControl(double setpoint) {
-    double output = pidController.calculate(getClimbPosition(), setpoint);
+  private double pidClimbControl(double setpoint) {
+    double output = pidClimberController.calculate(getClimbPosition(), setpoint);
     climbMotor.set(output);
     return output;
   }
 
   public Command climbUpCmd() {
     Command cmd = runEnd(this::climbUp, this::stopClimb);
-    cmd.setName("Climb Up");
+    cmd.setName("climb Up");
     return cmd;
   }
 
   public Command climbDownCmd() {
     Command cmd = runEnd(this::climbDown, this::stopClimb);
-    cmd.setName("Climb Down");
+    cmd.setName("climb Down");
     return cmd;
   }
   
   public Command manualClimbCmd(double setpoint) {
-    Command cmd = run(() -> manualClimbControl(setpoint));
-    cmd.setName("Manual Climb Control");
+    Command cmd = run(() -> pidClimbControl(setpoint));
+    cmd.setName("manual Climb Control");
     return cmd;
   }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Climb Position", getClimbPosition());
+    SmartDashboard.putNumber("Climb Output", climbMotor.get());
   }
 }
