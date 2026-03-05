@@ -83,9 +83,9 @@ public class SwerveControlCmd extends Command {
 
     if (isAligning) {
       double ballSpeed = 10.0;
-      ChassisSpeeds DriveSpeeds = swerveDrive.getRobotRelativeSpeeds();
-      double effectiveBallSpeed = ballSpeed + DriveSpeeds.vxMetersPerSecond;
-      double compensation = Math.toDegrees(Math.atan2(DriveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
+      ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
+      double effectiveBallSpeed = ballSpeed + driveSpeeds.vxMetersPerSecond;
+      double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
 
       SmartDashboard.putNumber("compensation", compensation);
     
