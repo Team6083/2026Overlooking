@@ -28,9 +28,9 @@ public class SwerveControlCmd extends Command {
   public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
-    this.limiterX = new SlewRateLimiter(3);
-    this.limiterY = new SlewRateLimiter(3);
-    this.rotLimiter = new SlewRateLimiter(3);
+    this.limiterX = new SlewRateLimiter(4);
+    this.limiterY = new SlewRateLimiter(4);
+    this.rotLimiter = new SlewRateLimiter(5);
     addRequirements(swerveDrive);
   }
 

@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class TagTracking {
   private final NetworkTable limelightTable;
+  private final String tableName;
   private boolean disabled = false;
 
   public TagTracking() {
@@ -16,7 +17,8 @@ public class TagTracking {
   }
 
   public TagTracking(String name) {
-    limelightTable = NetworkTableInstance.getDefault().getTable(name);
+    this.tableName = name;
+    this.limelightTable = NetworkTableInstance.getDefault().getTable(name);
   }
 
   public double getTv() {
@@ -75,5 +77,13 @@ public class TagTracking {
 
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
+  }
+
+  public double[] getBotPoseArray() {
+    return limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
+  }
+
+  public String getName() {
+    return tableName;
   }
 }
