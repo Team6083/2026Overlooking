@@ -11,7 +11,7 @@ import frc.robot.subsystems.swervedrive.SwerveDrive;
 public class PositioningCmd extends Command {
   private final SwerveDrive drive;
   private final TagTracking[] limelights;
-
+  
   public PositioningCmd(SwerveDrive driveSubsystem, TagTracking... limelights) {
     this.drive = driveSubsystem;
     this.limelights = limelights;
@@ -19,20 +19,23 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
+    double yaw = drive.getPose2d().getRotation().getDegrees();
+    double yawRate = Math.toDegrees(drive.getRobotRelativeSpeeds().omegaRadiansPerSecond);
+
     for (TagTracking limelight : limelights) {
+      limelight.setRobotOrientation(yaw, yawRate, 0, 0, 0, 0);
+
       if (limelight.hasTarget()) {
-        double[] poseArray = limelight.getBotPoseArray();
+        double[] poseArray = limelight.getBotPoseArrayMegaTag2();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
-        if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
-          double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[2], 2));
-        
-          double trustValue = 0.4 + (distance * 0.6); 
-          trustValue = Math.min(trustValue, 5.0); 
-
+        if (poseArray.length >= 11 && targetPoseRobot.length >= 6) {
+          double distance = poseArray[9];
+          
+          double trustValue = Math.min(0.4 + (distance * 0.6), 5.0);
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
-        
+          
           drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, 9999999));
         }
       }
@@ -44,3 +47,4 @@ public class PositioningCmd extends Command {
     return true;
   }
 }
+
