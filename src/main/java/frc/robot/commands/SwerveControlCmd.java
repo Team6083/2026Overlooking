@@ -9,6 +9,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.lib.TagTracking;
@@ -80,7 +82,14 @@ public class SwerveControlCmd extends Command {
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      return MathUtil.clamp(yawPID.calculate(vision.getTx(), 0), -1.5, 1.5);
+      double ballSpeed = 10.0;
+      ChassisSpeeds DriveSpeeds = swerveDrive.getRobotRelativeSpeeds();
+      double effectiveBallSpeed = ballSpeed + DriveSpeeds.vxMetersPerSecond;
+      double compensation = Math.toDegrees(Math.atan2(DriveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
+
+      SmartDashboard.putNumber("compensation", compensation);
+    
+      return MathUtil.clamp(yawPID.calculate(vision.getTx(), compensation), -1.5, 1.5);
     } else {
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();
     }
