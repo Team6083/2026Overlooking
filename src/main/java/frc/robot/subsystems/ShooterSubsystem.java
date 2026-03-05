@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
     setShooterVoltage(feedforwardVoltage);
   }
 
-  private void stopShooter() {
+  public void stopShooter() {
     shooterMotor.setVoltage(0);
   }
 

@@ -35,20 +35,21 @@ public class CalculateSpeedShooterCmd extends Command {
   public void execute() {
     boolean isTargetValid = targetDebouncer.calculate(tagTracking.hasTarget() && tagTracking.isHubTag());
     if (isTargetValid) {
-      distance = Math.sqrt(Math.pow(tagTracking.getTx(), 2) + Math.pow(tagTracking.getTy(), 2));
-      double targetVelocity = 2588 * Math.exp(0.00431 * distance);
+      distance = Math.sqrt(Math.pow(tagTracking.get3dTz(), 2) + Math.pow(tagTracking.getTy(), 2));
+      double targetVelocity = 2570.2 * Math.exp(0.0044 * distance);  //2570.2e^0.0044x
       CalculateSpeedShooterCmd.targetVelocity = targetVelocity;
-      shooterSubsystem.shootCmd();
+      shooterSubsystem.shoot();
     } else {
       double targetVelocity = ShooterConstants.targetVelocity;
       CalculateSpeedShooterCmd.targetVelocity = targetVelocity;
-      shooterSubsystem.shootCmd();
+      shooterSubsystem.shoot();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooterSubsystem.stopShooter();
   }
 
   // Returns true when the command should end.
