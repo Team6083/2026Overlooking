@@ -30,12 +30,10 @@ public class SwerveControlCmd extends Command {
       Supplier<Boolean> shouldSprint) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
-
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
-
-    addRequirements(swerveDrive);
+    this.shouldSprint = shouldSprint;    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
