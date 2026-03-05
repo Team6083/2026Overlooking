@@ -10,6 +10,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.SwerveControlConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -19,22 +20,20 @@ public class SwerveControlCmd extends Command {
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
-  private Supplier<Double> magnification;
-  private Supplier<Double> rotMagnification;
   private double speedX;
   private double speedY;
   private double rotSpeed;
+  private Supplier<Boolean> shouldSprint;
 
   /** Creates a new SwerveControlCmd. */
-  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController, Supplier<Double> magnification,
-      Supplier<Double> rotMagnification) {
+  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
+      Supplier<Boolean> shouldSprint) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
     this.limiterX = new SlewRateLimiter(3);
     this.limiterY = new SlewRateLimiter(3);
     this.rotLimiter = new SlewRateLimiter(3);
-    this.magnification = magnification;
-    this.rotMagnification = rotMagnification;
+    this.shouldSprint = shouldSprint;
     addRequirements(swerveDrive);
   }
 
@@ -46,13 +45,18 @@ public class SwerveControlCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Boolean isSprint = shouldSprint.get();
+    double magnification = isSprint ? SwerveControlConstants.kFastMagnification
+        : SwerveControlConstants.kSlowMagnification;
+    double rotMagnification = isSprint ? SwerveControlConstants.kFastRotMagnification
+        : SwerveControlConstants.kSlowRotMagnification;
 
     speedX = -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) * 4
-        * magnification.get();
+        * magnification;
     speedY = -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) * 4
-        * magnification.get();
+        * magnification;
     rotSpeed = -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
-        * 4 * rotMagnification.get();
+        * 4 * rotMagnification;
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
 

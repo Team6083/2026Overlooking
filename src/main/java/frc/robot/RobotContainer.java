@@ -29,8 +29,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
 
-  private Supplier<Double> magnification;
-  private Supplier<Double> rotMagnification;
+  private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -50,6 +49,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("autoChooser", autoChooser);
 
+
+
     configureBindings();
 
   }
@@ -62,7 +63,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, magnification, rotMagnification));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
@@ -75,9 +76,6 @@ public class RobotContainer {
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-
-    magnification = () -> mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
-    rotMagnification = () -> mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
   }
 
   public Command getAutonomousCommand() {
