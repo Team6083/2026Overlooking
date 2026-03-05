@@ -112,7 +112,7 @@ public class SwerveModule extends SubsystemBase {
   public void setDesiredState(SwerveModuleState desiredState) {
     Rotation2d currentAngle = Rotation2d.fromRadians(getAngleRadians());
 
-    desiredState.optimize(currentAngle);
+    // desiredState.optimize(currentAngle);
     SwerveModuleState optimized = desiredState;
 
     double turnOutput = rotPIDController.calculate(
