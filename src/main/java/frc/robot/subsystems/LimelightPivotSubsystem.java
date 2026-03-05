@@ -12,37 +12,37 @@ import frc.robot.Constants.LimelightPivotConstants;
 
 public class LimelightPivotSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
-  private final Servo servoMotor;
+  private final Servo limelightPivot;
 
   public LimelightPivotSubsystem() {
-    servoMotor = new Servo(LimelightPivotConstants.servoMotorChannel);
+    limelightPivot = new Servo(LimelightPivotConstants.servoMotorChannel);
   }
 
-  public void setAngleTo90() {
-    servoMotor.setAngle(LimelightPivotConstants.deployAngle);
+  public void deployLimelightPivot() {
+    limelightPivot.setAngle(LimelightPivotConstants.deployAngle);
   }
 
-  public void setAngleTo0() {
-    servoMotor.setAngle(LimelightPivotConstants.retractAngle);
+  public void retractLimelightPivot() {
+    limelightPivot.setAngle(LimelightPivotConstants.retractAngle);
   }
 
-  public Command setAngleTo90Cmd() {
-    Command cmd = runOnce(this::setAngleTo90);
-    cmd.setName("setAngleTo90Cmd");
+  public Command deployLimelightPivotCmd() {
+    Command cmd = runOnce(this::deployLimelightPivot);
+    cmd.setName("deployLimelightPivotCmd");
     return cmd;
   }
 
-  public Command setAngleTo0Cmd() {
-    Command cmd = runOnce(this::setAngleTo0);
-    cmd.setName("setAngleTo0Cmd");
+  public Command retractLimelightPivotCmd() {
+    Command cmd = runOnce(this::retractLimelightPivot);
+    cmd.setName("retractLimelightPivotCmd");
     return cmd;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("servoMotorAngle", servoMotor.getAngle());
-    SmartDashboard.putNumber("servoMotorPosition", servoMotor.get());
-    SmartDashboard.putNumber("servoMotorSpeed", servoMotor.getSpeed());
+    SmartDashboard.putNumber("servoMotorAngle", limelightPivot.getAngle());
+    SmartDashboard.putNumber("servoMotorPosition", limelightPivot.get());
+    SmartDashboard.putNumber("servoMotorSpeed", limelightPivot.getSpeed());
   }
 }
