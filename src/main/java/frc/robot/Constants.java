@@ -72,7 +72,7 @@ public class Constants {
 
     public static final double reverseIntakeSpeed = -0.6;
 
-    public static final double pivotSpeed = 0.7;
+    public static final double deployPivotSpeed = 0.7;
     public static final double reversePivotSpeed = -0.4;
 
     public static final double pivotTestSpeed = 0.4;

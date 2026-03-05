@@ -71,7 +71,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Sync Pivot
   public void deploy() {
-    runSyncPivot(IntakeConstants.pivotSpeed);
+    runSyncPivot(IntakeConstants.deployPivotSpeed);
   }
 
   public void retract() {
@@ -93,8 +93,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void manualDeployIntake() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.pivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.deployPivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.deployPivotSpeed);
   }
 
   public double getLeftPos() {
@@ -212,5 +212,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("pivotLeftEncoderConnected", pivotLeftEncoder.isConnected());
     SmartDashboard.putBoolean("pivotRightEncoderConnected", pivotRightEncoder.isConnected());
     SmartDashboard.putData(pivotFollowPIDController);
+    SmartDashboard.putData("IntakeSubsystem", this);
   }
 }
