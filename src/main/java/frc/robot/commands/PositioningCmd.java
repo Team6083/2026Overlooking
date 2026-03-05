@@ -19,9 +19,14 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
+    double yaw = drive.getPose2d().getRotation().getDegrees();
+    double yawRate = Math.toDegrees(drive.getRobotRelativeSpeeds().omegaRadiansPerSecond);
+
     for (TagTracking limelight : limelights) {
+      limelight.setRobotOrientation(yaw, yawRate, 0, 0, 0, 0);
+
       if (limelight.hasTarget()) {
-        double[] poseArray = limelight.getBotPoseArray();
+        double[] poseArray = limelight.getBotPoseArrayMegaTag2();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
         if (poseArray.length >= 11 && targetPoseRobot.length >= 6) {
