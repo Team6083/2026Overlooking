@@ -7,25 +7,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.lib.TagTracking;
+import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController;
-  private final TagTracking vision;
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
   private final PIDController yawPID;
-  private final Debouncer targetDebouncer;
 
   private double speedX;
   private double speedY;
@@ -33,16 +33,14 @@ public class SwerveControlCmd extends Command {
   private boolean isAligning;
 
   /** Creates a new SwerveControlCmd. */
-  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController, TagTracking vision) {
+  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
-    this.vision = vision;
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
     this.yawPID = new PIDController(0.08, 0, 0);
     yawPID.setTolerance(1.0);
-    this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
     addRequirements(swerveDrive);
   }
   
@@ -59,6 +57,14 @@ public class SwerveControlCmd extends Command {
     speedY = calcSpeedY();
     rotSpeed = calcRotSpeed();
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
+  }
+
+  private double[] getHubPosition() {
+    if (DriverStation.getAlliance().isPresent() &&
+        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        return new double[]{FieldConstants.redHubX, FieldConstants.redHubY}; 
+    }
+    return new double[]{FieldConstants.blueHubX, FieldConstants.blueHubY};
   }
 
   private double getMagnification() {
@@ -78,18 +84,33 @@ public class SwerveControlCmd extends Command {
   }
 
   private double calcRotSpeed() {
-    boolean targetValid = targetDebouncer.calculate(vision.hasTarget() && vision.isHubTag());
-    isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
+    isAligning = mainController.rightBumper().getAsBoolean();
 
     if (isAligning) {
-      double ballSpeed = 2.0;
+      Pose2d robotPose = swerveDrive.getPose2d();
       ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
-      double effectiveBallSpeed = ballSpeed + driveSpeeds.vxMetersPerSecond;
+      double[] hub = getHubPosition();
+
+      double dx = hub[0] - robotPose.getX();
+      double dy = hub[1] - robotPose.getY();
+      double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
+
+      double currentAngle = robotPose.getRotation().getDegrees();
+      double error = targetAngle - currentAngle;
+      if (error > 180) {
+        error -= 360;
+      }
+      if (error < -180) {
+        error += 360;
+      }
+
+      double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
       double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
 
+      SmartDashboard.putNumber("headingError", error);
       SmartDashboard.putNumber("compensation", compensation);
     
-      return MathUtil.clamp(yawPID.calculate(vision.getTx(), compensation), -1.5, 1.5);
+      return MathUtil.clamp(yawPID.calculate(error, compensation), -1.5, 1.5);
     } else {
       return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) * 4 * getRotMagnification();
     }

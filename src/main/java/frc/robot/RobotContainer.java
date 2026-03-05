@@ -90,7 +90,7 @@ public class RobotContainer {
     // position tracking
     positioningCmd.schedule();
     // swerve drive
-    SwerveControlCmd swerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shooterTracker);
+    SwerveControlCmd swerveControlCmd = new SwerveControlCmd(swerveDrive, mainController);
     swerveDrive.setDefaultCommand(swerveControlCmd);
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
