@@ -82,7 +82,7 @@ public class SwerveControlCmd extends Command {
     isAligning = mainController.rightBumper().getAsBoolean() && targetValid;
 
     if (isAligning) {
-      double ballSpeed = 10.0;
+      double ballSpeed = 2.0;
       ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
       double effectiveBallSpeed = ballSpeed + driveSpeeds.vxMetersPerSecond;
       double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
