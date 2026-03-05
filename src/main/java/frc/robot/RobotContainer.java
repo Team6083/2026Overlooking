@@ -18,6 +18,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
+import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -26,6 +27,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final WpilibSwerveDrive wpilibSwerveDrive;
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
@@ -37,6 +39,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    wpilibSwerveDrive = new WpilibSwerveDrive(Constants.COMPETITION_CONFIG);
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -60,17 +63,26 @@ public class RobotContainer {
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+
+    mainController.x().onTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
+    mainController.y().onTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
+    mainController.a().onTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
+    mainController.b().onTrue(wpilibSwerveDrive.sysIdDynamicRCmd());
+    mainController.povUp().onTrue(wpilibSwerveDrive.sysIdQuasistaticTurningCmd());
+    mainController.povDown().onTrue(wpilibSwerveDrive.sysIdDynamicTurningCmd());
+
+
     // shooter
-    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
-    mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
-    // intake
-    mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
-    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
-    mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
-    mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // // transport
+    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // // intake
+    // mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
+    // mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
+    // mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
