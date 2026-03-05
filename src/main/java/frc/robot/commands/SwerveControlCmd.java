@@ -39,7 +39,7 @@ public class SwerveControlCmd extends Command {
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
-    this.yawPID = new PIDController(0.08, 0, 0);
+    this.yawPID = new PIDController(0.04, 0, 0);
     yawPID.setTolerance(1.0);
     addRequirements(swerveDrive);
   }
@@ -103,6 +103,7 @@ public class SwerveControlCmd extends Command {
       if (error < -180) {
         error += 360;
       }
+      error = MathUtil.applyDeadband(error, 1.5);
 
       double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
       double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));

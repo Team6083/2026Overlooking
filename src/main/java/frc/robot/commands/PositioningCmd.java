@@ -33,7 +33,7 @@ public class PositioningCmd extends Command {
           double distance = poseArray[9];
           
           double trustValue = Math.min(0.4 + (distance * 0.6), 5.0);
-          Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
+          Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], drive.getPose2d().getRotation());
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
           
           drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, 9999999));
