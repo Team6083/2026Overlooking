@@ -12,10 +12,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.PositioningCmd;
+import java.util.function.Supplier;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
@@ -60,16 +60,14 @@ public class RobotContainer {
 
     SmartDashboard.putData("autoChooser", autoChooser);
 
-
-
     configureBindings();
 
   }
 
   public void updateVision() {
-    TagTracking[] trackers = {shooterTracker, backTracker};
+    TagTracking[] trackers = { shooterTracker, backTracker };
     Pose2d[] visionPoses = new Pose2d[trackers.length];
-    
+
     for (int i = 0; i < trackers.length; i++) {
       if (trackers[i].hasTarget()) {
         double[] poseArray = trackers[i].getBotPoseArray();
