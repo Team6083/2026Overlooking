@@ -77,7 +77,7 @@ public class Constants {
 
     public static final double pivotManualSpeed = 0.4;
 
-    public static final double pivotFollowKp = 0;
+    public static final double pivotFollowKp = 0.1;
     public static final double pivotFollowKi = 0;
     public static final double pivotFollowKd = 0;
     
