@@ -75,7 +75,7 @@ public class Constants {
     public static final double deployPivotSpeed = 0.7;
     public static final double reversePivotSpeed = -0.4;
 
-    public static final double pivotTestSpeed = 0.4;
+    public static final double pivotManualSpeed = 0.4;
 
     public static final double pivotFollowKp = 0;
     public static final double pivotFollowKi = 0;
