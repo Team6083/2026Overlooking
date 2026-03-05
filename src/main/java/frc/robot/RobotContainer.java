@@ -64,12 +64,12 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
 
-    mainController.x().onTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
-    mainController.y().onTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
-    mainController.a().onTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
-    mainController.b().onTrue(wpilibSwerveDrive.sysIdDynamicRCmd());
-    mainController.povUp().onTrue(wpilibSwerveDrive.sysIdQuasistaticTurningCmd());
-    mainController.povDown().onTrue(wpilibSwerveDrive.sysIdDynamicTurningCmd());
+    mainController.x().whileTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
+    mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
+    mainController.a().whileTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
+    mainController.b().whileTrue(wpilibSwerveDrive.sysIdDynamicRCmd());
+    mainController.povUp().whileTrue(wpilibSwerveDrive.sysIdQuasistaticTurningCmd());
+    mainController.povDown().whileTrue(wpilibSwerveDrive.sysIdDynamicTurningCmd());
 
 
     // shooter
