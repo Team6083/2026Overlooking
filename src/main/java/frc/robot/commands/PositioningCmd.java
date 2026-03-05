@@ -24,15 +24,15 @@ public class PositioningCmd extends Command {
         double[] poseArray = limelight.getBotPoseArray();
         double[] targetPoseRobot = limelight.getTargetPoseRobotSpace();
 
-        if (poseArray.length >= 7 && targetPoseRobot.length >= 6) {
-          double distance = Math.sqrt(Math.pow(targetPoseRobot[0], 2) + Math.pow(targetPoseRobot[2], 2));
+        if (poseArray.length >= 11 && targetPoseRobot.length >= 6) {
+          double distance = poseArray[9];
           
           double trustValue = Math.min(0.4 + (distance * 0.6), 5.0);
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
           
           // 核心任務：更新底層定位
-          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, trustValue));
+          drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, 9999999));
         }
       }
     }
