@@ -30,7 +30,7 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -55,21 +55,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "neutral zone- trench"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "trench-hub"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "neutrol zone-shoot"
           }
         }
       ]
