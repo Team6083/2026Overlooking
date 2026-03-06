@@ -22,5 +22,4 @@ public class RectZone implements Zone {
   public boolean contains(double x, double y) {
     return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
   }
-
 }
