@@ -17,8 +17,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax climbMotor = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
 
   private final Encoder encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
-  private final PIDController pidClimberController = new PIDController(ClimberConstants.climberKp, ClimberConstants.climberKi,
-        ClimberConstants.climberKd);
+  private final PIDController pidClimberController = new PIDController(ClimberConstants.climberKp,
+      ClimberConstants.climberKi,ClimberConstants.climberKd);
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
@@ -57,13 +57,13 @@ public class ClimberSubsystem extends SubsystemBase {
     cmd.setName("climb Down");
     return cmd;
   }
-  
+
   public Command manualClimbCmd(double setpoint) {
     Command cmd = run(() -> pidClimbControl(setpoint));
     cmd.setName("manual Climb Control");
     return cmd;
   }
-  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
