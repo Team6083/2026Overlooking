@@ -27,7 +27,7 @@ public class Constants {
       SwerveModuleConstant backRight) {
   }
 
-  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
+  public static final DriveBaseConstant TEST_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
           21, 26, 13, -0.164062, true, true, "FrontLeft"),
       new SwerveModuleConstant(
@@ -37,7 +37,7 @@ public class Constants {
       new SwerveModuleConstant(
           23, 24, 12, 0.260986, true, true, "BackRight"));
 
-  public static final DriveBaseConstant CHASSIS_CONFIG = new DriveBaseConstant(
+  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
           25, 27, 31, 0.352783, true, true, "FrontLeft"),
       new SwerveModuleConstant(
