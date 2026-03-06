@@ -7,9 +7,10 @@ package frc.robot.commands;
 import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Meters;
 
-import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -19,41 +20,37 @@ import frc.robot.subsystems.ShooterSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CalculateSpeedShooterCmd extends Command {
   private final ShooterSubsystem shooterSubsystem;
-  private final TagTracking tagTracking;
   private final frc.robot.subsystems.swervedrive.SwerveDrive swerveDrive;
 
-  private final Debouncer targetDebouncer = new Debouncer(0.2);
+  private double targetVelocity;
 
   /** Creates a new CalculateSpeedShooterCmd. */
   public CalculateSpeedShooterCmd(ShooterSubsystem shooterSubsystem, TagTracking tagTracking,
       frc.robot.subsystems.swervedrive.SwerveDrive swerveDrive) {
     this.shooterSubsystem = shooterSubsystem;
-    this.tagTracking = tagTracking;
     this.swerveDrive = swerveDrive;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooterSubsystem);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean isTargetValid = targetDebouncer.calculate(tagTracking.hasTarget() && tagTracking.isHubTag());
-    double targetVelocity;
-    double distanceX;
-    double distanceY;
+    Distance distanceX;
+    Distance distanceY;
     Distance distance;
 
-    distanceX = swerveDrive.getPose2d().getX() - getHubPositionX()-59.69;
-    distanceY = swerveDrive.getPose2d().getY() - getHubPositionY()-59.69;
+    distanceX = Meters.of(swerveDrive.getPose2d().getX() - getHubPositionX());
+    distanceY = Meters.of(swerveDrive.getPose2d().getY() - getHubPositionY());
 
-    if (isTargetValid) {
-      distance = Meters.of(Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)));
-      targetVelocity = 2570.3 * Math.exp(0.00436 * distance.in(Centimeters)); // 2570.2e^0.0044x
-    } else {
-      distance = Meters.of(-1);
-      targetVelocity = ShooterConstants.targetVelocity;
-    }
+    distance = Meters.of(Math.sqrt(Math.pow(distanceX.in(Meters), 2) + Math.pow(distanceY.in(Meters), 2)));
+    targetVelocity = MathUtil.clamp(ShooterConstants.shooterDistanceMultiplier
+        * Math.exp(ShooterConstants.shooterDistanceExponent * distance.in(Centimeters)),
+        0.0, ShooterConstants.maxShooterVelocity); // 1981.4e^0.00436x
 
     shooterSubsystem.shoot(targetVelocity);
+
+    SmartDashboard.putNumber("shooterCalculatedVelocity", targetVelocity);
+    SmartDashboard.putNumber("shooterDistance", distance.in(Centimeters));
   }
 
   private double getHubPositionX() {
@@ -70,6 +67,10 @@ public class CalculateSpeedShooterCmd extends Command {
       return FieldConstants.redHubY;
     }
     return FieldConstants.blueHubY;
+  }
+
+  private double getTargetVelocity() {
+    return this.targetVelocity;
   }
 
   // Called once the command ends or is interrupted.

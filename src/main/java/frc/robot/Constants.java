@@ -84,6 +84,11 @@ public class Constants {
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
     public static final double targetVelocity = 5700;
+    public static final double maxShooterVelocity = 6500;
+
+    public static final double shooterDistanceMultiplier = 1981.4;
+    public static final double shooterDistanceExponent = 0.00436;
+
   }
 
   public static class TransportConstants {

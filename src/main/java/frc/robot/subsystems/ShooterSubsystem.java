@@ -60,7 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
     SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
-    SmartDashboard.putNumber("targetShooterVelocity", targetVelocity);
+    SmartDashboard.putNumber("shooterTargetVelocity", targetVelocity);
     SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
     SmartDashboard.putData("ShooterSubsystem", this);
   }
