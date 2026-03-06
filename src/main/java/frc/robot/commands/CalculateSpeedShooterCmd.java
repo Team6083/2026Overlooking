@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -25,7 +24,7 @@ public class CalculateSpeedShooterCmd extends Command {
   private double targetVelocity;
 
   /** Creates a new CalculateSpeedShooterCmd. */
-  public CalculateSpeedShooterCmd(ShooterSubsystem shooterSubsystem, TagTracking tagTracking,
+  public CalculateSpeedShooterCmd(ShooterSubsystem shooterSubsystem,
       frc.robot.subsystems.swervedrive.SwerveDrive swerveDrive) {
     this.shooterSubsystem = shooterSubsystem;
     this.swerveDrive = swerveDrive;
