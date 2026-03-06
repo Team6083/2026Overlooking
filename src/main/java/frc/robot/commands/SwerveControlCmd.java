@@ -98,7 +98,7 @@ public class SwerveControlCmd extends Command {
       double dx = hub[0] - robotPose.getX();
       double dy = hub[1] - robotPose.getY();
       double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
-      driveSpeeds = swerveDrive.getRobotRelativeSpeeds();[]
+      driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
 
       double currentAngle = robotPose.getRotation().getDegrees();
       double error = targetAngle - currentAngle;
