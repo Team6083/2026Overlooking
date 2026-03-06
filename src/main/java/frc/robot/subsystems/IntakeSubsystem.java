@@ -189,14 +189,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("intakeMotorVoltage", intakeMotor.getMotorOutputVoltage());
-    SmartDashboard.putNumber("pivotLeftMotorVoltage", pivotLeft.getMotorOutputVoltage());
-    SmartDashboard.putNumber("pivotRightMotorVoltage", pivotRight.getMotorOutputVoltage());
-    SmartDashboard.putNumber("pivotLeftAbsolutePosition", pivotLeftEncoder.get());
-    SmartDashboard.putNumber("pivotRightAbsolutePosition", pivotRightEncoder.get());
-    SmartDashboard.putBoolean("pivotLeftEncoderConnected", pivotLeftEncoder.isConnected());
-    SmartDashboard.putBoolean("pivotRightEncoderConnected", pivotRightEncoder.isConnected());
+    SmartDashboard.putNumber("intake/motorVoltage", intakeMotor.getMotorOutputVoltage());
+    SmartDashboard.putNumber("intake/pivotLeftPositionDeg", getLeftPos());
+    SmartDashboard.putNumber("intake/pivotRightPositionDeg", getRightPos());
+    SmartDashboard.putNumber("intake/pivotLeftVoltage", pivotLeft.getMotorOutputVoltage());
+    SmartDashboard.putNumber("intake/pivotRightVoltage", pivotRight.getMotorOutputVoltage());
+    SmartDashboard.putBoolean("intake/pivotLeftEncoderConnected", pivotLeftEncoder.isConnected());
+    SmartDashboard.putBoolean("intake/pivotRightEncoderConnected", pivotRightEncoder.isConnected());
+    SmartDashboard.putData("intake/subsystem", this);
     SmartDashboard.putData(pivotFollowPIDController);
-    SmartDashboard.putData("IntakeSubsystem", this);
   }
 }
