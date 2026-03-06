@@ -39,7 +39,7 @@ public class SwerveModule extends SubsystemBase {
   public SwerveModule(SwerveModuleConstant swerveModuleConstant) {
     turningMotor = new SparkMax(swerveModuleConstant.turningMotorId(), MotorType.kBrushless);
     SparkMaxConfig turningMotorConfig = new SparkMaxConfig();
-    turningMotorConfig.smartCurrentLimit(40)
+    turningMotorConfig.smartCurrentLimit(15)
         .idleMode(IdleMode.kCoast)
         .inverted(swerveModuleConstant.turningInverted());
     turningMotor.configure(turningMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -58,7 +58,7 @@ public class SwerveModule extends SubsystemBase {
     turningEncoderConfiguration.MagnetSensor.MagnetOffset = swerveModuleConstant.canCoderOffset();
     turningEncoder.getConfigurator().apply(turningEncoderConfiguration);
 
-    rotPIDController = new PIDController(0.5, 0, 0);
+    rotPIDController = new PIDController(0.225, 0, 0);
     rotPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     driveMotorVoltage = 0;
