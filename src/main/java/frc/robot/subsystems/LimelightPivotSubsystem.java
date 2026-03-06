@@ -43,6 +43,5 @@ public class LimelightPivotSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("servoMotorAngle", limelightPivot.getAngle());
     SmartDashboard.putNumber("servoMotorPosition", limelightPivot.get());
-    SmartDashboard.putNumber("servoMotorSpeed", limelightPivot.getSpeed());
   }
 }
