@@ -52,6 +52,13 @@ public class Constants {
     public static final Distance kWheelRadius = Inches.of(2);
   }
 
+  public static final class SwerveControlConstants {
+    public static final double kFastMagnification = 0.6;
+    public static final double kSlowMagnification = 0.3;
+    public static final double kFastRotMagnification = 0.8;
+    public static final double kSlowRotMagnification = 0.4;
+  }
+
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
     public static final int pivotLeftId = 30;
