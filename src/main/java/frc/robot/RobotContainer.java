@@ -35,6 +35,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
   private final PositioningCmd positioningCmd;
+  private final Auto auto;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
@@ -52,6 +53,7 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem();
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
+    auto = new Auto();
     Auto.configureAutoBuilder(swerveDrive);
 
     registerCommand();
@@ -87,6 +89,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("findpath", auto.findingPath("New New Path"));
   }
 
   private void configureBindings() {

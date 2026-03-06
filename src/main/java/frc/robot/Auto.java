@@ -4,16 +4,26 @@
 
 package frc.robot;
 
+import java.util.Set;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /** Add your docs here. */
 public class Auto {
+  private static SwerveDrive swerveDrive;
+
   public static void configureAutoBuilder(SwerveDrive swerveDrive) {
 
     try {
@@ -42,4 +52,18 @@ public class Auto {
       e.printStackTrace();
     }
   }
-}
+
+  public Command findingPath(String pathName) {
+   
+    try {
+      PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+      Pose2d targetPose2d = path.getStartingHolonomicPose().get();
+      return AutoBuilder.pathfindToPose(
+          targetPose2d,
+          new PathConstraints(4, 4, 60, 6));
+    } catch (Exception e) {
+      return Commands.none();
+    }
+  }
+  }
+
