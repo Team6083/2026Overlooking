@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SwerveControlConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
+import java.util.function.Supplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
@@ -26,14 +28,15 @@ public class SwerveControlCmd extends Command {
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
   private final PIDController yawPID;
-
+  private boolean isAligning;
   private double speedX;
   private double speedY;
   private double rotSpeed;
-  private boolean isAligning;
+  private Supplier<Boolean> shouldSprint;
 
   /** Creates a new SwerveControlCmd. */
-  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController) {
+  public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
+      Supplier<Boolean> shouldSprint) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
     this.limiterX = new SlewRateLimiter(4);
@@ -41,6 +44,7 @@ public class SwerveControlCmd extends Command {
     this.rotLimiter = new SlewRateLimiter(5);
     this.yawPID = new PIDController(0.04, 0, 0);
     yawPID.setTolerance(1.0);
+    this.shouldSprint = shouldSprint;    
     addRequirements(swerveDrive);
   }
   
@@ -56,6 +60,7 @@ public class SwerveControlCmd extends Command {
     speedX = calcSpeedX();
     speedY = calcSpeedY();
     rotSpeed = calcRotSpeed();
+    Boolean isSprint = shouldSprint.get();
     swerveDrive.drive(speedX, speedY, rotSpeed, true);
   }
 
