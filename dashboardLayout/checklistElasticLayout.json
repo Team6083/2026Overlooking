@@ -7,7 +7,7 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "intake",
+            "title": "leftEncoder",
             "x": 0.0,
             "y": 0.0,
             "width": 256.0,
@@ -18,14 +18,14 @@
             },
             "children": [
               {
-                "title": "intakeEncoderConnected",
-                "x": 640.0,
-                "y": 0.0,
+                "title": "pivotLeftEncoderConnected",
+                "x": 128.0,
+                "y": 128.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Boolean Box",
                 "properties": {
-                  "topic": "/SmartDashboard/intakeEncoderConnected",
+                  "topic": "/SmartDashboard/intake/pivotLeftEncoderConnected",
                   "period": 0.06,
                   "data_type": "boolean",
                   "true_color": 4283215696,
@@ -35,28 +35,86 @@
                 }
               },
               {
-                "title": "intakeAbsolutePosition",
-                "x": 640.0,
+                "title": "pivotLeftPositionDeg",
+                "x": 128.0,
                 "y": 128.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/intakeAbsolutePosition",
+                  "topic": "/SmartDashboard/intake/pivotLeftPositionDeg",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "intakeMotorVoltage",
-                "x": 768.0,
-                "y": 128.0,
+                "title": "pivotLeftVoltage",
+                "x": 0.0,
+                "y": 256.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/intakeMotorVoltage",
+                  "topic": "/SmartDashboard/intake/pivotLeftVoltage",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "rightEncoder",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "pivotRightEncoderConnected",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/SmartDashboard/intake/pivotRightEncoderConnected",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "pivotRightPositionDeg",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/intake/pivotRightPositionDeg",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "pivotRightVoltage",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/intake/pivotRightVoltage",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -66,7 +124,65 @@
           },
           {
             "title": "shooter",
-            "x": 256.0,
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "shooterAtSpeed",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/SmartDashboard/shooter/shooterAtSpeed",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "shooterRPM",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/shooter/shooterRPM",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "shooterVoltage",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/shooter/shooterVoltage",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "gyro",
+            "x": 768.0,
             "y": 0.0,
             "width": 256.0,
             "height": 256.0,
@@ -76,28 +192,31 @@
             },
             "children": [
               {
-                "title": "shooterMotorVoltage",
+                "title": "gyroConnected",
                 "x": 896.0,
                 "y": 128.0,
                 "width": 128.0,
                 "height": 128.0,
-                "type": "Text Display",
+                "type": "Boolean Box",
                 "properties": {
-                  "topic": "/SmartDashboard/shooterMotorVoltage",
+                  "topic": "/SmartDashboard/drive/gyroConnected",
                   "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
                 }
               },
               {
-                "title": "shooterVelocity",
+                "title": "gyroHeadingDeg",
                 "x": 896.0,
                 "y": 128.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/shooterVelocity",
+                  "topic": "/SmartDashboard/drive/gyroHeadingDeg",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -106,22 +225,7 @@
             ]
           }
         ],
-        "containers": [
-          {
-            "title": "gyro",
-            "x": 256.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/gyro",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          }
-        ]
+        "containers": []
       }
     },
     {
