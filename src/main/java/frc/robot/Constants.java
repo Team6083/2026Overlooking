@@ -100,4 +100,11 @@ public class Constants {
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
+
+  public static class FieldConstants {
+    public static final double blueHubX = 4.6256;
+    public static final double blueHubY = 4.0346;
+    public static final double redHubX = 11.9155;
+    public static final double redHubY = 4.0346;
+  }
 }

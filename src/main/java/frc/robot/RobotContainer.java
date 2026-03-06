@@ -49,7 +49,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, shooterTracker);
+    calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, shooterTracker, swerveDrive);
 
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
