@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
@@ -89,7 +90,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("findpath", auto.findingPath("New New Path"));
+    NamedCommands.registerCommand("findpath", Commands.deferredProxy(() -> auto.findingPath("New New Path")));
   }
 
   private void configureBindings() {

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.Set;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -54,16 +52,17 @@ public class Auto {
   }
 
   public Command findingPath(String pathName) {
-   
     try {
       PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
       Pose2d targetPose2d = path.getStartingHolonomicPose().get();
+      double idealStartingVel = path.getIdealStartingState().velocityMPS();
+
       return AutoBuilder.pathfindToPose(
           targetPose2d,
-          new PathConstraints(4, 4, 60, 6));
+          new PathConstraints(4, 4, 60, 6),
+          idealStartingVel);
     } catch (Exception e) {
       return Commands.none();
     }
   }
-  }
-
+}
