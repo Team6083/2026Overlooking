@@ -65,9 +65,9 @@ public class SwerveControlCmd extends Command {
   }
 
   private double[] getHubPosition() {
-    if (DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-        return new double[]{FieldConstants.redHubX, FieldConstants.redHubY}; 
+    if (DriverStation.getAlliance().isPresent() 
+        && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      return new double[]{FieldConstants.redHubX, FieldConstants.redHubY}; 
     }
     return new double[]{FieldConstants.blueHubX, FieldConstants.blueHubY};
   }
@@ -93,12 +93,11 @@ public class SwerveControlCmd extends Command {
 
     if (isAligning) {
       Pose2d robotPose = swerveDrive.getPose2d();
-      ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
       double[] hub = getHubPosition();
-
       double dx = hub[0] - robotPose.getX();
       double dy = hub[1] - robotPose.getY();
       double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
+      ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
 
       double currentAngle = robotPose.getRotation().getDegrees();
       double error = targetAngle - currentAngle;
