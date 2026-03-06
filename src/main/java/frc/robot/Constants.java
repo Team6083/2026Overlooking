@@ -93,6 +93,8 @@ public class Constants {
     public static final double transportLowerMotorIn = 0.2;
     public static final double transportUpperMotorOut = 0.2;
     public static final double transportLowerMotorOut = 0.2;
+    public static final boolean transportUpperMotorInverted = true;
+    public static final boolean transportLowerMotorInverted = true;
   }
 
   public static class AutoConstants {

@@ -17,8 +17,8 @@ public class TransportSubsystem extends SubsystemBase {
   private final VictorSPX transportLowerMotor = new VictorSPX(TransportConstants.transportMotorLowerID);
 
   public TransportSubsystem() {
-    transportUpperMotor.setInverted(true);
-    transportLowerMotor.setInverted(true);
+    transportUpperMotor.setInverted(TransportConstants.transportUpperMotorInverted);
+    transportLowerMotor.setInverted(TransportConstants.transportLowerMotorInverted);
   }
 
   public void transportIn() {
