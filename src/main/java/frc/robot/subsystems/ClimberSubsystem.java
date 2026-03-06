@@ -67,8 +67,8 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Climb Position", getClimbPosition());
-    SmartDashboard.putNumber("Climb Output", climbMotor.get());
+    SmartDashboard.putNumber("ClimberPosition", getClimbPosition());
+    SmartDashboard.putNumber("ClimberOutput", climbMotor.get());
     SmartDashboard.putData("ClimberSubsystem", this);
   }
 }
