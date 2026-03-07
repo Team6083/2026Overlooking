@@ -51,7 +51,7 @@ public class Auto {
     }
   }
 
-  public Command findingPath(String pathName) {
+  public static Command findingPath(String pathName) {
     try {
       PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
       Pose2d targetPose2d = path.getStartingHolonomicPose().get();
@@ -59,10 +59,11 @@ public class Auto {
 
       return AutoBuilder.pathfindToPose(
           targetPose2d,
-          new PathConstraints(4, 4, 60, 6),
+          new PathConstraints(4, 4, Math.PI/3, Math.PI/3),
           idealStartingVel);
     } catch (Exception e) {
-      return Commands.none();
+     e.printStackTrace();
+     return Commands.none();
     }
   }
 }

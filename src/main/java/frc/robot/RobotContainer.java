@@ -36,7 +36,6 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
   private final PositioningCmd positioningCmd;
-  private final Auto auto;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
@@ -47,14 +46,13 @@ public class RobotContainer {
     backTracker = new TagTracking("limelight-back");
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.WPILIB,
-        SwerveDriveFactory.RobotVariant.COMPETITION);
+        SwerveDriveFactory.RobotVariant.TEST);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
-    auto = new Auto();
     Auto.configureAutoBuilder(swerveDrive);
 
     registerCommand();
@@ -90,7 +88,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("findpath", Commands.deferredProxy(() -> auto.findingPath("New New Path")));
+    NamedCommands.registerCommand("findpath", Commands.deferredProxy(() -> Auto.findingPath("New New Path")));
   }
 
   private void configureBindings() {
