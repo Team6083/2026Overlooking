@@ -65,9 +65,9 @@ public class ClimberSubsystem extends SubsystemBase {
     return cmd;
   }
 
-  public Command manualClimbCmd(double setpoint) {
+  public Command pidClimbCmd(double setpoint) {
     Command cmd = run(() -> pidClimbControl(setpoint));
-    cmd.setName("manualClimbCmd");
+    cmd.setName("pidClimbCmd");
     return cmd;
   }
 
