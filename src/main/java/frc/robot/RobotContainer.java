@@ -73,8 +73,8 @@ public class RobotContainer {
 
     for (int i = 0; i < trackers.length; i++) {
       if (trackers[i].hasTarget()) {
-        double[] poseArray = trackers[i].getBotPoseArray();
-        if (poseArray.length >= 6) {
+        double[] poseArray = trackers[i].getBotPoseArrayMegaTag2();
+        if (poseArray.length >= 11) {
           visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
         } else {
           visionPoses[i] = new Pose2d();
