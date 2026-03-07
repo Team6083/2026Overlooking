@@ -39,13 +39,13 @@ public class Constants {
 
   public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
-          25, 27, 11, -0.332275, true, true, "FrontLeft"),
+          25, 27, 11, 0.337891, true, true, "FrontLeft"),
       new SwerveModuleConstant(
-          26, 28, 13, -0.490967, true, true, "FrontRight"),
+          26, 28, 13, 0.495361, true, true, "FrontRight"),
       new SwerveModuleConstant(
-          24, 23, 12, 0.442627, true, true, "BackLeft"),
+          24, 23, 12, -0.446289, true, true, "BackLeft"),
       new SwerveModuleConstant(
-          22, 21, 14, -0.295410, true, true, "BackRight"));
+          22, 20, 14, 0.302979, true, true, "BackRight"));
 
   public static final class ModuleConstant {
     // define the radius of the wheel in meters
