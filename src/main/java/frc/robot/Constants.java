@@ -65,31 +65,31 @@ public class Constants {
     public static final int pivotRightId = 31;
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
-    
-    public static final double pivotLeftExpectedZero = 70;
-    public static final double pivotRightExpectedZero = 279;
+
+    public static final double pivotLeftExpectedZero = 40;
+    public static final double pivotRightExpectedZero = -95;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 104;
-    public static final double pivotRetractStopPosition = 4;
+    public static final double pivotDeployStopPosition = 130;
+    public static final double pivotRetractStopPosition = 0;
 
-    public static final boolean intakeInverted = true;
+    public static final boolean intakeInverted = false;
 
     public static final double intakeSpeed = 0.6;
 
     public static final double reverseIntakeSpeed = -0.6;
 
-    public static final double deployPivotSpeed = 0.7;
+    public static final double deployPivotSpeed = 0.8;
     public static final double reversePivotSpeed = -0.4;
 
     public static final double pivotManualSpeed = 0.4;
 
-    public static final double pivotFollowKp = 0.1;
+    public static final double pivotFollowKp = 0.03;
     public static final double pivotFollowKi = 0;
     public static final double pivotFollowKd = 0;
-    
-    public static final boolean motorLeftInverted = false;
-    public static final boolean motorRightInverted = true;
+
+    public static final boolean motorLeftInverted = true;
+    public static final boolean motorRightInverted = false;
     public static final boolean encoderLeftInverted = true;
     public static final boolean encoderRightInverted = false;
   }
@@ -107,7 +107,7 @@ public class Constants {
 
   public static class TransportConstants {
     public static final int transportMotorUpperID = 32;
-    public static final int transportMotorLowerID = 0;
+    public static final int transportMotorLowerID = 36;
     public static final double transportUpperMotorIn = 0.2;
     public static final double transportLowerMotorIn = 0.2;
     public static final double transportUpperMotorOut = 0.2;
