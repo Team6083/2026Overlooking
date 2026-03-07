@@ -21,6 +21,12 @@
           "data": {
             "pathName": "test_pathfindingBack"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "findToPose"
+          }
         }
       ]
     }

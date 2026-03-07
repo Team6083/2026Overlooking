@@ -10,13 +10,12 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.FlippingUtil;
-import com.pathplanner.lib.util.GeometryUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
@@ -69,5 +68,11 @@ public class Auto {
       e.printStackTrace();
       return Commands.none();
     }
+  }
+
+  public static Command findToPoseCmd(Pose2d targetPose, double gaolEndState) {
+    return AutoBuilder.pathfindToPose(targetPose,
+        new PathConstraints(4, 4, Math.PI / 3, Math.PI / 30),
+        gaolEndState);
   }
 }

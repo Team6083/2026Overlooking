@@ -88,7 +88,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("findpath", Commands.deferredProxy(() -> Auto.findingPath("New New Path")));
+    NamedCommands.registerCommand("findpath", Commands.deferredProxy(() -> Auto.findingPath("test_pathfindingBack")));
+    NamedCommands.registerCommand("findToPose", Commands.deferredProxy(() -> Auto.findToPoseCmd(new Pose2d(13.5, 5, Rotation2d.fromDegrees(-135)), 0)));
   }
 
   private void configureBindings() {
