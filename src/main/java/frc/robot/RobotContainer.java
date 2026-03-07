@@ -93,8 +93,8 @@ public class RobotContainer {
     // position tracking
     positioningCmd.schedule();
     // swerve drive
-    //swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
-    //mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
+    mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
