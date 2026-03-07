@@ -25,6 +25,10 @@ public class Robot extends TimedRobot {
   private Timer gcTimer = new Timer();
 
   public Robot() {
+    if (!savelog) {
+      StatusLogger.disableAutoLogging();
+    }
+
     m_robotContainer = new RobotContainer();
     gcTimer.start();
   }
@@ -34,8 +38,6 @@ public class Robot extends TimedRobot {
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
-    } else {
-      StatusLogger.disableAutoLogging();
     }
 
     ntInstance.getStringTopic("/Metadata/BuildDate").publish()
@@ -51,17 +53,18 @@ public class Robot extends TimedRobot {
     ntInstance.getStringTopic("/Metadata/GitBranch").publish()
         .set(BuildConstants.GIT_BRANCH);
 
-    SmartDashboard.putString("GitInfo", String.format("%s (%s), %s",
+    SmartDashboard.putString("Metadata/GitInfo", String.format("%s (%s), %s",
         BuildConstants.GIT_SHA,
         BuildConstants.GIT_BRANCH,
         BuildConstants.DIRTY == 1 ? "Dirty" : "Clean"));
-    SmartDashboard.putString("BuildDate", BuildConstants.BUILD_DATE);
+    SmartDashboard.putString("Metadata/BuildDate", BuildConstants.BUILD_DATE);
 
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateVision();
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
