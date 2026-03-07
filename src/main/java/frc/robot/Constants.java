@@ -100,9 +100,7 @@ public class Constants {
     public static final double feedforwardKs = 0.2;
     public static final double feedforwardKv = 0.002;
     public static final double feedforwardKa = 0;
-    public static final int encoderChannelA = 0;
-    public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 5700;
+    public static final double targetVelocity = 5000;
   }
 
   public static class TransportConstants {
