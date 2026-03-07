@@ -4,6 +4,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
@@ -31,12 +32,17 @@ public class PositioningCmd extends Command {
 
         if (poseArray.length >= 11 && targetPoseRobot.length >= 6) {
           double distance = poseArray[9];
+          double latencyMs = poseArray[6];
+
+          SmartDashboard.putNumber("vision/latencyMs", latencyMs);
+          SmartDashboard.putNumber("vision/poseX", poseArray[0]);
+          SmartDashboard.putNumber("vision/poseY", poseArray[1]);
+          SmartDashboard.putNumber("vision/poseYaw", poseArray[5]);
           
           double trustValue = Math.min(0.4 + (distance * 0.6), 5.0);
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
           
-          // 核心任務：更新底層定位
           drive.addVisionMeasurement(visionPose, timestamp, VecBuilder.fill(trustValue, trustValue, 9999999));
         }
       }
