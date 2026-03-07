@@ -53,16 +53,16 @@ public class CalculateSpeedShooterCmd extends Command {
   }
 
   private double getHubPositionX() {
-    if (DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
       return FieldConstants.redHubX;
     }
     return FieldConstants.blueHubX;
   }
 
   private double getHubPositionY() {
-    if (DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
       return FieldConstants.redHubY;
     }
     return FieldConstants.blueHubY;
