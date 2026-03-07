@@ -96,8 +96,8 @@ public class RobotContainer {
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
-    swerveDrive.zeroGyro();
-    swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
+      swerveDrive.zeroGyro();
+      swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
