@@ -22,7 +22,7 @@ import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
-  private final SwerveDrive swerveDrive;
+  // private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
@@ -32,16 +32,16 @@ public class RobotContainer {
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
-    swerveDrive = SwerveDriveFactory.createSwerveDrive(
-        SwerveDriveFactory.SwerveImplementation.WPILIB,
-        SwerveDriveFactory.RobotVariant.COMPETITION);
+    // swerveDrive = SwerveDriveFactory.createSwerveDrive(
+    //     SwerveDriveFactory.SwerveImplementation.WPILIB,
+    //     SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     wpilibSwerveDrive = new WpilibSwerveDrive(Constants.COMPETITION_CONFIG);
 
-    Auto.configureAutoBuilder(swerveDrive);
+    Auto.configureAutoBuilder(wpilibSwerveDrive);
 
     registerCommand();
 
@@ -61,8 +61,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
-    mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+    wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController));
+    mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
 
     mainController.x().whileTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
     mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
