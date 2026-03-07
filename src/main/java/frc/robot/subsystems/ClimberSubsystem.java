@@ -5,7 +5,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,14 +18,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-  private final SparkMax climbMotor = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
+  private final SparkMax climbMotor  = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
 
   private final Encoder encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
   private final PIDController pidClimberController = new PIDController(ClimberConstants.climberKp,
-      ClimberConstants.climberKi,ClimberConstants.climberKd);
+      ClimberConstants.climberKi, ClimberConstants.climberKd);
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
+    SparkMaxConfig climberMotorConfig = new SparkMaxConfig();
+    climberMotorConfig.inverted(ClimberConstants.climbMotorInverted);
+    climbMotor.configure(climberMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   private void climbUp() {
@@ -48,19 +55,19 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public Command climbUpCmd() {
     Command cmd = runEnd(this::climbUp, this::stopClimb);
-    cmd.setName("climb Up");
+    cmd.setName("climbUpCmd");
     return cmd;
   }
 
   public Command climbDownCmd() {
     Command cmd = runEnd(this::climbDown, this::stopClimb);
-    cmd.setName("climb Down");
+    cmd.setName("climbDownCmd");
     return cmd;
   }
 
   public Command manualClimbCmd(double setpoint) {
     Command cmd = run(() -> pidClimbControl(setpoint));
-    cmd.setName("manual Climb Control");
+    cmd.setName("manualClimbCmd");
     return cmd;
   }
 

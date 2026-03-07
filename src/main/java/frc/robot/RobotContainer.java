@@ -109,8 +109,8 @@ public class RobotContainer {
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
     // climber
-    mainController.povLeft().whileTrue(climberSubsystem.manualClimbCmd(0.2));
-    mainController.povRight().whileTrue(climberSubsystem.manualClimbCmd(-0.2));
+    mainController.povLeft().whileTrue(climberSubsystem.climbUpCmd());
+    mainController.povRight().whileTrue(climberSubsystem.climbDownCmd());
   }
 
   public Command getAutonomousCommand() {

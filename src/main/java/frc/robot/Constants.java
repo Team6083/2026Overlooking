@@ -54,6 +54,7 @@ public class Constants {
 
   public static final class ClimberConstants {
     public static final int climbMotorId = 40;
+    public static final boolean climbMotorInverted = true;
 
     public static final double climbUpSpeed = 0.4;
     public static final double climbDownSpeed = -0.4;
