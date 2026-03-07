@@ -19,7 +19,7 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
-    double yaw = drive.getPose2d().getRotation().getDegrees();
+    double yaw = drive.getGyroRotation2d().getDegrees();
     double yawRate = Math.toDegrees(drive.getRobotRelativeSpeeds().omegaRadiansPerSecond);
 
     for (TagTracking limelight : limelights) {
