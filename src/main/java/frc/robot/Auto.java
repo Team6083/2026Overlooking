@@ -52,27 +52,9 @@ public class Auto {
     }
   }
 
-  public static Command findingPath(String pathName) {
-    try {
-      PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-
-      var alliance = DriverStation.getAlliance();
-      if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-        path = path.flipPath();
-      }
-
-      return AutoBuilder.pathfindThenFollowPath(
-          path,
-          new PathConstraints(4, 4, Math.PI *4, Math.PI *6));
-    } catch (Exception e) {
-      e.printStackTrace();
-      return Commands.none();
-    }
-  }
-
-  public static Command findToPoseCmd(Pose2d targetPose, double gaolEndState) {
+  public static Command findToPoseCmd(Pose2d targetPose, double goalEndState) {
     return AutoBuilder.pathfindToPose(targetPose,
-        new PathConstraints(4.9, 4, Math.PI*4, Math.PI*6),
-        gaolEndState);
+        new PathConstraints(4.9, 4, Math.PI * 4, Math.PI * 6),
+        goalEndState);
   }
 }

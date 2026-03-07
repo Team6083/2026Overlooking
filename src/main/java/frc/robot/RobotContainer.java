@@ -89,10 +89,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("findpath",
-        Commands.deferredProxy(() -> Auto.findingPath("test_pathfindingBack")));
-    NamedCommands.registerCommand("findToPose",
-        Commands.deferredProxy(() -> Auto.findToPoseCmd(new Pose2d(13.5, 5, Rotation2d.fromDegrees(-135)), 0)));
   }
 
   private void configureBindings() {
@@ -108,14 +104,15 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(Auto.findToPoseCmd(new Pose2d(13.5, 5, Rotation2d.fromDegrees(45)), 0));
+    mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
-    mainController.a().whileTrue(Auto.findToPoseCmd(new Pose2d(12,7.3,new Rotation2d(Math.PI*7/4)), 4.9).andThen(Auto.findToPoseCmd(new Pose2d(8.969,5.659,new Rotation2d(Math.PI*3/2)), 0)));
+    mainController.a().whileTrue(Auto.findToPoseCmd(new Pose2d(12, 7.3, new Rotation2d(Math.PI * 7 / 4)), 4.9)
+        .andThen(Auto.findToPoseCmd(new Pose2d(8.969, 5.659, new Rotation2d(Math.PI * 3 / 2)), 0)));
   }
 
   public Command getAutonomousCommand() {
