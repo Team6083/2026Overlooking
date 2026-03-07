@@ -10,6 +10,8 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FlippingUtil;
+import com.pathplanner.lib.util.GeometryUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -54,16 +56,18 @@ public class Auto {
   public static Command findingPath(String pathName) {
     try {
       PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-      Pose2d targetPose2d = path.getStartingHolonomicPose().get();
-      double idealStartingVel = path.getIdealStartingState().velocityMPS();
 
-      return AutoBuilder.pathfindToPose(
-          targetPose2d,
-          new PathConstraints(4, 4, Math.PI/3, Math.PI/3),
-          idealStartingVel);
+      var alliance = DriverStation.getAlliance();
+      if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        path.flipPath();
+      }
+
+      return AutoBuilder.pathfindThenFollowPath(
+          path,
+          new PathConstraints(4, 4, Math.PI / 3, Math.PI / 3));
     } catch (Exception e) {
-     e.printStackTrace();
-     return Commands.none();
+      e.printStackTrace();
+      return Commands.none();
     }
   }
 }
