@@ -124,11 +124,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   @Override
   public void zeroGyro() {
     gyro.reset();
-    poseEstimator.resetPosition(
-        gyro.getRotation2d(),
-        getSwerveModulePosition(),
-        new Pose2d(getPose2d().getTranslation(), new Rotation2d(0)) // 保留 X,Y，只清角度
-    );
   }
 
   @Override
