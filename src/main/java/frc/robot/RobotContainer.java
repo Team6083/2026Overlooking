@@ -24,6 +24,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
+import java.util.function.Supplier;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -38,6 +39,8 @@ public class RobotContainer {
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
+
+  private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -66,13 +69,13 @@ public class RobotContainer {
   }
 
   public void updateVision() {
-    TagTracking[] trackers = {shooterTracker, backTracker};
+    TagTracking[] trackers = { shooterTracker, backTracker };
     Pose2d[] visionPoses = new Pose2d[trackers.length];
-    
+
     for (int i = 0; i < trackers.length; i++) {
       if (trackers[i].hasTarget()) {
-        double[] poseArray = trackers[i].getBotPoseArray();
-        if (poseArray.length >= 6) {
+        double[] poseArray = trackers[i].getBotPoseArrayMegaTag2();
+        if (poseArray.length >= 11) {
           visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
         } else {
           visionPoses[i] = new Pose2d();
@@ -94,7 +97,7 @@ public class RobotContainer {
     // position tracking
     positioningCmd.schedule();
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(swerveDrive.zeroGyroCommand());
     // shooter
     mainController.rightBumper().whileTrue(calculateSpeedShooterCmd);
@@ -102,9 +105,8 @@ public class RobotContainer {
     // transport
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
-    mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
-    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
   }
@@ -112,4 +114,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
 }
