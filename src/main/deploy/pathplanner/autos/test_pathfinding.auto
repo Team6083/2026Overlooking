@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "test_pathfinding"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New New Path"
+            "pathName": "test_pathfindingBack"
           }
         }
       ]
