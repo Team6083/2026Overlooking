@@ -58,12 +58,12 @@ public class Auto {
 
       var alliance = DriverStation.getAlliance();
       if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-        path.flipPath();
+        path = path.flipPath();
       }
 
       return AutoBuilder.pathfindThenFollowPath(
           path,
-          new PathConstraints(4, 4, Math.PI / 3, Math.PI / 3));
+          new PathConstraints(4, 4, Math.PI *4, Math.PI *6));
     } catch (Exception e) {
       e.printStackTrace();
       return Commands.none();
@@ -72,7 +72,7 @@ public class Auto {
 
   public static Command findToPoseCmd(Pose2d targetPose, double gaolEndState) {
     return AutoBuilder.pathfindToPose(targetPose,
-        new PathConstraints(4, 4, Math.PI / 3, Math.PI / 30),
+        new PathConstraints(4.9, 4, Math.PI*4, Math.PI*6),
         gaolEndState);
   }
 }
