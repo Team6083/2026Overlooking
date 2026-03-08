@@ -37,12 +37,16 @@ public class AimAssistCmd extends SwerveControlCmd {
     double dx = hub[0] - robotPose.getX();
     double dy = hub[1] - robotPose.getY();
     double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
-    ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
+    final ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
 
     double currentAngle = robotPose.getRotation().getDegrees();
     double error = targetAngle - currentAngle;
-    if (error > 180) error -= 360;
-    if (error < -180) error += 360;
+    if (error > 180) {
+        error -= 360;
+    }
+    if (error < -180) {
+        error += 360;
+    }
     error = MathUtil.applyDeadband(error, 1.5);
 
     double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
