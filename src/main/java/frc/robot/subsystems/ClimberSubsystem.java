@@ -11,7 +11,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,14 +18,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-  private final SparkMax climbMotor  = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
+  private final SparkMax climbMotor = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
 
   private final Encoder encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
     SparkMaxConfig climberMotorConfig = new SparkMaxConfig();
-    climberMotorConfig.inverted(ClimberConstants.climbMotorInverted);
+    climberMotorConfig
+        .inverted(ClimberConstants.climbMotorInverted)
+        .idleMode(IdleMode.kBrake);
     climbMotor.configure(climberMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
