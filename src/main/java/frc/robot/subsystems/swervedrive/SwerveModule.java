@@ -149,7 +149,9 @@ public class SwerveModule extends SubsystemBase {
 
   private void setFaultAlerts() {
     activeFaultAlert.set(driveMotor.hasActiveFault() || turningMotor.hasActiveFault());
+    activeFaultAlert.setText(driveMotor.getFaults().toString());
     stickyFaultAlert.set(driveMotor.hasStickyFault() || turningMotor.hasStickyFault());
+    stickyFaultAlert.setText(driveMotor.getStickyFaults().toString());
   }
 
   @Override
