@@ -109,8 +109,8 @@ public class Constants {
     public static final int transportMotorLowerID = 36;
     public static final double transportUpperMotorIn = 0.2;
     public static final double transportLowerMotorIn = 0.2;
-    public static final double transportUpperMotorOut = 0.2;
-    public static final double transportLowerMotorOut = 0.2;
+    public static final double transportUpperMotorOut = -0.2;
+    public static final double transportLowerMotorOut = -0.2;
     public static final boolean transportUpperMotorInverted = true;
     public static final boolean transportLowerMotorInverted = true;
   }
