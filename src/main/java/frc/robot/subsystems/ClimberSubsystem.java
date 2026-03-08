@@ -10,7 +10,6 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -62,8 +61,8 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("climberPosition", getClimbPosition());
-    SmartDashboard.putNumber("climberOutput", climbMotor.get());
-    SmartDashboard.putData("climberSubsystem", this);
+    SmartDashboard.putNumber("climber/climberPosition", getClimbPosition());
+    SmartDashboard.putNumber("climber/climberOutput", climbMotor.get());
+    SmartDashboard.putData("climber/subsystem", this);
   }
 }
