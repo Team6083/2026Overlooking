@@ -8,28 +8,42 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7814871794871805,
-        "y": 1.1744615384615384
+        "x": 2.019349397590361,
+        "y": 1.4669879518072289
       },
       "isLocked": false,
       "linkedName": "right_shoot"
     },
     {
       "anchor": {
-        "x": 3.6120827389443653,
-        "y": 0.4315834522111266
+        "x": 0.7845180722891567,
+        "y": 0.4288554216867476
       },
       "prevControl": {
-        "x": 1.847450883848098,
-        "y": 0.542610051353383
+        "x": 1.9209999999999998,
+        "y": 0.33050602409638485
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "right_trench"
+      "linkedName": "outpost"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7672811059907828,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 273.0,
+        "maxAngularAcceleration": 1885.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -41,11 +55,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 4.0,
+    "velocity": 0,
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "shoot to trench",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": -134.96930638344026
