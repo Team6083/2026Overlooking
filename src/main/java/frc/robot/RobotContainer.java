@@ -23,14 +23,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
-import frc.robot.subsystems.swervedrive.SwerveDrive;
-import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 import java.util.function.Supplier;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
   private final TagTracking backTracker;
-  private final SwerveDrive swerveDrive;
+  // private final SwerveDrive swerveDrive;
 
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
@@ -48,9 +46,9 @@ public class RobotContainer {
     shooterTracker = new TagTracking("limelight-shooter");
 
     backTracker = new TagTracking("limelight-back");
-    swerveDrive = SwerveDriveFactory.createSwerveDrive(
-        SwerveDriveFactory.SwerveImplementation.WPILIB,
-        SwerveDriveFactory.RobotVariant.COMPETITION);
+    // swerveDrive = SwerveDriveFactory.createSwerveDrive(
+    //     SwerveDriveFactory.SwerveImplementation.WPILIB,
+    //     SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
@@ -58,7 +56,7 @@ public class RobotContainer {
 
     wpilibSwerveDrive = new WpilibSwerveDrive(Constants.COMPETITION_CONFIG);
 
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    positioningCmd = new PositioningCmd(wpilibSwerveDrive, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(wpilibSwerveDrive);
 
@@ -104,7 +102,7 @@ public class RobotContainer {
 
 
     wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
-    mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
+    // mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
 
     mainController.x().whileTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
     mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
@@ -123,21 +121,21 @@ public class RobotContainer {
     // mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
+    wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
-      swerveDrive.zeroGyro();
-      swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
+      wpilibSwerveDrive.zeroGyro();
+      wpilibSwerveDrive.resetPose(new Pose2d(wpilibSwerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
-    // shooter
-    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
-    mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
-    // intake
-    mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
-    mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
-    mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    // // shooter
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // // transport
+    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // // intake
+    // mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
+    // mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
+    // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
