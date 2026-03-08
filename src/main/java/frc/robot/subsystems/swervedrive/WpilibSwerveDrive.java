@@ -8,6 +8,7 @@ import com.studica.frc.AHRS;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -151,11 +152,17 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   }
 
   @Override
+  public Rotation2d getGyroRotation2d() {
+    return gyro.getRotation2d(); 
+  }
+
+  @Override
   public void periodic() {
     // This method will be called once per scheduler run
     poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
-    SmartDashboard.putNumber("gyro", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("drive/gyroHeadingDeg", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putBoolean("drive/gyroConnected", gyro.isConnected());
     swerveDesiredStatePublisher.set(swerveModuleStates);
     swerveCurrentStatePublisher.set(new SwerveModuleState[] {
         frontLeft.getState(),
