@@ -66,6 +66,7 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
+
     public static final double pivotLeftExpectedZero = 50;
     public static final double pivotRightExpectedZero = -105;
 
