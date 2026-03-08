@@ -65,9 +65,9 @@ public class Constants {
     public static final int pivotRightId = 31;
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
-    
-    public static final double pivotLeftExpectedZero = 70;
-    public static final double pivotRightExpectedZero = 279;
+
+    public static final double pivotLeftExpectedZero = 40;
+    public static final double pivotRightExpectedZero = -95;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 104;
