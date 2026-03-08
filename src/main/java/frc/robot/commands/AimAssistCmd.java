@@ -42,10 +42,10 @@ public class AimAssistCmd extends SwerveControlCmd {
     double currentAngle = robotPose.getRotation().getDegrees();
     double error = targetAngle - currentAngle;
     if (error > 180) {
-        error -= 360;
+      error -= 360;
     }
     if (error < -180) {
-        error += 360;
+      error += 360;
     }
     error = MathUtil.applyDeadband(error, 1.5);
 
