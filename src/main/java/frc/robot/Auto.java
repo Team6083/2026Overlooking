@@ -9,7 +9,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FlippingUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -53,8 +53,34 @@ public class Auto {
   }
 
   public static Command findToPoseCmd(Pose2d targetPose, double goalEndState) {
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      targetPose = FlippingUtil.flipFieldPose(targetPose);
+    }
     return AutoBuilder.pathfindToPose(targetPose,
         new PathConstraints(4.9, 4, Math.PI * 4, Math.PI * 6),
         goalEndState);
+  }
+
+  public static Command findToPoseCmd(Pose2d targetPose, double goalEndState, double maxVel, double maxAccel) {
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      targetPose = FlippingUtil.flipFieldPose(targetPose);
+    }
+    return AutoBuilder.pathfindToPose(targetPose,
+        new PathConstraints(maxVel, maxAccel, Math.PI * 4, Math.PI * 6),
+        goalEndState);
+  }
+
+  public static Command setCurrentPoseCmd(Pose2d currentPose2d) {
+    final Pose2d currentPose;
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      currentPose = FlippingUtil.flipFieldPose(currentPose2d);
+    } else {
+      currentPose = currentPose2d;
+    }
+    Command cmd = Commands.run(() -> swerveDrive.resetPose(currentPose));
+    return cmd;
   }
 }

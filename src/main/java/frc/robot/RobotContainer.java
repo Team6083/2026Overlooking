@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -88,7 +88,12 @@ public class RobotContainer {
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
+    NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("setLeftTrenchPose", Auto.setCurrentPoseCmd(AutoConstants.leftTrenchPose));
+    NamedCommands.registerCommand("toLeftTrenchPose", Auto.findToPoseCmd(AutoConstants.leftTrenchPose, 4));
+    NamedCommands.registerCommand("toLeftNeutralPoseA", Auto.findToPoseCmd(AutoConstants.leftNeutralPoseA, 2));
+    NamedCommands.registerCommand("toLeftNeutralPoseC", Auto.findToPoseCmd(AutoConstants.leftNeutralPoseC, 0, 2, 2));
   }
 
   private void configureBindings() {
