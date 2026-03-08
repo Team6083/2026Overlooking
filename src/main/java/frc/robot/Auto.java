@@ -24,7 +24,7 @@ public class Auto {
   private static SwerveDrive swerveDrive;
 
   public static void configureAutoBuilder(SwerveDrive swerveDrive) {
-
+    Auto.swerveDrive = swerveDrive;
     try {
       RobotConfig config = RobotConfig.fromGUISettings();
 

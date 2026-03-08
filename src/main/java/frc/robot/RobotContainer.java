@@ -47,7 +47,7 @@ public class RobotContainer {
     backTracker = new TagTracking("limelight-back");
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.WPILIB,
-        SwerveDriveFactory.RobotVariant.TEST);
+        SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
@@ -90,10 +90,19 @@ public class RobotContainer {
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
     NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
+
     NamedCommands.registerCommand("setLeftTrenchPose", Auto.setCurrentPoseCmd(AutoConstants.leftTrenchPose));
+    NamedCommands.registerCommand("setMidPose", Auto.setCurrentPoseCmd(AutoConstants.midPostPose));
+    NamedCommands.registerCommand("setRightTrenchPose", Auto.setCurrentPoseCmd(AutoConstants.rightTrenchPose));
+
     NamedCommands.registerCommand("toLeftTrenchPose", Auto.findToPoseCmd(AutoConstants.leftTrenchPose, 4));
     NamedCommands.registerCommand("toLeftNeutralPoseA", Auto.findToPoseCmd(AutoConstants.leftNeutralPoseA, 2));
     NamedCommands.registerCommand("toLeftNeutralPoseC", Auto.findToPoseCmd(AutoConstants.leftNeutralPoseC, 0, 2, 2));
+    NamedCommands.registerCommand("toLeftShoot", Auto.findToPoseCmd(AutoConstants.leftShootPose, 0));
+    NamedCommands.registerCommand("toRightTrenchPose", Auto.findToPoseCmd(AutoConstants.rightTrenchPose, 4));
+    NamedCommands.registerCommand("toRightNeutralPoseA", Auto.findToPoseCmd(AutoConstants.rightNeutralPoseA, 2));
+    NamedCommands.registerCommand("toRightNeutralPoseC", Auto.findToPoseCmd(AutoConstants.rightNeutralPoseC, 0, 2, 2));
+    NamedCommands.registerCommand("toRightShoot", Auto.findToPoseCmd(AutoConstants.rightShootPose, 0));
   }
 
   private void configureBindings() {
@@ -106,7 +115,8 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem,
+    // transportSubsystem));
     // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // // transport
     mainController.rightBumper().whileTrue(transportSubsystem.transportInCmd());
