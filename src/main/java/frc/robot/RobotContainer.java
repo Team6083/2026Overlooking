@@ -18,27 +18,30 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
+import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
-  private final SwerveDrive swerveDrive;
+  // private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final WpilibSwerveDrive wpilibSwerveDrive;
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
-    swerveDrive = SwerveDriveFactory.createSwerveDrive(
-        SwerveDriveFactory.SwerveImplementation.WPILIB,
-        SwerveDriveFactory.RobotVariant.COMPETITION);
+    // swerveDrive = SwerveDriveFactory.createSwerveDrive(
+    //     SwerveDriveFactory.SwerveImplementation.WPILIB,
+    //     SwerveDriveFactory.RobotVariant.COMPETITION);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    wpilibSwerveDrive = new WpilibSwerveDrive(Constants.COMPETITION_CONFIG);
 
-    Auto.configureAutoBuilder(swerveDrive);
+    Auto.configureAutoBuilder(wpilibSwerveDrive);
 
     registerCommand();
 
@@ -58,26 +61,29 @@ public class RobotContainer {
 
   private void configureBindings() {
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive,
-    mainController));
-    mainController.start().onTrue(swerveDrive.zeroGyroCommand());
-    // // shooter
-    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem,
-    // transportSubsystem));
+
+    wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController));
+    mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
+
+    mainController.x().whileTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
+    mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
+    mainController.a().whileTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
+    mainController.b().whileTrue(wpilibSwerveDrive.sysIdDynamicRCmd());
+    mainController.povUp().whileTrue(wpilibSwerveDrive.sysIdQuasistaticTurningCmd());
+    mainController.povDown().whileTrue(wpilibSwerveDrive.sysIdDynamicTurningCmd());
+
+
+    // shooter
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    // transport
+    // // transport
     // mainController.b().whileTrue(transportSubsystem.transportInCmd());
-    // intake
+    // // intake
     // mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     // mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
-    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    // mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.y().whileTrue(swerveDrive.sysIdDynamicFCmd());
-    mainController.a().whileTrue(swerveDrive.sysIdDynamicRCmd());
-    mainController.x().whileTrue(swerveDrive.sysIdQuasistaticFCmd());
-    mainController.b().whileTrue(swerveDrive.sysIdQuasistaticRCmd());
-
   }
 
   public Command getAutonomousCommand() {
