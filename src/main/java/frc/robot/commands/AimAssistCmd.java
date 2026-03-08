@@ -57,7 +57,6 @@ public class AimAssistCmd extends SwerveControlCmd {
 
   @Override
   public void end(boolean interrupted) {
-    yawPID.reset();
   }
 
   public boolean isAlignedToHub() {
