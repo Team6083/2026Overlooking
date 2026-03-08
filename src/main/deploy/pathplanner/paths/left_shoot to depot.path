@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.254409638554217,
-        "y": 5.9473493975903615
+        "x": 2.115741399762753,
+        "y": 6.127663107947805
       },
       "isLocked": false,
       "linkedName": "left_shoot"
     },
     {
       "anchor": {
-        "x": 0.7189518072289156,
-        "y": 5.980132530120482
+        "x": 0.6417319098457894,
+        "y": 5.977034400948992
       },
       "prevControl": {
-        "x": 1.724835570401276,
-        "y": 5.980132530120482
+        "x": 1.64761567301815,
+        "y": 5.977034400948992
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6276715410573583,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 273.0,
+        "maxAngularAcceleration": 1885.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

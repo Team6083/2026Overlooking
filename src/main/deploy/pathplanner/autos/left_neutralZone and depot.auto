@@ -5,15 +5,35 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "left_trench to left_neutralZone_A"
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.3
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "left_trench to left_neutralZone_A"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "deployIntake"
+                }
+              }
+            ]
           }
         },
         {
@@ -23,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "left_neutrolZone_A to left_neutrolZone_B"
+                  "pathName": "left_neutralZone_A to left_neutralZone_C"
                 }
               },
               {
@@ -38,7 +58,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left_neutrolZone_B to left_trench"
+            "pathName": "left_neutralZone_C to left_trench"
           }
         },
         {
