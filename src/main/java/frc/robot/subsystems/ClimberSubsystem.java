@@ -9,6 +9,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,8 +22,6 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax climbMotor  = new SparkMax(ClimberConstants.climbMotorId, MotorType.kBrushless);
 
   private final Encoder encoder = new Encoder(ClimberConstants.climbEncoderIdA, ClimberConstants.climbEncoderIdB);
-  private final PIDController pidClimberController = new PIDController(ClimberConstants.climberKp,
-      ClimberConstants.climberKi, ClimberConstants.climberKd);
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
