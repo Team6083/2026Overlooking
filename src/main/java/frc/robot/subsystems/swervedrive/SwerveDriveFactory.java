@@ -15,19 +15,19 @@ public class SwerveDriveFactory {
   }
 
   public enum RobotVariant {
-    COMPETITION,
-    CHASSIS
+    TEST,
+    COMPETITION
   }
 
   public static SwerveDrive createSwerveDrive(SwerveImplementation type, RobotVariant variant) {
     String swerveConfigDirName = switch (variant) {
+      case TEST -> "swerve/test";
       case COMPETITION -> "swerve/competition";
-      case CHASSIS -> "swerve/chassis";
     };
 
     DriveBaseConstant driveBaseConstant = switch (variant) {
+      case TEST -> Constants.TEST_CONFIG;
       case COMPETITION -> Constants.COMPETITION_CONFIG;
-      case CHASSIS -> Constants.CHASSIS_CONFIG;
     };
 
     return switch (type) {

@@ -6,6 +6,7 @@ package frc.robot.subsystems.swervedrive;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +32,7 @@ public interface SwerveDrive extends Subsystem {
 
   ChassisSpeeds getRobotRelativeSpeeds();
 
+
   Command sysIdQuasistaticFCmd();
 
   Command sysIdDynamicFCmd();
@@ -38,4 +40,7 @@ public interface SwerveDrive extends Subsystem {
   Command sysIdQuasistaticRCmd();
 
   Command sysIdDynamicRCmd();
+
+  Rotation2d getGyroRotation2d();
+
 }
