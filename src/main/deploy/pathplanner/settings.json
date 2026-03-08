@@ -2,7 +2,13 @@
   "robotWidth": 0.8386,
   "robotLength": 0.8386,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "trench to shoot",
+    "intake",
+    "neutralZone to trench",
+    "shoot to trench",
+    "trench to neutralZone"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 4.9,
   "defaultMaxAccel": 4.5,
