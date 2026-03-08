@@ -47,12 +47,6 @@ public class ClimberSubsystem extends SubsystemBase {
     return encoder.getDistance(); // Adjust distance per pulse if necessary
   }
 
-  private double pidClimbControl(double setpoint) {
-    double output = pidClimberController.calculate(getClimbPosition(), setpoint);
-    climbMotor.set(output);
-    return output;
-  }
-
   public Command climbUpCmd() {
     Command cmd = runEnd(this::climbUp, this::stopClimb);
     cmd.setName("climbUpCmd");
@@ -62,12 +56,6 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command climbDownCmd() {
     Command cmd = runEnd(this::climbDown, this::stopClimb);
     cmd.setName("climbDownCmd");
-    return cmd;
-  }
-
-  public Command pidClimbCmd(double setpoint) {
-    Command cmd = run(() -> pidClimbControl(setpoint));
-    cmd.setName("pidClimbCmd");
     return cmd;
   }
 
