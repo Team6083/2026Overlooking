@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.418208778173192,
-        "y": 0.5866785290628707
+        "x": 3.6120827389443653,
+        "y": 0.4315834522111266
       },
       "prevControl": {
-        "x": 2.6535769230769244,
-        "y": 0.6977051282051271
+        "x": 1.847450883848098,
+        "y": 0.542610051353383
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 4.0,
-    "rotation": 90.843
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "shoot to trench",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 34.82448915695686
+    "rotation": -134.96930638344026
   },
   "useDefaultConstraints": true
 }

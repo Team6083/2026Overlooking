@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.418208778173192,
-        "y": 0.5866785290628707
+        "x": 3.6120827389443653,
+        "y": 0.4315834522111266
       },
       "prevControl": {
-        "x": 4.7117692307692325,
-        "y": 0.5697948717948724
+        "x": 3.905643191540406,
+        "y": 0.41469979494312836
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 4.0,
-    "rotation": 90.84252426074045
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "neutralZone to trench",
