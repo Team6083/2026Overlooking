@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "left_trench-neutral zone"
+                  "pathName": "left_trench to left_neutralZone_A"
                 }
               },
               {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "left_neutrol zone-center"
+                  "pathName": "left_neutrolZone_A to left_neutrolZone_B"
                 }
               },
               {
@@ -45,7 +45,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "center-neutral zone"
+            "pathName": null
           }
         },
         {
@@ -57,7 +57,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "neutrol zone-shoot"
+            "pathName": null
           }
         }
       ]

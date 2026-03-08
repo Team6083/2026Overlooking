@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "trench-neutral zone"
+                  "pathName": null
                 }
               },
               {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "intake"
+                  "pathName": null
                 }
               },
               {
@@ -51,7 +51,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "center-neutral zone"
+            "pathName": null
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "neutrol zone-shoot"
+            "pathName": null
           }
         }
       ]
