@@ -6,5 +6,5 @@ package frc.robot.lib.Zone;
 
 /** Add your docs here. */
 public class FieldZones {
-  public static final Zone trench = new RectZone(0, 4.5, 0, 3);
+  public static final Zone trench = new RectZone(10, 14, 1.5, 0);
 }

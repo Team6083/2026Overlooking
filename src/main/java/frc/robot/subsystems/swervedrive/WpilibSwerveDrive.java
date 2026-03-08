@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveBaseConstant;
+import frc.robot.lib.Zone.FieldZones;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
@@ -171,5 +172,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         backRight.getState()
     });
     currentPosePublisher.set(getPose2d());
+
+    SmartDashboard.putBoolean("isNearTrench",
+        FieldZones.trench.contains(
+            getPose2d().getTranslation().getX(),
+            getPose2d().getTranslation().getY()));
   }
 }
