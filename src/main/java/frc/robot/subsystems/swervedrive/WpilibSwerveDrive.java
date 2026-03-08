@@ -190,22 +190,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
   }
 
-  public Command sysIdQuasistaticTurningCmd() {
-    frontLeft.setAngle(new Rotation2d(Math.toDegrees(45)));
-    frontRight.setAngle(new Rotation2d(Math.toDegrees(135)));
-    backLeft.setAngle(new Rotation2d(Math.toDegrees(315)));
-    backRight.setAngle(new Rotation2d(Math.toDegrees(225)));
-    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
-  }
-
-  public Command sysIdDynamicTurningCmd() {
-    frontLeft.setAngle(new Rotation2d(Math.toDegrees(45)));
-    frontRight.setAngle(new Rotation2d(Math.toDegrees(135)));
-    backLeft.setAngle(new Rotation2d(Math.toDegrees(315)));
-    backRight.setAngle(new Rotation2d(Math.toDegrees(225)));
-    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
