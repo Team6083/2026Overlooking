@@ -16,8 +16,6 @@ import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveDrive;
-import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 import frc.robot.subsystems.swervedrive.WpilibSwerveDrive;
 
 public class RobotContainer {
@@ -69,8 +67,6 @@ public class RobotContainer {
     mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
     mainController.a().whileTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
     mainController.b().whileTrue(wpilibSwerveDrive.sysIdDynamicRCmd());
-    mainController.povUp().whileTrue(wpilibSwerveDrive.sysIdQuasistaticTurningCmd());
-    mainController.povDown().whileTrue(wpilibSwerveDrive.sysIdDynamicTurningCmd());
 
 
     // shooter
