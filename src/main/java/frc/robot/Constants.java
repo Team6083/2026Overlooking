@@ -87,9 +87,14 @@ public class Constants {
   }
 
   public static class TransportConstants {
-    public static final int transportMotorID = 32;
-    public static final double transportMotorIn = 0.2;
-    public static final double transportMotorOut = 0.2;
+    public static final int transportMotorUpperID = 32;
+    public static final int transportMotorLowerID = 0;
+    public static final double transportUpperMotorIn = 0.2;
+    public static final double transportLowerMotorIn = 0.2;
+    public static final double transportUpperMotorOut = 0.2;
+    public static final double transportLowerMotorOut = 0.2;
+    public static final boolean transportUpperMotorInverted = true;
+    public static final boolean transportLowerMotorInverted = true;
   }
 
   public static class AutoConstants {
