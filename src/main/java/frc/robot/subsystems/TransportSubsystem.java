@@ -44,14 +44,9 @@ public class TransportSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    SmartDashboard.putNumber("transportUpperMotorSpeed", transportUpperMotor.getMotorOutputPercent());
-    SmartDashboard.putNumber("transportLowerMotorSpeed", transportLowerMotor.getMotorOutputPercent());
-    SmartDashboard.putData("TransportSubsystem", this);
-
-    SmartDashboard.putNumber("transport/motorOutputPercent", transportUpperMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("transport/UpperMotorOutputPercent", transportUpperMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("transport/LowerMotorOutputPercent", transportLowerMotor.getMotorOutputPercent());
     SmartDashboard.putData("transport/subsystem", this);
-
     // This method will be called once per scheduler run
   }
 }
