@@ -66,9 +66,8 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-
-    public static final double pivotLeftExpectedZero = 50;
-    public static final double pivotRightExpectedZero = -105;
+    public static final double pivotLeftExpectedZero = 40;
+    public static final double pivotRightExpectedZero = -95;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 130;
@@ -110,8 +109,8 @@ public class Constants {
     public static final int transportMotorLowerID = 36;
     public static final double transportUpperMotorIn = 0.2;
     public static final double transportLowerMotorIn = 0.2;
-    public static final double transportUpperMotorOut = 0.2;
-    public static final double transportLowerMotorOut = 0.2;
+    public static final double transportUpperMotorOut = -0.2;
+    public static final double transportLowerMotorOut = -0.2;
     public static final boolean transportUpperMotorInverted = true;
     public static final boolean transportLowerMotorInverted = true;
   }
