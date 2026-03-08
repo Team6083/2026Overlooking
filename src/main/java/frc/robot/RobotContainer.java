@@ -106,18 +106,19 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
-    mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // // transport
+    mainController.rightBumper().whileTrue(transportSubsystem.transportInCmd());
     // intake
-    mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
+    mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-
-    mainController.a().whileTrue(Auto.findToPoseCmd(new Pose2d(12, 7.3, new Rotation2d(Math.PI * 7 / 4)), 4.9)
-        .andThen(Auto.findToPoseCmd(new Pose2d(8.969, 5.659, new Rotation2d(Math.PI * 3 / 2)), 0)));
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    mainController.a().whileTrue(intakeSubsystem.retractRightIntakeCmd());
+    mainController.x().whileTrue(intakeSubsystem.deployRightIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
