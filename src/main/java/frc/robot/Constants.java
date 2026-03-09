@@ -27,7 +27,7 @@ public class Constants {
       SwerveModuleConstant backRight) {
   }
 
-  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
+  public static final DriveBaseConstant TEST_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
           21, 26, 13, -0.164062, true, true, "FrontLeft"),
       new SwerveModuleConstant(
@@ -37,42 +37,60 @@ public class Constants {
       new SwerveModuleConstant(
           23, 24, 12, 0.260986, true, true, "BackRight"));
 
-  public static final DriveBaseConstant CHASSIS_CONFIG = new DriveBaseConstant(
+  public static final DriveBaseConstant COMPETITION_CONFIG = new DriveBaseConstant(
       new SwerveModuleConstant(
-          21, 26, 13, -0.164062, true, true, "FrontLeft"),
+          25, 27, 11, 0.337891, true, true, "FrontLeft"),
       new SwerveModuleConstant(
-          25, 27, 11, -0.016602, true, true, "FrontRight"),
+          26, 28, 13, 0.495361, true, true, "FrontRight"),
       new SwerveModuleConstant(
-          22, 18, 14, -0.254395, true, true, "BackLeft"),
+          24, 23, 12, -0.446289, true, true, "BackLeft"),
       new SwerveModuleConstant(
-          23, 24, 12, 0.260986, true, true, "BackRight"));
+          22, 20, 14, 0.302979, true, true, "BackRight"));
 
   public static final class ModuleConstant {
     // define the radius of the wheel in meters
     public static final Distance kWheelRadius = Inches.of(2);
   }
 
+  public static final class SwerveControlConstants {
+    public static final double kFastMagnification = 0.6;
+    public static final double kSlowMagnification = 0.3;
+    public static final double kFastRotMagnification = 0.8;
+    public static final double kSlowRotMagnification = 0.4;
+  }
+
   public static final class IntakeConstants {
     public static final int intakeMotorId = 34;
+    public static final int pivotLeftId = 30;
+    public static final int pivotRightId = 31;
+    public static final int pivotLeftEncoderId = 3;
+    public static final int pivotRightEncoderId = 2;
+
+    public static final double pivotLeftExpectedZero = 40;
+    public static final double pivotRightExpectedZero = -95;
+
+    public static final double pivotEncoderFullRange = 360;
+    public static final double pivotDeployStopPosition = 130;
+    public static final double pivotRetractStopPosition = 17;
 
     public static final boolean intakeInverted = true;
 
     public static final double intakeSpeed = 0.6;
-
     public static final double reverseIntakeSpeed = -0.6;
 
-    public static final int pivotLeftId = 31;
-    public static final int pivotRightId = 30;
+    public static final double deployPivotSpeed = 0.8;
+    public static final double retractPivotSpeed = -1;
 
-    public static final int pivotEncoderId = 2;
-    public static final double pivotFullRange = 360;
-    public static final double pivotExpectedZero = 152.5;
+    public static final double pivotManualSpeed = 0.4;
 
-    public static final double pivotDeployStopPosition = 100;
-    public static final double pivotRetractPosition = 0;
+    public static final double pivotFollowKp = 0.03;
+    public static final double pivotFollowKi = 0;
+    public static final double pivotFollowKd = 0;
 
-    public static final double pivotSpeed = 0.4;
-    public static final double reversePivotSpeed = -0.8;
+    public static final boolean motorLeftInverted = false;
+    public static final boolean motorRightInverted = true;
+    public static final boolean encoderLeftInverted = true;
+    public static final boolean encoderRightInverted = false;
   }
 
   public static final class ShooterConstants {
@@ -87,9 +105,14 @@ public class Constants {
   }
 
   public static class TransportConstants {
-    public static final int transportMotorID = 32;
-    public static final double transportMotorIn = 0.2;
-    public static final double transportMotorOut = 0.2;
+    public static final int transportMotorUpperID = 32;
+    public static final int transportMotorLowerID = 36;
+    public static final double transportUpperMotorIn = 0.2;
+    public static final double transportLowerMotorIn = 0.2;
+    public static final double transportUpperMotorOut = -0.2;
+    public static final double transportLowerMotorOut = -0.2;
+    public static final boolean transportUpperMotorInverted = true;
+    public static final boolean transportLowerMotorInverted = true;
   }
 
   public static class AutoConstants {
