@@ -53,12 +53,11 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
-
+    
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     limelightPivotSubsystem = new LimelightPivotSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
