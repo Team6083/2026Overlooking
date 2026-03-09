@@ -14,6 +14,7 @@ import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightPivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
@@ -27,6 +28,7 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final LimelightPivotSubsystem limelightPivotSubsystem;
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -37,6 +39,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    limelightPivotSubsystem = new LimelightPivotSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -64,13 +67,16 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+
+    mainController.a().onTrue(limelightPivotSubsystem.downdeployLimelightPivotCmd());
+    mainController.b().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
   }
 
   public Command getAutonomousCommand() {
