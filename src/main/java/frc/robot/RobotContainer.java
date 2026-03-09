@@ -121,12 +121,14 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    mainController.a().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
     mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
