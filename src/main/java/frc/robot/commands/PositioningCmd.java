@@ -19,7 +19,7 @@ public class PositioningCmd extends Command {
 
   @Override
   public void execute() {
-    double yaw = drive.getPose2d().getRotation().getDegrees();
+    double yaw = drive.getGyroRotation2d().getDegrees();
     double yawRate = Math.toDegrees(drive.getRobotRelativeSpeeds().omegaRadiansPerSecond);
 
     for (TagTracking limelight : limelights) {
@@ -31,7 +31,7 @@ public class PositioningCmd extends Command {
 
         if (poseArray.length >= 11 && targetPoseRobot.length >= 6) {
           double distance = poseArray[9];
-          
+
           double trustValue = Math.min(0.4 + (distance * 0.6), 5.0);
           Pose2d visionPose = new Pose2d(poseArray[0], poseArray[1], drive.getPose2d().getRotation());
           double timestamp = Timer.getFPGATimestamp() - (poseArray[6] / 1000.0);
