@@ -18,22 +18,22 @@ public class LimelightPivotSubsystem extends SubsystemBase {
     limelightPivot = new Servo(LimelightPivotConstants.servoMotorChannel);
   }
 
-  public void deployLimelightPivot() {
-    limelightPivot.setAngle(LimelightPivotConstants.deployAngle);
+  public void downLimelightPivot() {
+    limelightPivot.setPosition(LimelightPivotConstants.downPosition);
   }
 
-  public void retractLimelightPivot() {
-    limelightPivot.setAngle(LimelightPivotConstants.retractAngle);
+  public void upLimelightPivot() {
+    limelightPivot.setPosition(LimelightPivotConstants.upPosition);
   }
 
-  public Command deployLimelightPivotCmd() {
-    Command cmd = runOnce(this::deployLimelightPivot);
+  public Command downdeployLimelightPivotCmd() {
+    Command cmd = runOnce(this::downLimelightPivot);
     cmd.setName("deployLimelightPivotCmd");
     return cmd;
   }
 
-  public Command retractLimelightPivotCmd() {
-    Command cmd = runOnce(this::retractLimelightPivot);
+  public Command upLimelightPivotCmd() {
+    Command cmd = runOnce(this::upLimelightPivot);
     cmd.setName("retractLimelightPivotCmd");
     return cmd;
   }
