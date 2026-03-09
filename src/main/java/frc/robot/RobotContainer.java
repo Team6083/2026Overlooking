@@ -98,6 +98,9 @@ public class RobotContainer {
     wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
 
+    wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
+    // mainController.start().onTrue(wpilibSwerveDrive.zeroGyroCommand());
+
     mainController.x().whileTrue(wpilibSwerveDrive.sysIdQuasistaticFCmd());
     mainController.y().whileTrue(wpilibSwerveDrive.sysIdQuasistaticRCmd());
     mainController.a().whileTrue(wpilibSwerveDrive.sysIdDynamicFCmd());
@@ -115,6 +118,23 @@ public class RobotContainer {
     // mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+
+    wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
+    mainController.start().onTrue(Commands.runOnce(() -> {
+      wpilibSwerveDrive.zeroGyro();
+      wpilibSwerveDrive.resetPose(new Pose2d(wpilibSwerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
+    }));
+    // // shooter
+    // mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // // transport
+    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    // // intake
+    // mainController.povUp().whileTrue(intakeSubsystem.deployIntakeCmd());
+    // mainController.povDown().whileTrue(intakeSubsystem.retractIntakeCmd());
+    // mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    // mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
+
   }
 
   public Command getAutonomousCommand() {
