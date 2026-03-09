@@ -102,8 +102,8 @@ public class Constants {
   }
 
   public static class LimelightPivotConstants {
-    public static final int servoMotorChannel = 0;
-    public static final double deployAngle = 90;
-    public static final double retractAngle = 0;
+    public static final int servoMotorChannel = 4;
+    public static final double deployAngle = 0.25;
+    public static final double retractAngle = 1;
   }
 }
