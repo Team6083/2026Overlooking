@@ -103,6 +103,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("toRightNeutralPoseA", Auto.findToPoseCmd(AutoConstants.rightNeutralPoseA, 2));
     NamedCommands.registerCommand("toRightNeutralPoseC", Auto.findToPoseCmd(AutoConstants.rightNeutralPoseC, 0, 2, 2));
     NamedCommands.registerCommand("toRightShoot", Auto.findToPoseCmd(AutoConstants.rightShootPose, 0));
+    NamedCommands.registerCommand("toDepotPoseA", Auto.findToPoseCmd(AutoConstants.depotPoseA, 0));
+    NamedCommands.registerCommand("toDepotPoseB", Auto.findToPoseCmd(AutoConstants.depotPoseB, 0));
+    NamedCommands.registerCommand("toOutPostPose", Auto.findToPoseCmd(AutoConstants.outPostPose, 0));
   }
 
   private void configureBindings() {

@@ -124,6 +124,7 @@ public class Constants {
     public static final double kpRotation = 4.5;
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
+
     public static final Pose2d leftTrenchPose = new Pose2d(3.612, 7.419, new Rotation2d(Math.PI));
     public static final Pose2d rightTrenchPose = new Pose2d(3.612, 0.432, new Rotation2d(Math.PI));
     public static final Pose2d leftShootPose = new Pose2d(2.629, 5.788, new Rotation2d(136 * Math.PI / 180));
@@ -136,7 +137,7 @@ public class Constants {
     public static final Pose2d rightNeutralPoseC = new Pose2d(7.8, 3.558, new Rotation2d(90 * Math.PI / 180));
     public static final Pose2d depotPoseA = new Pose2d(1.091, 6.023, new Rotation2d(Math.PI));
     public static final Pose2d depotPoseB = new Pose2d(1.091, 5.982, new Rotation2d(Math.PI));
-    public static final Pose2d outPostPose = new Pose2d(0.785,0.429,new Rotation2d(Math.PI));
-    public static final Pose2d midPostPose = new Pose2d(3.55,4,new Rotation2d(Math.PI));
+    public static final Pose2d outPostPose = new Pose2d(0.785, 0.429, new Rotation2d(Math.PI));
+    public static final Pose2d midPostPose = new Pose2d(3.55, 4, new Rotation2d(Math.PI));
   }
 }
