@@ -28,13 +28,13 @@ public class LimelightPivotSubsystem extends SubsystemBase {
 
   public Command downLimelightPivotCmd() {
     Command cmd = runOnce(this::downLimelightPivot);
-    cmd.setName("deployLimelightPivotCmd");
+    cmd.setName("downLimelightPivotCmd");
     return cmd;
   }
 
   public Command upLimelightPivotCmd() {
     Command cmd = runOnce(this::upLimelightPivot);
-    cmd.setName("retractLimelightPivotCmd");
+    cmd.setName("upLimelightPivotCmd");
     return cmd;
   }
 
