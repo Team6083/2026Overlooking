@@ -12,22 +12,18 @@ import frc.robot.Constants.LimelightPivotConstants;
 
 public class LimelightPivotSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
-  private final Servo leftLimelightPivot;
-  private final Servo rightLimelightPivot;
+  private final Servo limelightPivot;
 
   public LimelightPivotSubsystem() {
-    leftLimelightPivot = new Servo(LimelightPivotConstants.leftServoMotorChannel);
-    rightLimelightPivot = new Servo(LimelightPivotConstants.rightServoMotorChannel);
+    limelightPivot = new Servo(LimelightPivotConstants.servoMotorChannel);
   }
 
   public void deployLimelightPivot() {
-    leftLimelightPivot.setAngle(LimelightPivotConstants.deployAngle);
-    rightLimelightPivot.setAngle(-LimelightPivotConstants.deployAngle);
+    limelightPivot.setAngle(LimelightPivotConstants.deployAngle);
   }
 
   public void retractLimelightPivot() {
-    leftLimelightPivot.setAngle(LimelightPivotConstants.retractAngle);
-    rightLimelightPivot.setAngle(LimelightPivotConstants.retractAngle);
+    limelightPivot.setAngle(LimelightPivotConstants.retractAngle);
   }
 
   public Command deployLimelightPivotCmd() {
@@ -45,9 +41,7 @@ public class LimelightPivotSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("leftServoMotorAngle", leftLimelightPivot.getAngle());
-    SmartDashboard.putNumber("leftServoMotorPosition", leftLimelightPivot.get());
-    SmartDashboard.putNumber("rightServoMotorAngle", rightLimelightPivot.getAngle());
-    SmartDashboard.putNumber("rightServoMotorPosition", rightLimelightPivot.get());
+    SmartDashboard.putNumber("servoMotorAngle", limelightPivot.getAngle());
+    SmartDashboard.putNumber("servoMotorPosition", limelightPivot.get());
   }
 }
