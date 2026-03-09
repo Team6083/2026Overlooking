@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AimAssistCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -40,6 +42,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -47,6 +50,8 @@ public class RobotContainer {
     // swerveDrive = SwerveDriveFactory.createSwerveDrive(
     //     SwerveDriveFactory.SwerveImplementation.WPILIB,
     //     SwerveDriveFactory.RobotVariant.COMPETITION);
+    //backTracker = new TagTracking("limelight-back");
+    //positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
@@ -93,6 +98,8 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     // positioningCmd.schedule();
+    //mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    //controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
 
     wpilibSwerveDrive.setDefaultCommand(new SwerveControlCmd(wpilibSwerveDrive, mainController, shouldSprint));
