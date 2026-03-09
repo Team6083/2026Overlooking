@@ -106,15 +106,15 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    // mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
-    mainController.a().onTrue(limelightPivotSubsystem.downdeployLimelightPivotCmd());
-    mainController.b().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
+    mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
+    mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
   }
 
   public Command getAutonomousCommand() {

@@ -26,7 +26,7 @@ public class LimelightPivotSubsystem extends SubsystemBase {
     limelightPivot.setPosition(LimelightPivotConstants.upPosition);
   }
 
-  public Command downdeployLimelightPivotCmd() {
+  public Command downLimelightPivotCmd() {
     Command cmd = runOnce(this::downLimelightPivot);
     cmd.setName("deployLimelightPivotCmd");
     return cmd;
