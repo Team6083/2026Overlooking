@@ -42,7 +42,6 @@ public class RobotContainer {
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
-  private final Supplier<Boolean> useLimelight = () -> controlPanel.button(1).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -50,11 +49,11 @@ public class RobotContainer {
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
+    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, useLimelight, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -95,7 +94,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    positioningCmd.schedule();
+    controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
