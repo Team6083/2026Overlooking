@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
@@ -40,6 +41,8 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
+  private final Supplier<Boolean> useLimelight = () -> controlPanel.button(1).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -51,7 +54,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    positioningCmd = new PositioningCmd(swerveDrive, useLimelight, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
