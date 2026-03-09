@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.util.StatusLogger;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -40,6 +41,8 @@ public class Robot extends TimedRobot {
       DriverStation.startDataLog(DataLogManager.getLog());
     }
 
+    SignalLogger.enableAutoLogging(savelog);
+
     ntInstance.getStringTopic("/Metadata/BuildDate").publish()
         .set(BuildConstants.BUILD_DATE);
     ntInstance.getStringTopic("/Metadata/GitBranch").publish()
@@ -53,17 +56,18 @@ public class Robot extends TimedRobot {
     ntInstance.getStringTopic("/Metadata/GitBranch").publish()
         .set(BuildConstants.GIT_BRANCH);
 
-    SmartDashboard.putString("GitInfo", String.format("%s (%s), %s",
+    SmartDashboard.putString("Metadata/GitInfo", String.format("%s (%s), %s",
         BuildConstants.GIT_SHA,
         BuildConstants.GIT_BRANCH,
         BuildConstants.DIRTY == 1 ? "Dirty" : "Clean"));
-    SmartDashboard.putString("BuildDate", BuildConstants.BUILD_DATE);
+    SmartDashboard.putString("Metadata/BuildDate", BuildConstants.BUILD_DATE);
 
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateVision();
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }

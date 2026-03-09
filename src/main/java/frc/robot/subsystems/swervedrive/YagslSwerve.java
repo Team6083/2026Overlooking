@@ -1,150 +1,178 @@
-// package frc.robot.subsystems.swervedrive;
+package frc.robot.subsystems.swervedrive;
 
-// import edu.wpi.first.math.Vector;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.math.numbers.N3;
-// import edu.wpi.first.networktables.NetworkTableInstance;
-// import edu.wpi.first.networktables.StructArrayPublisher;
-// import edu.wpi.first.networktables.StructPublisher;
-// import edu.wpi.first.wpilibj.DriverStation;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import java.io.File;
-// import java.util.Arrays;
-// import swervelib.SwerveDrive;
-// import swervelib.parser.SwerveParser;
-// import swervelib.telemetry.SwerveDriveTelemetry;
-// import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.io.File;
+import java.util.Arrays;
+import swervelib.SwerveDrive;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
-// public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
-//   /** Creates a new SwerveDrive. */
-//   private final SwerveDrive swerveDrive;
+public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
+  /** Creates a new SwerveDrive. */
+  private final SwerveDrive swerveDrive;
 
-//   StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
-//       .getStructTopic("currentPose", Pose2d.struct).publish();
-//   StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
-//       .getStructArrayTopic("poseHistory", Pose2d.struct).publish();
+  StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("currentPose", Pose2d.struct).publish();
+  StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("poseHistory", Pose2d.struct).publish();
 
-//   public YagslSwerve(File directory) {
+  public YagslSwerve(File directory) {
 
-//     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-//     try {
-//       swerveDrive = new SwerveParser(directory).createSwerveDrive(4);
-//     } catch (Exception e) {
-//       throw new RuntimeException(e);
-//     }
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    try {
+      swerveDrive = new SwerveParser(directory).createSwerveDrive(4);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
 
-//     swerveDrive.setHeadingCorrection(false);
-//     swerveDrive.setCosineCompensator(false);
-//     swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
-//     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
-//     swerveDrive.setChassisDiscretization(true, 0.02);
-//     swerveDrive.setMotorIdleMode(true);
-//   }
+    swerveDrive.setHeadingCorrection(false);
+    swerveDrive.setCosineCompensator(false);
+    swerveDrive.setAngularVelocityCompensation(false, false, 0.1); // test
+    swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
+    swerveDrive.setChassisDiscretization(true, 0.02);
+    swerveDrive.setMotorIdleMode(true);
+  }
 
-//   @Override
-//   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
-//     swerveDrive.addVisionMeasurement(visionRobotPose, timestamp);
-//   }
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp);
+  }
 
-//   @Override
-//   public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
-//     swerveDrive.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
-//   }
+  @Override
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs) {
+    swerveDrive.addVisionMeasurement(visionRobotPose, timestamp, visionStdDevs);
+  }
 
-//   @Override
-//   public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
-//     var alliance = DriverStation.getAlliance();
-//     var inverted = 1;
-//     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-//       inverted = -1;
-//     }
+  @Override
+  public void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative) {
+    var alliance = DriverStation.getAlliance();
+    var inverted = 1;
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      inverted = -1;
+    }
 
-//     var directionMultiplier = fieldRelative ? inverted : 1;
-//     Translation2d finalTranslation = new Translation2d(
-//         translationX * directionMultiplier,
-//         translationY * directionMultiplier);
+    var directionMultiplier = fieldRelative ? inverted : 1;
+    Translation2d finalTranslation = new Translation2d(
+        translationX * directionMultiplier,
+        translationY * directionMultiplier);
 
-//     swerveDrive.drive(
-//         finalTranslation,
-//         angularRotationX,
-//         fieldRelative, false);
-//   }
+    swerveDrive.drive(
+        finalTranslation,
+        angularRotationX,
+        fieldRelative, false);
+  }
 
-//   @Override
-//   public void drive(ChassisSpeeds speeds) {
-//     swerveDrive.drive(speeds);
-//   }
+  @Override
+  public void drive(ChassisSpeeds speeds) {
+    swerveDrive.drive(speeds);
+  }
 
-//   @Override
-//   public void zeroGyro() {
-//     swerveDrive.zeroGyro();
-//   }
+  @Override
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
+  }
 
-//   @Override
-//   public Pose2d getPose2d() {
-//     return swerveDrive.getPose();
-//   }
+  @Override
+  public Pose2d getPose2d() {
+    return swerveDrive.getPose();
+  }
 
-//   @Override
-//   public void resetPose(Pose2d pose) {
-//     swerveDrive.resetOdometry(pose);
-//   }
+  @Override
+  public void resetPose(Pose2d pose) {
+    swerveDrive.resetOdometry(pose);
+  }
 
-//   @Override
-//   public ChassisSpeeds getRobotRelativeSpeeds() {
-//     return swerveDrive.getRobotVelocity();
-//   }
+  @Override
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return swerveDrive.getRobotVelocity();
+  }
 
-//   @Override
-//   public Command zeroGyroCommand() {
-//     Command cmd = runOnce(() -> this.zeroGyro());
-//     cmd.setName("zeroGyroCommand");
-//     return cmd;
-//   }
+  @Override
+  public Command zeroGyroCommand() {
+    Command cmd = runOnce(() -> this.zeroGyro());
+    cmd.setName("zeroGyroCommand");
+    return cmd;
+  }
 
-//   public double getGyroHeading() {
-//     double gyroHeading = swerveDrive.getYaw().getDegrees() % 360;
-//     if (gyroHeading < 0) {
-//       gyroHeading += 360;
-//     }
-//     return gyroHeading;
-//   }
+  public double getGyroHeading() {
+    double gyroHeading = swerveDrive.getYaw().getDegrees() % 360;
+    if (gyroHeading < 0) {
+      gyroHeading += 360;
+    }
+    return gyroHeading;
+  }
 
-//   public double getMaxSpeed() {
-//     return swerveDrive.getMaximumChassisVelocity();
-//   }
+  public double getMaxSpeed() {
+    return swerveDrive.getMaximumChassisVelocity();
+  }
 
-//   public Command centerModulesCmd() {
-//     Command cmd = runOnce(() -> Arrays.asList(swerveDrive.getModules())
-//         .forEach(it -> it.setAngle(0.0)));
-//     cmd.setName("centerModulesCmd");
-//     return cmd;
-//   }
+  public Command centerModulesCmd() {
+    Command cmd = runOnce(() -> Arrays.asList(swerveDrive.getModules())
+        .forEach(it -> it.setAngle(0.0)));
+    cmd.setName("centerModulesCmd");
+    return cmd;
+  }
 
-//   public Command lockPoseCmd() {
-//     Command cmd = run(() -> swerveDrive.lockPose());
-//     cmd.setName("lockPoseCmd");
-//     return cmd;
-//   }
+  public Command lockPoseCmd() {
+    Command cmd = run(() -> swerveDrive.lockPose());
+    cmd.setName("lockPoseCmd");
+    return cmd;
+  }
 
-  
+  @Override
+  public Rotation2d getGyroRotation2d() {
+    return swerveDrive.getYaw(); // raw gyro，不經過 estimator
+  }
 
-//   @Override
-//   public void periodic() {
-//     var gyro = swerveDrive.getGyro().getIMU();
-//     boolean gyroIsConnected = false;
-//     if (gyro instanceof com.studica.frc.AHRS) {
-//       gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
-//     }
+  @Override
+  public void periodic() {
+    var gyro = swerveDrive.getGyro().getIMU();
+    boolean gyroIsConnected = false;
+    if (gyro instanceof com.studica.frc.AHRS) {
+      gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
+    }
 
-//     SmartDashboard.putNumber("gyroHeading", getGyroHeading());
-//     SmartDashboard.putBoolean("gyroIsConnected", gyroIsConnected);
+    SmartDashboard.putNumber("drive/gyroHeadingDeg", getGyroHeading());
+    SmartDashboard.putBoolean("drive/gyroConnected", gyroIsConnected);
 
-//     currentPosePublisher.set(getPose2d());
-//     SwerveDriveTelemetry.updateData();
-//   }
-// }
+    currentPosePublisher.set(getPose2d());
+    SwerveDriveTelemetry.updateData();
+  }
+
+@Override
+public Command sysIdQuasistaticFCmd() {
+	// TODO Auto-generated method stub
+	throw new UnsupportedOperationException("Unimplemented method 'sysIdQuasistaticFCmd'");
+}
+
+@Override
+public Command sysIdDynamicFCmd() {
+	// TODO Auto-generated method stub
+	throw new UnsupportedOperationException("Unimplemented method 'sysIdDynamicFCmd'");
+}
+
+@Override
+public Command sysIdQuasistaticRCmd() {
+	// TODO Auto-generated method stub
+	throw new UnsupportedOperationException("Unimplemented method 'sysIdQuasistaticRCmd'");
+}
+
+@Override
+public Command sysIdDynamicRCmd() {
+	// TODO Auto-generated method stub
+	throw new UnsupportedOperationException("Unimplemented method 'sysIdDynamicRCmd'");
+}
+}

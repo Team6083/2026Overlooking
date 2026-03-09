@@ -6,6 +6,7 @@ package frc.robot.subsystems.swervedrive;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +17,7 @@ public interface SwerveDrive extends Subsystem {
   void addVisionMeasurement(Pose2d visionRobotPose, double timestamp);
 
   void addVisionMeasurement(Pose2d visionRobotPose, double timestamp, Vector<N3> visionStdDevs);
-  
+
   void drive(double translationX, double translationY, double angularRotationX, boolean fieldRelative);
 
   void drive(ChassisSpeeds speeds);
@@ -38,4 +39,6 @@ public interface SwerveDrive extends Subsystem {
   Command sysIdQuasistaticRCmd();
 
   Command sysIdDynamicRCmd();
+
+  Rotation2d getGyroRotation2d();
 }
