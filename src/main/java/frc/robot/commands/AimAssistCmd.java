@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -23,10 +24,13 @@ public class AimAssistCmd extends SwerveControlCmd {
     super(swerveDrive, mainController, shouldSprint);
     this.yawPID = new PIDController(0.04, 0, 0);
     yawPID.setTolerance(1.0);
+    yawPID.enableContinuousInput(-180, 180);
+    
   }
 
   @Override
   public void initialize() {
+    super.initialize();
     yawPID.reset();
   }
 
@@ -47,16 +51,12 @@ public class AimAssistCmd extends SwerveControlCmd {
     if (error < -180) {
       error += 360;
     }
-    error = MathUtil.applyDeadband(error, 1.5);
-
     double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
     double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
-
-    return MathUtil.clamp(yawPID.calculate(error, compensation), -1.5, 1.5);
-  }
-
-  @Override
-  public void end(boolean interrupted) {
+    double output = MathUtil.clamp(-(yawPID.calculate(error, compensation)), -1.5, 1.5);
+    SmartDashboard.putNumber("AimAssist/output", output);
+    SmartDashboard.putData("AimAssist/yawPID", yawPID);
+    return isAlignedToHub() ? 0 : output;
   }
 
   public boolean isAlignedToHub() {
