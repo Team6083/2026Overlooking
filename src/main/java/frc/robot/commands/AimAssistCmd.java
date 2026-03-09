@@ -23,9 +23,9 @@ public class AimAssistCmd extends SwerveControlCmd {
       Supplier<Boolean> shouldSprint) {
     super(swerveDrive, mainController, shouldSprint);
     this.yawPID = new PIDController(0.04, 0, 0);
-    yawPID.setTolerance(1.0);
-    yawPID.enableContinuousInput(-180, 180);
-    
+    this.yawPID.setTolerance(1.0);
+    this.yawPID.enableContinuousInput(-180, 180);
+    SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
   }
 
   @Override
@@ -54,9 +54,9 @@ public class AimAssistCmd extends SwerveControlCmd {
     double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
     double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
     double output = MathUtil.clamp(-(yawPID.calculate(error, compensation)), -1.5, 1.5);
-    SmartDashboard.putNumber("AimAssistCmd/output", output);
-    SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
-    return isAlignedToHub() ? 0 : output;
+    double actualOutput = isAlignedToHub() ? 0 : output;
+    SmartDashboard.putNumber("AimAssistCmd/output", actualOutput);
+    return actualOutput;
   }
 
   public boolean isAlignedToHub() {
