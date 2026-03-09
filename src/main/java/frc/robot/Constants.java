@@ -102,6 +102,8 @@ public class Constants {
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
     public static final double targetVelocity = 5700;
+    // Tunable ball launch speed (m/s)
+    public static final double ballSpeed = 2.0;
   }
 
   public static class TransportConstants {
@@ -128,5 +130,12 @@ public class Constants {
     public static final int servoMotorChannel = 4;
     public static final double upPosition = 0.25;
     public static final double downPosition = 1;
+  }
+  
+  public static class FieldConstants {
+    public static final double blueHubX = 4.6256; 
+    public static final double blueHubY = 4.0346; 
+    public static final double redHubX = 11.9155; 
+    public static final double redHubY = 4.0346;
   }
 }
