@@ -54,8 +54,8 @@ public class AimAssistCmd extends SwerveControlCmd {
     double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
     double compensation = Math.toDegrees(Math.atan2(driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
     double output = MathUtil.clamp(-(yawPID.calculate(error, compensation)), -1.5, 1.5);
-    SmartDashboard.putNumber("AimAssist/output", output);
-    SmartDashboard.putData("AimAssist/yawPID", yawPID);
+    SmartDashboard.putNumber("AimAssistCmd/output", output);
+    SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
     return isAlignedToHub() ? 0 : output;
   }
 
