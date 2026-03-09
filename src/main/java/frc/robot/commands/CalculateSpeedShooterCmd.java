@@ -15,17 +15,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CalculateSpeedShooterCmd extends Command {
   private final ShooterSubsystem shooterSubsystem;
-  private final frc.robot.subsystems.swervedrive.SwerveDrive swerveDrive;
+  private final SwerveDrive swerveDrive;
 
   private double targetVelocity;
 
   /** Creates a new CalculateSpeedShooterCmd. */
   public CalculateSpeedShooterCmd(ShooterSubsystem shooterSubsystem,
-      frc.robot.subsystems.swervedrive.SwerveDrive swerveDrive) {
+      SwerveDrive swerveDrive) {
     this.shooterSubsystem = shooterSubsystem;
     this.swerveDrive = swerveDrive;
     addRequirements(shooterSubsystem);
@@ -53,16 +54,16 @@ public class CalculateSpeedShooterCmd extends Command {
   }
 
   private double getHubPositionX() {
-    if (DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
       return FieldConstants.redHubX;
     }
     return FieldConstants.blueHubX;
   }
 
   private double getHubPositionY() {
-    if (DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
       return FieldConstants.redHubY;
     }
     return FieldConstants.blueHubY;

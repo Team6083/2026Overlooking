@@ -62,5 +62,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooterTargetVelocity", targetVelocity);
     SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
     SmartDashboard.putData("ShooterSubsystem", this);
+
   }
 }
