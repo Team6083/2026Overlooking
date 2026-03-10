@@ -45,7 +45,7 @@ public class CalculateSpeedShooterCmd extends Command {
     distance = Meters.of(Math.sqrt(Math.pow(distanceX.in(Meters), 2) + Math.pow(distanceY.in(Meters), 2)));
     targetVelocity = MathUtil.clamp(ShooterConstants.shooterDistanceMultiplier
         * Math.exp(ShooterConstants.shooterDistanceExponent * distance.in(Centimeters)),
-        0.0, ShooterConstants.maxShooterVelocity); // 1981.4e^0.00436x
+        0.0, ShooterConstants.maxShooterVelocity); // 2207.31e^0.0017x
 
     shooterSubsystem.shoot(targetVelocity);
 

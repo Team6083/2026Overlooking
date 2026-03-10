@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -27,7 +30,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
-import java.util.function.Supplier;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -115,8 +117,8 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
-    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+
   }
 
   public Command getAutonomousCommand() {

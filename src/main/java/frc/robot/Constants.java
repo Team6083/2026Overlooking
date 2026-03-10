@@ -75,8 +75,9 @@ public class Constants {
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.6;
-    public static final double reverseIntakeSpeed = -0.6;
+    public static final double intakeSpeed = 0.5;
+
+    public static final double reverseIntakeSpeed = -0.5;
 
     public static final double deployPivotSpeed = 0.8;
     public static final double retractPivotSpeed = -1;
@@ -96,28 +97,31 @@ public class Constants {
   public static final class ShooterConstants {
     public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
-    public static final double feedforwardKs = 0.1;
-    public static final double feedforwardKv = 0.002;
-    public static final double feedforwardKa = 0;
-    public static final int encoderChannelA = 0;
-    public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 5700;
-    public static final double maxShooterVelocity = 6000; 
+    public static final double targetVelocity = 3000;
+    public static final double maxShooterVelocity = 6000;
 
-    public static final double shooterDistanceMultiplier = 1981.4;
-    public static final double shooterDistanceExponent = 0.00436;
+    public static final double shooterDistanceMultiplier = 2207.31;
+    public static final double shooterDistanceExponent = 0.0017;
 
     // Tunable ball launch speed (m/s)
     public static final double ballSpeed = 2.0;
+
+    public static final double feedforwardKs = 0.01;
+    public static final double feedforwardKv = 0.00207;
+    public static final double feedforwardKa = 0;
+    public static final int encoderChannelA = 0;
+    public static final int encoderChannelB = 1;
   }
 
   public static class TransportConstants {
     public static final int transportMotorUpperID = 32;
     public static final int transportMotorLowerID = 36;
-    public static final double transportUpperMotorIn = 0.2;
-    public static final double transportLowerMotorIn = 0.2;
-    public static final double transportUpperMotorOut = -0.2;
-    public static final double transportLowerMotorOut = -0.2;
+    public static final double transportUpperMotorIn = 0.5;
+    public static final double transportLowerMotorIn = 0.5;
+
+    public static final double transportUpperMotorOut = -0.5;
+    public static final double transportLowerMotorOut = -0.5;
+
     public static final boolean transportUpperMotorInverted = true;
     public static final boolean transportLowerMotorInverted = true;
   }
@@ -130,11 +134,12 @@ public class Constants {
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
-  
+
   public static class FieldConstants {
-    public static final double blueHubX = 4.6256; 
-    public static final double blueHubY = 4.0346; 
-    public static final double redHubX = 11.9155; 
+    public static final double blueHubX = 4.6256;
+    public static final double blueHubY = 4.0346;
+    public static final double redHubX = 11.9155;
+
     public static final double redHubY = 4.0346;
   }
 }
