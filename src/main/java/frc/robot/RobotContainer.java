@@ -59,8 +59,6 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem();
     calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive);
 
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
-
     Auto.configureAutoBuilder(swerveDrive);
 
     registerCommand();

@@ -103,7 +103,7 @@ public class Constants {
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
     public static final double targetVelocity = 5700;
-    public static final double maxShooterVelocity = 6000; 
+    public static final double maxShooterVelocity = 6000;
 
     public static final double shooterDistanceMultiplier = 2207.31;
     public static final double shooterDistanceExponent = 0.0017;
@@ -131,11 +131,11 @@ public class Constants {
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
-  
+
   public static class FieldConstants {
-    public static final double blueHubX = 4.6256; 
-    public static final double blueHubY = 4.0346; 
-    public static final double redHubX = 11.9155; 
+    public static final double blueHubX = 4.6256;
+    public static final double blueHubY = 4.0346;
+    public static final double redHubX = 11.9155;
     public static final double redHubY = 4.0346;
   }
 }
