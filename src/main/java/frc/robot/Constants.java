@@ -75,9 +75,9 @@ public class Constants {
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.6;
+    public static final double intakeSpeed = 0.5;
 
-    public static final double reverseIntakeSpeed = -0.6;
+    public static final double reverseIntakeSpeed = -0.5;
 
     public static final double deployPivotSpeed = 0.7;
     public static final double reversePivotSpeed = -0.4;
@@ -105,15 +105,15 @@ public class Constants {
     public static final double targetVelocity = 5700;
     public static final double maxShooterVelocity = 6000; 
 
-    public static final double shooterDistanceMultiplier = 1981.4;
-    public static final double shooterDistanceExponent = 0.00436;
+    public static final double shooterDistanceMultiplier = 2207.31;
+    public static final double shooterDistanceExponent = 0.0017;
 
   }
 
   public static class TransportConstants {
     public static final int transportMotorID = 32;
-    public static final double transportMotorIn = 0.2;
-    public static final double transportMotorOut = 0.2;
+    public static final double transportMotorIn = 0.5;
+    public static final double transportMotorOut = 0.5;
   }
 
   public static class AutoConstants {
@@ -130,5 +130,5 @@ public class Constants {
     public static final double blueHubY = 4.0346;
     public static final double redHubX = 11.9155;
     public static final double redHubY = 4.0346;
-  }
+    }
 }
