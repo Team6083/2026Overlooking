@@ -2,6 +2,7 @@ package frc.robot.subsystems.swervedrive;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
@@ -129,6 +130,11 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     Command cmd = run(() -> swerveDrive.lockPose());
     cmd.setName("lockPoseCmd");
     return cmd;
+  }
+
+  @Override
+  public Rotation2d getGyroRotation2d() {
+    return swerveDrive.getYaw(); // raw gyro，不經過 estimator
   }
 
   @Override
