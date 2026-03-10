@@ -126,10 +126,10 @@ public class Constants {
     public static final double kdRotation = 0.5;
   }
 
-  public static class LimelightPivotConstants {
+  public static class DrsConstants {
     public static final int servoMotorChannel = 4;
-    public static final double upPosition = 0.25;
-    public static final double downPosition = 1;
+    public static final double upPosition = 1;
+    public static final double downPosition = 0.25;
   }
   
   public static class FieldConstants {

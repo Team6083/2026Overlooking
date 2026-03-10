@@ -8,40 +8,40 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LimelightPivotConstants;
+import frc.robot.Constants.DrsConstants;
 
 public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
-  private final Servo limelightPivot;
+  private final Servo drs;
 
   public DrsSubsystem() {
-    limelightPivot = new Servo(LimelightPivotConstants.servoMotorChannel);
+    drs = new Servo(DrsConstants.servoMotorChannel);
   }
 
-  public void downLimelightPivot() {
-    limelightPivot.setPosition(LimelightPivotConstants.downPosition);
+  public void downDrs() {
+    drs.setPosition(DrsConstants.downPosition);
   }
 
-  public void upLimelightPivot() {
-    limelightPivot.setPosition(LimelightPivotConstants.upPosition);
+  public void upDrs() {
+    drs.setPosition(DrsConstants.upPosition);
   }
 
-  public Command downLimelightPivotCmd() {
-    Command cmd = runOnce(this::downLimelightPivot);
-    cmd.setName("downLimelightPivotCmd");
+  public Command downDrsCmd() {
+    Command cmd = runOnce(this::downDrs);
+    cmd.setName("downDrsCmd");
     return cmd;
   }
 
-  public Command upLimelightPivotCmd() {
-    Command cmd = runOnce(this::upLimelightPivot);
-    cmd.setName("upLimelightPivotCmd");
+  public Command upDrsCmd() {
+    Command cmd = runOnce(this::upDrs);
+    cmd.setName("upDrsCmd");
     return cmd;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("servoMotorAngle", limelightPivot.getAngle());
-    SmartDashboard.putNumber("servoMotorPosition", limelightPivot.get());
+    SmartDashboard.putNumber("servoMotorAngle", drs.getAngle());
+    SmartDashboard.putNumber("servoMotorPosition", drs.get());
   }
 }

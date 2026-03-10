@@ -29,9 +29,9 @@ public class AutoDrsCmd extends Command {
   @Override
   public void execute() {
     if (isUnderRedLeftTrench() || isUnderRedRightTrench() || isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
-      drsSubsystem.downLimelightPivot();
+      drsSubsystem.downDrs();
     } else {
-      drsSubsystem.upLimelightPivot();
+      drsSubsystem.upDrs();
     }
   }
 
