@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
-import frc.robot.commands.AutoLimelightPivotCmd;
+import frc.robot.commands.AutoDrsCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -56,7 +56,7 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.YAGSL,
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
-    
+
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
@@ -105,8 +105,7 @@ public class RobotContainer {
     mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
     controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
-        .alongWith(new AutoLimelightPivotCmd(swerveDrive)));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
@@ -124,6 +123,8 @@ public class RobotContainer {
 
     mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
     mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
+
+    limelightPivotSubsystem.setDefaultCommand(new AutoDrsCmd(swerveDrive, limelightPivotSubsystem));
   }
 
   public Command getAutonomousCommand() {
