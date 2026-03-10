@@ -75,7 +75,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void retract() {
-    runSyncPivot(IntakeConstants.reversePivotSpeed);
+    runSyncPivot(IntakeConstants.retractPivotSpeed);
   }
 
   private void runSyncPivot(double baseSpeed) {
@@ -88,8 +88,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // manual
   public void manualRetractIntake() {
-    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
-    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.reversePivotSpeed);
+    pivotLeft.set(ControlMode.PercentOutput, IntakeConstants.retractPivotSpeed);
+    pivotRight.set(ControlMode.PercentOutput, IntakeConstants.retractPivotSpeed);
   }
 
   public void manualDeployIntake() {
