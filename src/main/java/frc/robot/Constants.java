@@ -61,10 +61,6 @@ public class Constants {
 
     public static final int climbEncoderIdA = 4;
     public static final int climbEncoderIdB = 5;
-
-    public static final double climberKp = 0.1;
-    public static final double climberKi = 0.0;
-    public static final double climberKd = 0.0;
   }
 
   public static final class SwerveControlConstants {
