@@ -22,6 +22,7 @@ import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
@@ -37,6 +38,7 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final DrsSubsystem limelightPivotSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
@@ -51,10 +53,11 @@ public class RobotContainer {
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
-
+    
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    limelightPivotSubsystem = new DrsSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -107,14 +110,15 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.a().whileTrue(transportSubsystem.transportInCmd());
+    mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
-    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+
+    mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
+    mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
   }
 
   public Command getAutonomousCommand() {
