@@ -38,10 +38,10 @@ public class AutoLimelightPivotCmd extends Command {
 
   public Boolean isUnderBlueLeftTrench() {
 
-    double TrenchMinX = 4;
-    double TrenchMaxX = 5.22;
-    double TrenchMinY = 6.8;
-    double TrenchMaxY = 8.08;
+    double TrenchMinX = 3.9;
+    double TrenchMaxX = 5.4;
+    double TrenchMinY = 6.5;
+    double TrenchMaxY = 8.0;
 
     if (swerveDrive.getPose2d().getX() > TrenchMinX && swerveDrive.getPose2d().getX() < TrenchMaxX
         && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
@@ -52,10 +52,10 @@ public class AutoLimelightPivotCmd extends Command {
 
   public Boolean isUnderBlueRightTrench() {
 
-    double TrenchMinX = 4;
-    double TrenchMaxX = 5.22;
+    double TrenchMinX = 3.9;
+    double TrenchMaxX = 5.4;
     double TrenchMinY = 0;
-    double TrenchMaxY = 1.25;
+    double TrenchMaxY = 1.5;
 
     if (swerveDrive.getPose2d().getX() > TrenchMinX && swerveDrive.getPose2d().getX() < TrenchMaxX
         && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
@@ -66,10 +66,10 @@ public class AutoLimelightPivotCmd extends Command {
 
   public Boolean isUnderRedLeftTrench() {
 
-    double TrenchMinX = 11.362;
-    double TrenchMaxX = 12.553;
+    double TrenchMinX = 11.2;
+    double TrenchMaxX = 12.7;
     double TrenchMinY = 0;
-    double TrenchMaxY = 1.25;
+    double TrenchMaxY = 1.5;
 
     if (swerveDrive.getPose2d().getX() > TrenchMinX && swerveDrive.getPose2d().getX() < TrenchMaxX
         && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
@@ -80,10 +80,10 @@ public class AutoLimelightPivotCmd extends Command {
 
   public Boolean isUnderRedRightTrench() {
 
-    double TrenchMinX = 11.362;
-    double TrenchMaxX = 12.553;
-    double TrenchMinY = 6.8;
-    double TrenchMaxY = 8.08;
+    double TrenchMinX = 11.4;
+    double TrenchMaxX = 12.7;
+    double TrenchMinY = 6.5;
+    double TrenchMaxY = 8;
 
     if (swerveDrive.getPose2d().getX() > TrenchMinX && swerveDrive.getPose2d().getX() < TrenchMaxX
         && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
