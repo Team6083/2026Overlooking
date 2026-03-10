@@ -38,7 +38,7 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
-  private final DrsSubsystem limelightPivotSubsystem;
+  private final DrsSubsystem drsSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
@@ -57,7 +57,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    limelightPivotSubsystem = new DrsSubsystem();
+    drsSubsystem = new DrsSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -117,8 +117,8 @@ public class RobotContainer {
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
-    mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
-    mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
+    mainController.a().onTrue(drsSubsystem.downDrsCmd());
+    mainController.y().onTrue(drsSubsystem.upDrsCmd());
   }
 
   public Command getAutonomousCommand() {
