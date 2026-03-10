@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -14,18 +17,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AimAssistCmd;
 import frc.robot.commands.AutoLimelightPivotCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
+import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
-import java.util.function.Supplier;
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -36,11 +41,13 @@ public class RobotContainer {
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final DrsSubsystem limelightPivotSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -48,11 +55,12 @@ public class RobotContainer {
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.YAGSL,
         SwerveDriveFactory.RobotVariant.COMPETITION);
-
+    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    limelightPivotSubsystem = new DrsSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -94,7 +102,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // position tracking
-    positioningCmd.schedule();
+    mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
         .alongWith(new AutoLimelightPivotCmd(swerveDrive)));
@@ -106,14 +115,15 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.a().whileTrue(transportSubsystem.transportInCmd());
+    mainController.b().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
-    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+
+    mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
+    mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
   }
 
   public Command getAutonomousCommand() {
