@@ -116,9 +116,6 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-
-    mainController.a().onTrue(drsSubsystem.downDrsCmd());
-    mainController.y().onTrue(drsSubsystem.upDrsCmd());
   }
 
   public Command getAutonomousCommand() {
