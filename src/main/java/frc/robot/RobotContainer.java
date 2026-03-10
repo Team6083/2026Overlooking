@@ -21,6 +21,7 @@ import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final TagTracking backTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
+  private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -54,6 +56,8 @@ public class RobotContainer {
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
     
+
+    climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
@@ -119,6 +123,9 @@ public class RobotContainer {
 
     mainController.a().onTrue(limelightPivotSubsystem.downLimelightPivotCmd());
     mainController.y().onTrue(limelightPivotSubsystem.upLimelightPivotCmd());
+    // climber
+    mainController.povLeft().whileTrue(climberSubsystem.climbUpCmd());
+    mainController.povRight().whileTrue(climberSubsystem.climbDownCmd());
   }
 
   public Command getAutonomousCommand() {
