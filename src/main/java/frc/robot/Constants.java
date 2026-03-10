@@ -98,7 +98,7 @@ public class Constants {
     public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
     public static final double targetVelocity = 3000;
-    public static final double maxShooterVelocity = 6000;
+    public static final double maxShooterVelocity = 5700;
 
     public static final double shooterDistanceMultiplier = 2207.31;
     public static final double shooterDistanceExponent = 0.0017;
