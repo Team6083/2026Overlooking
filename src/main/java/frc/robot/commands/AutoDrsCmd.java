@@ -20,11 +20,6 @@ public class AutoDrsCmd extends Command {
     addRequirements(drsSubsystem);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -88,17 +83,6 @@ public class AutoDrsCmd extends Command {
         && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
       return true;
     }
-    return false;
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
     return false;
   }
 }
