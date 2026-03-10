@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 
@@ -15,11 +16,12 @@ public class ShooterComboCmd extends ParallelCommandGroup {
   /** Creates a new shootercomboCmd. */
   public ShooterComboCmd(
       ShooterSubsystem shooterSubsystem,
-      TransportSubsystem transportSubsystem) {
+      TransportSubsystem transportSubsystem,
+      FeederSubsystem feederSubsystem) {
     addCommands(
         shooterSubsystem.shootCmd(),
-        Commands.idle().until(shooterSubsystem::isShooterAtSpeed).andThen(transportSubsystem.transportInCmd())
+        Commands.idle().until(shooterSubsystem::isShooterAtSpeed).andThen(transportSubsystem.transportInCmd().alongWith(feederSubsystem.feedInCmd()))
     );
-    addRequirements(shooterSubsystem, transportSubsystem);
+    addRequirements(shooterSubsystem, transportSubsystem, feederSubsystem);
   }
 }

@@ -4,20 +4,43 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.TransportConstants;
+import frc.robot.Constants.FeederConstants;
 
 public class FeederSubsystem extends SubsystemBase {
   /** Creates a new FeederSubsystem. */
-  private final VictorSPX transportUpperMotor = new VictorSPX(TransportConstants.transportMotorUpperID);
+  private final VictorSPX feederMotor = new VictorSPX(FeederConstants.feederMotorID);
 
   public FeederSubsystem() {
+    feederMotor.setInverted(FeederConstants.feederMotorInverted);
   }
+
+  public void feedIn() {
+    feederMotor.set(ControlMode.PercentOutput, FeederConstants.feederMotorIn);
+  }
+
+  public void feedOut() {
+    feederMotor.set(ControlMode.PercentOutput, FeederConstants.feederMotorOut);
+  }
+
+  public void feedStop() {
+    feederMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public Command feedInCmd() {
+    Command cmd = runEnd(this::feedIn, this::feedStop);
+    cmd.setName("feedInCmd");
+    return cmd;
+  } 
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Feeder", feederMotor.getMotorOutputPercent());
     // This method will be called once per scheduler run
   }
 }
