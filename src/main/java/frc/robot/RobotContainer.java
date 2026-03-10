@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -31,6 +29,8 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
+import java.util.function.Supplier;
+
 
 public class RobotContainer {
   private final TagTracking shooterTracker;

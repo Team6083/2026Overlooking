@@ -31,7 +31,6 @@ public class AutoDrsCmd extends Command {
   }
 
   public Boolean isUnderBlueLeftTrench() {
-
     double trenchMinX = 3.9;
     double trenchMaxX = 5.4;
     double trenchMinY = 6.5;
@@ -45,7 +44,6 @@ public class AutoDrsCmd extends Command {
   }
 
   public Boolean isUnderBlueRightTrench() {
-
     double trenchMinX = 3.9;
     double trenchMaxX = 5.4;
     double trenchMinY = 0;
@@ -59,21 +57,19 @@ public class AutoDrsCmd extends Command {
   }
 
   public Boolean isUnderRedLeftTrench() {
+    double trenchMinX = 11.2;
+    double trenchMaxX = 12.7;
+    double trenchMinY = 0;
+    double trenchMaxY = 1.5;
 
-    double TrenchMinX = 11.2;
-    double TrenchMaxX = 12.7;
-    double TrenchMinY = 0;
-    double TrenchMaxY = 1.5;
-
-    if (swerveDrive.getPose2d().getX() > TrenchMinX && swerveDrive.getPose2d().getX() < TrenchMaxX
-        && swerveDrive.getPose2d().getY() > TrenchMinY && swerveDrive.getPose2d().getY() < TrenchMaxY) {
+    if (swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY) {
       return true;
     }
     return false;
   }
 
   public Boolean isUnderRedRightTrench() {
-
     double trenchMinX = 11.4;
     double trenchMaxX = 12.7;
     double trenchMinY = 6.5;
