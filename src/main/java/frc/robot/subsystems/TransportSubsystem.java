@@ -26,6 +26,22 @@ public class TransportSubsystem extends SubsystemBase {
     transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
   }
 
+  public void transportLoIn() {
+    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
+  }
+
+  public void transportUpIn() {
+    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportUpperMotorIn);
+  }
+
+  public void transportLoOut() {
+    transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
+  }
+
+  public void transportUpOut() {
+    transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportUpperMotorIn);
+  }
+
   private void transportOut() {
     transportUpperMotor.set(ControlMode.PercentOutput, TransportConstants.transportUpperMotorOut);
     transportLowerMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorOut);
@@ -34,6 +50,13 @@ public class TransportSubsystem extends SubsystemBase {
   private void stopTransport() {
     transportUpperMotor.set(ControlMode.PercentOutput, 0);
     transportLowerMotor.set(ControlMode.PercentOutput, 0);
+  }
+    public void stopTransportLo() {
+    transportLowerMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void TransportUpIn() {
+    transportUpperMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public Command transportInCmd() {
