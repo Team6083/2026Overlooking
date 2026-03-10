@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightPivotConstants;
 
-public class LimelightPivotSubsystem extends SubsystemBase {
+public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo limelightPivot;
 
-  public LimelightPivotSubsystem() {
+  public DrsSubsystem() {
     limelightPivot = new Servo(LimelightPivotConstants.servoMotorChannel);
   }
 
