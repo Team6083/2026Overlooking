@@ -7,7 +7,7 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "leftEncoder",
+            "title": "intakeLeftEncoder",
             "x": 0.0,
             "y": 0.0,
             "width": 256.0,
@@ -65,7 +65,7 @@
             ]
           },
           {
-            "title": "rightEncoder",
+            "title": "intakeRightEncoder",
             "x": 256.0,
             "y": 0.0,
             "width": 256.0,
@@ -217,6 +217,47 @@
                 "type": "Text Display",
                 "properties": {
                   "topic": "/SmartDashboard/drive/gyroHeadingDeg",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "servo",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "servoMotorPosition",
+                "x": 1152.0,
+                "y": 128.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/servoMotorPosition",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "servoMotorAngle",
+                "x": 1024.0,
+                "y": 128.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/servoMotorAngle",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
