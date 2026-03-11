@@ -57,10 +57,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
-    SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
-    SmartDashboard.putNumber("shooterTargetVelocity", targetVelocity);
-    SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
-    SmartDashboard.putData("ShooterSubsystem", this);
+    SmartDashboard.putBoolean("shooter/atSpeed", isShooterAtSpeed());
+    SmartDashboard.putNumber("shooter/currentRPM", getShooterVelocity());
+    SmartDashboard.putNumber("shooter/targetRPM", targetVelocity);
+    SmartDashboard.putNumber("shooter/shooterVoltage", shooterMotor.getAppliedOutput() * shooterMotor.getBusVoltage());
+    SmartDashboard.putData("shooter/subsystem", this);
   }
 }
