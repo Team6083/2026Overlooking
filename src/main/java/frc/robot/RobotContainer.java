@@ -98,7 +98,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-
     // position tracking
     mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
     controlPanel.button(1).whileTrue(positioningCmd);
