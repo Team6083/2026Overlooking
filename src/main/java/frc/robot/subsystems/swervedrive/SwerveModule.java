@@ -148,10 +148,19 @@ public class SwerveModule extends SubsystemBase {
   }
 
   private void setFaultAlerts() {
+    var driveFaults = driveMotor.getFaults().toString();
+    var turningFaults = turningMotor.getFaults().toString();
+
+    var driveStickyFaults = driveMotor.getStickyFaults().toString();
+    var turningStickyFaults = turningMotor.getStickyFaults().toString();
+
     activeFaultAlert.set(driveMotor.hasActiveFault() || turningMotor.hasActiveFault());
-    activeFaultAlert.setText(driveMotor.getFaults().toString());
+    activeFaultAlert.setText(this.getName() + "Drive" + driveFaults +
+        " Turning " + turningFaults);
+
     stickyFaultAlert.set(driveMotor.hasStickyFault() || turningMotor.hasStickyFault());
-    stickyFaultAlert.setText(driveMotor.getStickyFaults().toString());
+    stickyFaultAlert.setText(this.getName() + "Drive" + driveStickyFaults +
+        " Turning " + turningStickyFaults);
   }
 
   @Override
