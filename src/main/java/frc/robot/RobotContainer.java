@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
+import frc.robot.commands.AutoAlignCmd;
 import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final TagTracking backTracker;
   private final SwerveDrive swerveDrive;
   private final CalculateSpeedShooterCmd calculateSpeedShooterCmd;
+  private final AimAssistCmd aimAssistCmd;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
@@ -60,6 +62,8 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem();
 
     calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive);
+
+    aimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint);
 
     registerCommand();
 
@@ -107,7 +111,7 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    mainController.rightBumper().whileTrue(calculateSpeedShooterCmd);
+    mainController.rightBumper().whileTrue(Commands.parallel(calculateSpeedShooterCmd, aimAssistCmd));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     mainController.a().whileTrue(transportSubsystem.transportInCmd());
