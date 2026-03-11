@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -14,8 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AimAssistCmd;
 import frc.robot.commands.AutoAlignCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
@@ -40,17 +44,20 @@ public class RobotContainer {
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
+  private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
+
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
     backTracker = new TagTracking("limelight-back");
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
+    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -65,13 +72,13 @@ public class RobotContainer {
   }
 
   public void updateVision() {
-    TagTracking[] trackers = {shooterTracker, backTracker};
+    TagTracking[] trackers = { shooterTracker, backTracker };
     Pose2d[] visionPoses = new Pose2d[trackers.length];
-    
+
     for (int i = 0; i < trackers.length; i++) {
       if (trackers[i].hasTarget()) {
-        double[] poseArray = trackers[i].getBotPoseArray();
-        if (poseArray.length >= 6) {
+        double[] poseArray = trackers[i].getBotPoseArrayMegaTag2();
+        if (poseArray.length >= 11) {
           visionPoses[i] = new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
         } else {
           visionPoses[i] = new Pose2d();
@@ -91,32 +98,39 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    positioningCmd.schedule();
+    mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController));
-    mainController.start().onTrue(swerveDrive.zeroGyroCommand());
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
+    mainController.start().onTrue(Commands.runOnce(() -> {
+      swerveDrive.zeroGyro();
+      swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
+    }));
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    mainController.a().whileTrue(transportSubsystem.transportInCmd());
     // intake
-    mainController.y().onTrue(intakeSubsystem.deployIntakeCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.manualDeployIntakeCmd());
-    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
 
-    mainController.rightBumper().whileTrue(
+    Command autoAlignAndShoot = 
         Commands.either(
             new AutoAlignCmd(shooterTracker, swerveDrive)
                 .deadlineWith(shooterSubsystem.shootCmd())
                 .andThen(new ShooterComboCmd(shooterSubsystem, transportSubsystem)),
             Commands.none(),
-            () -> shooterTracker.isHubTag()));
+            () -> shooterTracker.isHubTag());
+
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
 }

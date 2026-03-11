@@ -4,6 +4,7 @@
 
 package frc.robot.lib;
 
+import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -11,6 +12,7 @@ public class TagTracking {
   private final NetworkTable limelightTable;
   private final String tableName;
   private boolean disabled = false;
+  private final DoubleArrayPublisher orientationPub;
 
   public TagTracking() {
     this("limelight");
@@ -19,6 +21,18 @@ public class TagTracking {
   public TagTracking(String name) {
     this.tableName = name;
     this.limelightTable = NetworkTableInstance.getDefault().getTable(name);
+    this.orientationPub = limelightTable.getDoubleArrayTopic("robot_orientation_set").publish();
+  }
+
+  public void setRobotOrientation(double yaw, double yawRate, 
+      double pitch, double pitchRate, double roll, double rollRate) {
+    double[] orientation = new double[]{yaw, yawRate, pitch, pitchRate, roll, rollRate};
+    orientationPub.set(orientation);
+  }
+  
+  public double[] getBotPoseArrayMegaTag2() {
+    return limelightTable.getEntry("botpose_orb_wpiblue").getDoubleArray(new double[11]);
+
   }
 
   public double getTv() {
@@ -54,7 +68,7 @@ public class TagTracking {
   }
 
   public double get3dYaw() {
-    return hasTarget() ? getTargetPoseRobotSpace()[4] : 0;
+    return hasTarget() ? getTargetPoseRobotSpace()[5] : 0;
   }
 
   public boolean isHubTag() {
@@ -62,7 +76,7 @@ public class TagTracking {
       return false;
     }
     int id = (int) getTid();
-    return (id >= 2 && id <= 5) || (id >= 8 && id <= 11) 
+    return (id >= 2 && id <= 5) || (id >= 9 && id <= 11) 
             || (id >= 18 && id <= 21) || (id >= 24 && id <= 27);
            
   }
