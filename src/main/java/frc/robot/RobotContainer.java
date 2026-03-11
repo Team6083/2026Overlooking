@@ -14,11 +14,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AimAssistCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DrsSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
@@ -31,15 +36,19 @@ public class RobotContainer {
   private final TagTracking backTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
+  private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final FeederSubsystem feederSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final DrsSubsystem drsSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -47,11 +56,14 @@ public class RobotContainer {
     swerveDrive = SwerveDriveFactory.createSwerveDrive(
         SwerveDriveFactory.SwerveImplementation.WPILIB,
         SwerveDriveFactory.RobotVariant.COMPETITION);
+    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
+    climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
+    feederSubsystem = new FeederSubsystem();
+    drsSubsystem = new DrsSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -87,12 +99,15 @@ public class RobotContainer {
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
-    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem, transportSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
+    NamedCommands.registerCommand("shoot",
+        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem).withTimeout(4));
   }
 
   private void configureBindings() {
     // position tracking
-    positioningCmd.schedule();
+    mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
@@ -100,14 +115,18 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
+    mainController.rightBumper().whileTrue(new ShooterComboCmd(
+        shooterSubsystem, transportSubsystem, feederSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.a().whileTrue(transportSubsystem.transportInCmd());
+    mainController.a().whileTrue(transportSubsystem.transportInCmd()
+        .alongWith(feederSubsystem.feedInCmd()));
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
-    mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
+    mainController.rightTrigger().whileTrue(
+        intakeSubsystem.intakeCmd()
+            .alongWith(transportSubsystem.transportInCmd()));
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
     mainController.b().whileTrue(transportSubsystem.transportInCmd());
 
