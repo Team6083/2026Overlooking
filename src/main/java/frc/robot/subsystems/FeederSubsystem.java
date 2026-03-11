@@ -40,7 +40,7 @@ public class FeederSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("feeder/motorOutputPercent", feederMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("feeder/feederVoltage", feederMotor.getMotorOutputVoltage());
     // This method will be called once per scheduler run
   }
 }
