@@ -125,6 +125,12 @@ public class Constants {
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
   }
+
+  public static class DrsConstants {
+    public static final int servoMotorChannel = 4;
+    public static final double upPosition = 1;
+    public static final double downPosition = 0.25;
+  }
   
   public static class FieldConstants {
     public static final double blueHubX = 4.6256; 
