@@ -20,15 +20,11 @@ public class TransportSubsystem extends SubsystemBase {
   }
 
   public void transportIn() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
-  }
-
-  public void transportLoIn() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorIn);
+    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
   }
 
   private void transportOut() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportLowerMotorOut);
+    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorOut);
   }
 
   private void stopTransport() {
