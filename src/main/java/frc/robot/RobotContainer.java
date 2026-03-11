@@ -128,8 +128,8 @@ public class RobotContainer {
         intakeSubsystem.intakeCmd()
             .alongWith(transportSubsystem.transportInCmd()));
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
-
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
