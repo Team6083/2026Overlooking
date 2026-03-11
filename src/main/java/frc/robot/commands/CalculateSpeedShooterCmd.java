@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,22 +36,15 @@ public class CalculateSpeedShooterCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Distance distanceX;
-    Distance distanceY;
-    Distance distance;
+    Distance dis = Meters.of(swerveDrive.getPose2d().getTranslation().getDistance(getHubPosition()));
 
-    distanceX = Meters.of(swerveDrive.getPose2d().getX() - getHubPositionX());
-    distanceY = Meters.of(swerveDrive.getPose2d().getY() - getHubPositionY());
-
-    distance = Meters.of(Math.sqrt(Math.pow(distanceX.in(Meters), 2) + Math.pow(distanceY.in(Meters), 2)));
     targetVelocity = MathUtil.clamp(ShooterConstants.shooterDistanceMultiplier
-        * Math.exp(ShooterConstants.shooterDistanceExponent * distance.in(Centimeters)),
+        * Math.exp(ShooterConstants.shooterDistanceExponent * dis.in(Centimeters)),
         0.0, ShooterConstants.maxShooterVelocity); // 2207.31e^0.0017x
 
     shooterSubsystem.shoot(targetVelocity);
 
-    SmartDashboard.putNumber("shooterCalculatedVelocity", targetVelocity);
-    SmartDashboard.putNumber("shooterDistance", distance.in(Centimeters));
+    SmartDashboard.putNumber("shooterDistance", dis.in(Centimeters));
   }
 
   private double getHubPositionX() {
@@ -67,6 +61,10 @@ public class CalculateSpeedShooterCmd extends Command {
       return FieldConstants.redHubY;
     }
     return FieldConstants.blueHubY;
+  }
+
+  private Translation2d getHubPosition() {
+    return new Translation2d(getHubPositionX(), getHubPositionY());
   }
 
   private double getTargetVelocity() {
