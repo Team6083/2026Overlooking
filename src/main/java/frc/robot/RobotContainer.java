@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -30,7 +29,6 @@ import frc.robot.subsystems.TransportSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveDriveFactory;
 import java.util.function.Supplier;
-
 
 public class RobotContainer {
   private final TagTracking shooterTracker;
@@ -114,17 +112,14 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
+    mainController.a().whileTrue(transportSubsystem.transportInCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-
-    drsSubsystem.setDefaultCommand(new AutoDrsCmd(swerveDrive, drsSubsystem));
-
-    mainController.a().onTrue(drsSubsystem.downDrsCmd());
-    mainController.y().onTrue(drsSubsystem.upDrsCmd());
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
   }
 
   public Command getAutonomousCommand() {
