@@ -21,7 +21,5 @@ public class ShooterComboCmd extends ParallelCommandGroup {
         shooterSubsystem.shootCmd(),
         Commands.idle().until(shooterSubsystem::isShooterAtSpeed)
             .andThen(transportSubsystem.transportInCmd().alongWith(feederSubsystem.feedInCmd())));
-
-    addRequirements(shooterSubsystem, transportSubsystem, feederSubsystem);
   }
 }
