@@ -106,7 +106,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    mainController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    controlPanel.button(2).whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
     controlPanel.button(1).whileTrue(positioningCmd);
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
@@ -119,8 +119,8 @@ public class RobotContainer {
         shooterSubsystem, transportSubsystem, feederSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
-    mainController.a().whileTrue(transportSubsystem.transportInCmd()
-        .alongWith(feederSubsystem.feedInCmd()));
+    // mainController.a().whileTrue(feederSubsystem.feedInCmd());
+    mainController.a().whileTrue(drsSubsystem.upDrsCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
@@ -128,8 +128,10 @@ public class RobotContainer {
         intakeSubsystem.intakeCmd()
             .alongWith(transportSubsystem.transportInCmd()));
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
-    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    // mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    // mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    mainController.b().whileTrue(climberSubsystem.climbUpCmd());
+    mainController.y().whileTrue(climberSubsystem.climbDownCmd());
   }
 
   public Command getAutonomousCommand() {
