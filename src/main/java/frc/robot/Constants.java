@@ -52,6 +52,17 @@ public class Constants {
     public static final Distance kWheelRadius = Inches.of(2);
   }
 
+  public static final class ClimberConstants {
+    public static final int climbMotorId = 40;
+    public static final boolean climbMotorInverted = true;
+
+    public static final double climbUpSpeed = 0.4;
+    public static final double climbDownSpeed = -0.4;
+
+    public static final int climbEncoderIdA = 4;
+    public static final int climbEncoderIdB = 5;
+  }
+
   public static final class SwerveControlConstants {
     public static final double kFastMagnification = 0.6;
     public static final double kSlowMagnification = 0.3;
