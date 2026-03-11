@@ -67,10 +67,6 @@ public class CalculateSpeedShooterCmd extends Command {
     return new Translation2d(getHubPositionX(), getHubPositionY());
   }
 
-  private double getTargetVelocity() {
-    return this.targetVelocity;
-  }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
