@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
-import frc.robot.commands.AutoDrsCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -45,6 +44,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
+  private Supplier<Boolean> shouldAutoDrs;
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
 
   public RobotContainer() {
@@ -58,7 +58,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    drsSubsystem = new DrsSubsystem();
+    drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
 
     Auto.configureAutoBuilder(swerveDrive);
 
