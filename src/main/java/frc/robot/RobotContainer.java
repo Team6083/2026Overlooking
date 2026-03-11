@@ -22,6 +22,7 @@ import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
@@ -39,6 +40,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
   private final SendableChooser<Command> autoChooser;
+  private final DrsSubsystem drsSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
@@ -58,6 +60,7 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
+    drsSubsystem = new DrsSubsystem();
 
     Auto.configureAutoBuilder(swerveDrive);
 
@@ -93,8 +96,9 @@ public class RobotContainer {
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
-    NamedCommands.registerCommand("shoot", new ShooterComboCmd(shooterSubsystem,
-        transportSubsystem, feederSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
+    NamedCommands.registerCommand("shoot",
+        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem).withTimeout(4));
   }
 
   private void configureBindings() {
