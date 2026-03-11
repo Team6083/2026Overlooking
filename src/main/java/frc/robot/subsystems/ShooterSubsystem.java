@@ -4,10 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,13 +16,12 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   private final SparkMax shooterMotor = new SparkMax(ShooterConstants.shooterMotorID, MotorType.kBrushless);
-  private final Encoder shooterEncoder = new Encoder(ShooterConstants.encoderChannelA,
-      ShooterConstants.encoderChannelB);
+  private final RelativeEncoder shooterEncoder;
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
       ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
   public ShooterSubsystem() {
-    shooterEncoder.setDistancePerPulse((double) 1 / 2048);
+    shooterEncoder = shooterMotor.getEncoder();
   }
 
   private void setShooterVoltage(double voltage) {
@@ -40,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getShooterVelocity() {
-    return shooterEncoder.getRate() * 60;
+    return shooterEncoder.getVelocity();
   }
 
   public boolean isShooterAtSpeed() {
@@ -55,9 +54,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("isShooterAtSpeed", isShooterAtSpeed());
-    SmartDashboard.putNumber("shooterVelocity", getShooterVelocity());
-    SmartDashboard.putNumber("shooterMotorVoltage", shooterMotor.get() * shooterMotor.getBusVoltage());
-    SmartDashboard.putData("ShooterSubsystem", this);
+    SmartDashboard.putBoolean("shooter/shooterAtSpeed", isShooterAtSpeed());
+    SmartDashboard.putNumber("shooter/shooterRPM", getShooterVelocity());
+    SmartDashboard.putNumber("shooter/shooterVoltage", shooterMotor.getAppliedOutput() * shooterMotor.getBusVoltage());
+    SmartDashboard.putData("shooter/subsystem", this);
   }
 }

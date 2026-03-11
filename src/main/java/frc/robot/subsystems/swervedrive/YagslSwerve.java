@@ -2,6 +2,7 @@ package frc.robot.subsystems.swervedrive;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
@@ -132,6 +133,11 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
+  public Rotation2d getGyroRotation2d() {
+    return swerveDrive.getYaw(); // raw gyro，不經過 estimator
+  }
+
+  @Override
   public void periodic() {
     var gyro = swerveDrive.getGyro().getIMU();
     boolean gyroIsConnected = false;
@@ -139,8 +145,8 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
       gyroIsConnected = ((com.studica.frc.AHRS) gyro).isConnected();
     }
 
-    SmartDashboard.putNumber("gyroHeading", getGyroHeading());
-    SmartDashboard.putBoolean("gyroIsConnected", gyroIsConnected);
+    SmartDashboard.putNumber("drive/gyroHeadingDeg", getGyroHeading());
+    SmartDashboard.putBoolean("drive/gyroConnected", gyroIsConnected);
 
     currentPosePublisher.set(getPose2d());
     SwerveDriveTelemetry.updateData();

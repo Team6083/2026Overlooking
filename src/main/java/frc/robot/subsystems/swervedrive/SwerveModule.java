@@ -44,7 +44,7 @@ public class SwerveModule extends SubsystemBase {
   public SwerveModule(SwerveModuleConstant swerveModuleConstant) {
     turningMotor = new SparkMax(swerveModuleConstant.turningMotorId(), MotorType.kBrushless);
     SparkMaxConfig turningMotorConfig = new SparkMaxConfig();
-    turningMotorConfig.smartCurrentLimit(40)
+    turningMotorConfig.smartCurrentLimit(15)
         .idleMode(IdleMode.kCoast)
         .inverted(swerveModuleConstant.turningInverted());
     turningMotor.configure(turningMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -63,7 +63,7 @@ public class SwerveModule extends SubsystemBase {
     turningEncoderConfiguration.MagnetSensor.MagnetOffset = swerveModuleConstant.canCoderOffset();
     turningEncoder.getConfigurator().apply(turningEncoderConfiguration);
 
-    rotPIDController = new PIDController(0.5, 0, 0);
+    rotPIDController = new PIDController(0.225, 0, 0);
     rotPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     driveMotorVoltage = 0;
@@ -165,19 +165,20 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putData(this.getName() + "AnglePID", rotPIDController);
-    SmartDashboard.putNumber(this.getName() + "MotorOutput", turningMotor.get());
-    SmartDashboard.putNumber(this.getName() + "AngleRadius", getAngleRadians());
-    SmartDashboard.putNumber(this.getName() + "DriveRate", getDriveRate().in(MetersPerSecond));
-    SmartDashboard.putNumber(this.getName() + "DriveMotorVoltage", driveMotorVoltage);
-    SmartDashboard.putNumber(this.getName() + "TurningMotorVoltage", turningMotorVoltage);
-    SmartDashboard.putNumber(this.getName() + "DriveMotorAppliedVoltage",
+    String prefix = "drive/" + this.getName() + "/";
+    SmartDashboard.putData(prefix + "anglePID", rotPIDController);
+    SmartDashboard.putNumber(prefix + "motorOutput", turningMotor.get());
+    SmartDashboard.putNumber(prefix + "angleRadians", getAngleRadians());
+    SmartDashboard.putNumber(prefix + "driveRateMps", getDriveRate().in(MetersPerSecond));
+    SmartDashboard.putNumber(prefix + "driveDistanceM", getDriveDistance().in(Meters));
+    SmartDashboard.putNumber(prefix + "driveMotorVoltage", driveMotorVoltage);
+    SmartDashboard.putNumber(prefix + "driveMotorAppliedVoltage",
         driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
-    SmartDashboard.putNumber(this.getName() + "DriveMotorCurrent", driveMotor.getOutputCurrent());
-    SmartDashboard.putNumber(this.getName() + "TurningMotorAppliedVoltage",
+    SmartDashboard.putNumber(prefix + "driveMotorCurrentAmps", driveMotor.getOutputCurrent());
+    SmartDashboard.putNumber(prefix + "turningMotorVoltage", turningMotorVoltage);
+    SmartDashboard.putNumber(prefix + "turningMotorAppliedVoltage",
         turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
-    SmartDashboard.putNumber(this.getName() + "TurningMotorCurrent", turningMotor.getOutputCurrent());
-    SmartDashboard.putNumber(this.getName() + "DriveDistance", getDriveDistance().in(Meters));
+    SmartDashboard.putNumber(prefix + "turningMotorCurrentAmps", turningMotor.getOutputCurrent());
 
     setFaultAlerts();
   }
