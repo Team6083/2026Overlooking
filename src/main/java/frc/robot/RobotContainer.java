@@ -117,10 +117,11 @@ public class RobotContainer {
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(
         shooterSubsystem, transportSubsystem, feederSubsystem));
-    mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
+    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     // mainController.a().whileTrue(feederSubsystem.feedInCmd());
     mainController.a().whileTrue(drsSubsystem.upDrsCmd());
+    mainController.x().whileTrue(drsSubsystem.downDrsCmd());
     // intake
     mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
