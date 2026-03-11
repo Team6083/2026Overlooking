@@ -109,7 +109,7 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    mainController.rightBumper().whileTrue(Commands.parallel(calculateSpeedShooterCmd, aimAssistCmd));
+    mainController.rightBumper().whileTrue(new ShooterComboCmd(shooterSubsystem, transportSubsystem));
     mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     mainController.a().whileTrue(transportSubsystem.transportInCmd());
@@ -118,8 +118,8 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.rightTrigger().whileTrue(intakeSubsystem.intakeCmd());
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    mainController.b().whileTrue(transportSubsystem.transportInCmd());
-
+    mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
   }
 
   public Command getAutonomousCommand() {

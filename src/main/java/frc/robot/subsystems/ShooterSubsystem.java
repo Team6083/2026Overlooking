@@ -64,4 +64,3 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putData("ShooterSubsystem", this);
   }
 }
-
