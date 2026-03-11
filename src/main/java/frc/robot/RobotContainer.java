@@ -33,8 +33,6 @@ public class RobotContainer {
   private final TagTracking shooterTracker;
   private final TagTracking backTracker;
   private final SwerveDrive swerveDrive;
-  private final CalculateSpeedShooterCmd calculateSpeedShooterCmd;
-  private final AimAssistCmd aimAssistCmd;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
@@ -59,9 +57,7 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 
-    calculateSpeedShooterCmd = new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive);
-
-    aimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint);
+    Auto.configureAutoBuilder(swerveDrive);
 
     registerCommand();
 
