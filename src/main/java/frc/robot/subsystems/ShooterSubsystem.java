@@ -20,6 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.feedforwardKs,
       ShooterConstants.feedforwardKv, ShooterConstants.feedforwardKa);
 
+  private double targetVelocity = 0;
+
   public ShooterSubsystem() {
     shooterEncoder = shooterMotor.getEncoder();
   }
@@ -28,13 +30,14 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.setVoltage(voltage);
   }
 
-  public void shoot() {
-    double targetVelocity = ShooterConstants.targetVelocity;
+  public void shoot(double targetVelocity) {
+    this.targetVelocity = targetVelocity;
     double feedforwardVoltage = feedforward.calculate(targetVelocity);
     setShooterVoltage(feedforwardVoltage);
   }
 
-  private void stopShooter() {
+  public void stopShooter() {
+    this.targetVelocity = 0;
     shooterMotor.setVoltage(0);
   }
 
@@ -43,11 +46,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isShooterAtSpeed() {
-    return getShooterVelocity() >= ShooterConstants.targetVelocity;
+    return getShooterVelocity() >= targetVelocity;
   }
 
   public Command shootCmd() {
-    Command cmd = runEnd(this::shoot, this::stopShooter);
+    Command cmd = runEnd(() -> shoot(ShooterConstants.targetVelocity), this::stopShooter);
     cmd.setName("shootCmd");
     return cmd;
   }
