@@ -41,7 +41,7 @@ public class DrsSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("servoMotorAngle", drs.getAngle());
-    SmartDashboard.putNumber("servoMotorPosition", drs.get());
+    SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
+    SmartDashboard.putNumber("drs/drsPosition", drs.get());
   }
 }
