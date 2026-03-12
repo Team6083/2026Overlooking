@@ -20,6 +20,8 @@ public class DrsSubsystem extends SubsystemBase {
   private final Servo drs;
   private final SwerveDrive swerveDrive;
   private final Supplier<Boolean> isAutoDrs;
+  private Boolean isDrsUp = true;
+  private Boolean wasUnderTrench = false;
   private final Debouncer targetDebouncer;
 
   public DrsSubsystem(SwerveDrive swerveDrive, Supplier<Boolean> isAutoDrs) {
@@ -95,14 +97,27 @@ public class DrsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     if (isAutoDrs.get()) {
-      if (isUnderRedLeftTrench() || isUnderRedRightTrench() || isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
+      boolean isUnderTrench = isUnderRedLeftTrench() || isUnderRedRightTrench() ||
+          isUnderBlueLeftTrench() || isUnderBlueRightTrench();
+
+      if (isUnderTrench) {
         downDrs();
       } else {
-        upDrs();
+        if (!wasUnderTrench) {
+          isDrsUp = (drs.get() == 1);
+        }
+
+        if (isDrsUp) {
+          upDrs();
+        } else {
+          downDrs();
+        }
       }
+
+      wasUnderTrench = isUnderTrench;
     }
+
     SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
     SmartDashboard.putNumber("drs/drsPosition", drs.get());
   }
