@@ -4,6 +4,7 @@
 
 package frc.robot.lib.Zone;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
@@ -17,9 +18,9 @@ public class CircleZone implements Zone {
   }
 
   @Override
-  public boolean contains(double x, double y) {
-    double dx = x - center.getX();
-    double dy = y - center.getY();
+  public boolean contains(Pose2d pose) {
+    double dx = pose.getX() - center.getX();
+    double dy = pose.getY() - center.getY();
     return dx * dx + dy * dy <= radius * radius;
   }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot.lib.Zone;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 /** Add your docs here. */
 public class RectZone implements Zone {
   private final double xMin;
@@ -19,7 +21,8 @@ public class RectZone implements Zone {
   }
 
   @Override
-  public boolean contains(double x, double y) {
-    return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
+  public boolean contains(Translation2d translation) {
+    return translation.getX() >= xMin && translation.getX() <= xMax
+        && translation.getY() >= yMin && translation.getY() <= yMax;
   }
 }

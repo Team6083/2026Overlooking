@@ -5,8 +5,20 @@
 package frc.robot.lib.Zone;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import java.util.List;
 
 /** Add your docs here. */
-public interface Zone {
-  boolean contains(Translation2d translation);
+public class CompositeZone implements Zone {
+  private final List<Zone> zones;
+
+  public CompositeZone(List<Zone> zones) {
+    this.zones = zones;
+  }
+
+  @Override
+  public boolean contains(Translation2d translation) {
+    for(Zone){
+
+    }
+  }     
 }
