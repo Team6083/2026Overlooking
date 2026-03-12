@@ -130,10 +130,11 @@ public class RobotContainer {
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
-        .alongWith(feederSubsystem.feedInCmd()));
+        .alongWith(feederSubsystem.feedInCmd())
+        .alongWith(intakeSubsystem.intakeCmd()));
     // intake
     controlPanel.button(8).whileTrue(
-        Commands.either(intakeSubsystem.intakeCmd().alongWith(feederSubsystem.feedInCmd()),
+        Commands.either(intakeSubsystem.intakeCmd().alongWith(transportSubsystem.transportInCmd()),
             intakeSubsystem.reverseIntakeCmd(),
             controlPanel.button(11)));
 
