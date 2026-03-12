@@ -103,7 +103,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
     NamedCommands.registerCommand("shoot",
-        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem, intakeSubsystem).withTimeout(4));
+        new ShooterComboCmd(
+            swerveDrive, shooterSubsystem,
+            transportSubsystem, feederSubsystem, intakeSubsystem,
+            () -> false)
+            .withTimeout(4));
   }
 
   private void configureBindings() {
@@ -118,8 +122,10 @@ public class RobotContainer {
     // shooter
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new PrepShooterCmd(swerveDrive, shooterSubsystem, transportSubsystem, feederSubsystem,
-                intakeSubsystem)));
+            .alongWith(new ShooterComboCmd(
+                swerveDrive, shooterSubsystem,
+                transportSubsystem, feederSubsystem,
+                intakeSubsystem, controlPanel.button(10))));
 
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
@@ -131,15 +137,11 @@ public class RobotContainer {
             intakeSubsystem.reverseIntakeCmd(),
             controlPanel.button(11)));
 
-    controlPanel.button(7).whileTrue(
-        Commands.either(intakeSubsystem.syncRetractIntakeCmd(),
-            intakeSubsystem.manualRetractCmd(),
-            controlPanel.button(10)));
+    controlPanel.button(7).whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    controlPanel.button(6).whileTrue(intakeSubsystem.syncDeployIntakeCmd());
 
-    controlPanel.button(6).whileTrue(
-        Commands.either(intakeSubsystem.syncDeployIntakeCmd(),
-            intakeSubsystem.manualDeployCmd(),
-            controlPanel.button(10)));
+    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
 
     // climber
     controlPanel.button(5).whileTrue(climberSubsystem.climbUpCmd());
