@@ -96,7 +96,7 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Command upDrsCmd() {
-    Command cmd = runOnce(()-> {
+    Command cmd = runOnce(() -> {
       isManual = true;
       upDrs();
     });
@@ -115,6 +115,8 @@ public class DrsSubsystem extends SubsystemBase {
           upDrs();
         }
       }
+    } else {
+      isManual = false;
     }
     SmartDashboard.putNumber("servoMotorAngle", drs.getAngle());
     SmartDashboard.putNumber("servoMotorPosition", drs.get());
