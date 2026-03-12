@@ -52,6 +52,17 @@ public class Constants {
     public static final Distance kWheelRadius = Inches.of(2);
   }
 
+  public static final class ClimberConstants {
+    public static final int climbMotorId = 40;
+    public static final boolean climbMotorInverted = true;
+
+    public static final double climbUpSpeed = 0.4;
+    public static final double climbDownSpeed = -0.4;
+
+    public static final int climbEncoderIdA = 4;
+    public static final int climbEncoderIdB = 5;
+  }
+
   public static final class SwerveControlConstants {
     public static final double kFastMagnification = 0.6;
     public static final double kSlowMagnification = 0.3;
@@ -66,28 +77,27 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = 40;
-    public static final double pivotRightExpectedZero = -95;
+    public static final double pivotLeftExpectedZero = -306;
+    public static final double pivotRightExpectedZero = 141;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 104;
-    public static final double pivotRetractStopPosition = 4;
+    public static final double pivotDeployStopPosition = 130;
+    public static final double pivotRetractStopPosition = 17;
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.6;
+    public static final double intakeSpeed = 0.5;
+    public static final double reverseIntakeSpeed = -0.5;
 
-    public static final double reverseIntakeSpeed = -0.6;
-
-    public static final double deployPivotSpeed = 0.7;
-    public static final double reversePivotSpeed = -0.4;
+    public static final double deployPivotSpeed = 0.8;
+    public static final double retractPivotSpeed = -1;
 
     public static final double pivotManualSpeed = 0.4;
 
-    public static final double pivotFollowKp = 0.1;
+    public static final double pivotFollowKp = 0.03;
     public static final double pivotFollowKi = 0;
     public static final double pivotFollowKd = 0;
-    
+
     public static final boolean motorLeftInverted = false;
     public static final boolean motorRightInverted = true;
     public static final boolean encoderLeftInverted = true;
@@ -97,18 +107,36 @@ public class Constants {
   public static final class ShooterConstants {
     public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
-    public static final double feedforwardKs = 0.2;
-    public static final double feedforwardKv = 0.002;
-    public static final double feedforwardKa = 0;
+
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 5700;
+
+    public static final double defaultTargetVelocity = 3000;
+    // Tunable ball launch speed (m/s)
+    public static final double ballSpeed = 2.0;
+
+    public static final double maxShooterVelocity = 5700;
+
+    public static final double feedforwardKs = 0.01;
+    public static final double feedforwardKv = 0.00207;
+    public static final double feedforwardKa = 0;
+
+    public static final double shooterDistanceMultiplier = 2207.31;
+    public static final double shooterDistanceExponent = 0.0017;
   }
 
-  public static class TransportConstants {
-    public static final int transportMotorID = 32;
-    public static final double transportMotorIn = 0.2;
-    public static final double transportMotorOut = 0.2;
+  public static final class FeederConstants {
+    public static final int feederMotorID = 32;
+    public static final double feederMotorIn = 0.5;
+    public static final double feederMotorOut = -0.5;
+    public static final boolean feederMotorInverted = false;
+  }
+
+  public static final class TransportConstants {
+    public static final int transportMotorLowerID = 36;
+    public static final double transportMotorIn = 0.5;
+    public static final double transportMotorOut = -0.5;
+    public static final boolean transportMotorInverted = true;
   }
 
   public static class AutoConstants {
@@ -118,5 +146,28 @@ public class Constants {
     public static final double kpRotation = 4.5;
     public static final double kiRotation = 0.0;
     public static final double kdRotation = 0.5;
+  }
+
+  public static class DrsConstants {
+    public static final int servoMotorChannel = 4;
+    public static final double upPosition = 1;
+    public static final double downPosition = 0.25;
+  }
+
+  public static class FieldConstants {
+    public static final double blueHubX = 4.611624;
+    public static final double blueHubY = 4.021328;
+    public static final double redHubX = 11.901424;
+    public static final double redHubY = 4.021328;
+
+    public static final double blueTrenchMinX = 3.9;
+    public static final double blueTrenchMaxX = 5.4;
+    public static final double redTrenchMinX = 11.2;
+    public static final double redTrenchMaxX = 12.7;
+
+    public static final double blueLeftTrenchMinY = 6.5;
+    public static final double blueLeftTrenchMaxY = 8;
+    public static final double blueRightTrenchMinY = 0;
+    public static final double blueRightTrenchMaxY = 1.5;
   }
 }
