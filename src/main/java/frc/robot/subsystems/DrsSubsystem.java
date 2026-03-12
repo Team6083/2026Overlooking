@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,12 +19,14 @@ public class DrsSubsystem extends SubsystemBase {
   private final Servo drs;
   private final SwerveDrive swerveDrive;
   private final Supplier<Boolean> isAutoDrs;
+  private final Debouncer targetDebouncer;
   private boolean isManual = false;
 
   public DrsSubsystem(SwerveDrive swerveDrive, Supplier<Boolean> isAutoDrs) {
     drs = new Servo(DrsConstants.servoMotorChannel);
     this.swerveDrive = swerveDrive;
     this.isAutoDrs = isAutoDrs;
+    this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
   }
 
   public void downDrs() {
@@ -40,11 +43,9 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = 6.5;
     double trenchMaxY = 8.0;
 
-    if (swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY) {
-      return true;
-    }
-    return false;
+    return targetDebouncer
+        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
   }
 
   public Boolean isUnderBlueRightTrench() {
@@ -53,11 +54,9 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = 0;
     double trenchMaxY = 1.5;
 
-    if (swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY) {
-      return true;
-    }
-    return false;
+    return targetDebouncer
+        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
   }
 
   public Boolean isUnderRedLeftTrench() {
@@ -66,11 +65,9 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = 0;
     double trenchMaxY = 1.5;
 
-    if (swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY) {
-      return true;
-    }
-    return false;
+    return targetDebouncer
+        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
   }
 
   public Boolean isUnderRedRightTrench() {
@@ -79,11 +76,9 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = 6.5;
     double trenchMaxY = 8;
 
-    if (swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY) {
-      return true;
-    }
-    return false;
+    return targetDebouncer
+        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
   }
 
   public Command downDrsCmd() {
