@@ -13,10 +13,12 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
+import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -108,8 +110,8 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     controlPanel.button(2).whileTrue(new AimAssistCmd(swerveDrive,
-    mainController, shouldSprint));
-    controlPanel.button(1).whileTrue(positioningCmd);
+        mainController, shouldSprint));
+    CommandScheduler.getInstance().schedule(positioningCmd);
     positioningCmd.schedule();
     coController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
     // swerve drive
@@ -122,8 +124,8 @@ public class RobotContainer {
     mainController.rightBumper().whileTrue(new ShooterComboCmd(
         shooterSubsystem, transportSubsystem, feederSubsystem));
 
-    // coController.x().whileTrue(shooterSubsystem.shootCmd());
-    // coController.b().whileTrue(feederSubsystem.feedInCmd().alongWith(transportSubsystem.transportInCmd()));
+    mainController.y().whileTrue(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive));
+    mainController.b().whileTrue(feederSubsystem.feedInCmd().alongWith(transportSubsystem.transportInCmd()));
     mainController.a().whileTrue(drsSubsystem.upDrsCmd());
     mainController.x().whileTrue(drsSubsystem.downDrsCmd());
     // intake
@@ -137,8 +139,8 @@ public class RobotContainer {
     coController.rightBumper().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
     coController.leftBumper().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
 
-    mainController.b().whileTrue(climberSubsystem.climbUpCmd());
-    mainController.y().whileTrue(climberSubsystem.climbDownCmd());
+    // mainController.b().whileTrue(climberSubsystem.climbUpCmd());
+    // mainController.y().whileTrue(climberSubsystem.climbDownCmd());
   }
 
   public Command getAutonomousCommand() {
