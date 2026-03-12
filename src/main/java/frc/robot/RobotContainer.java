@@ -50,7 +50,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
-  private Supplier<Boolean> shouldAutoDrs;
+  private Supplier<Boolean> shouldAutoDrs = () -> true;
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -145,9 +145,10 @@ public class RobotContainer {
     controlPanel.button(4).whileTrue(climberSubsystem.climbDownCmd());
 
     // Servo
-    Commands.either(drsSubsystem.upDrsCmd(),
-        drsSubsystem.downDrsCmd(),
-        controlPanel.button(12));
+    controlPanel.button(12).onChange(
+        Commands.either(drsSubsystem.upDrsCmd(),
+            drsSubsystem.downDrsCmd(),
+            controlPanel.button(12)));
 
   }
 
