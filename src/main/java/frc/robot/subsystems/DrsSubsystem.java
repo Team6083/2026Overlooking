@@ -94,7 +94,6 @@ public class DrsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     if (isAutoDrs.get() && isUnderTrench()) {
       drs.setPosition(DrsConstants.downPosition);
     } else {
