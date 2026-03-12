@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
 import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.PositioningCmd;
+import frc.robot.commands.PrepShooterCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
@@ -102,7 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
     NamedCommands.registerCommand("shoot",
-        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem).withTimeout(4));
+        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem, intakeSubsystem).withTimeout(4));
   }
 
   private void configureBindings() {
@@ -117,8 +118,9 @@ public class RobotContainer {
     // shooter
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)
-                .alongWith(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive))));
+            .alongWith(new PrepShooterCmd(swerveDrive, shooterSubsystem, transportSubsystem, feederSubsystem,
+                intakeSubsystem)));
+
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
