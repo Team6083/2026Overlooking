@@ -13,14 +13,14 @@ import frc.robot.Constants.TransportConstants;
 
 public class TransportSubsystem extends SubsystemBase {
   /** Creates a new transportSubsystem. */
-  VictorSPX transportMotor = new VictorSPX(TransportConstants.transportMotorID);
+  private final VictorSPX transportMotor = new VictorSPX(TransportConstants.transportMotorLowerID);
 
   public TransportSubsystem() {
-    transportMotor.setInverted(true);
+    transportMotor.setInverted(TransportConstants.transportMotorInverted);
   }
 
   public void transportIn() {
-    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);;
+    transportMotor.set(ControlMode.PercentOutput, TransportConstants.transportMotorIn);
   }
 
   private void transportOut() {
@@ -39,7 +39,7 @@ public class TransportSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("transport/motorOutputPercent", transportMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("transport/transportVoltage", transportMotor.getMotorOutputVoltage());
     SmartDashboard.putData("transport/subsystem", this);
     // This method will be called once per scheduler run
   }
