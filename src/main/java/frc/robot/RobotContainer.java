@@ -118,6 +118,7 @@ public class RobotContainer {
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
             .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)
+                .alongWith(intakeSubsystem.intakeCmd())
                 .alongWith(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive))));
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
