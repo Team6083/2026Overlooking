@@ -49,7 +49,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
-  private Supplier<Boolean> shouldAutoDrs = () -> true;
+  private Supplier<Boolean> shouldAutoDrs = () -> controlPanel.button(12).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -119,39 +119,50 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
     // shooter
-    controlPanel.button(1)
-        .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new ShooterComboCmd(
-                swerveDrive, shooterSubsystem,
-                transportSubsystem, feederSubsystem,
-                intakeSubsystem, controlPanel.button(10))));
+    var useAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
+        .alongWith(new ShooterComboCmd(
+            swerveDrive, shooterSubsystem,
+            transportSubsystem, feederSubsystem,
+            intakeSubsystem, controlPanel.button(11)));
 
-    controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
+    var notAimAssistCmd = new ShooterComboCmd(
+        swerveDrive, shooterSubsystem,
+        transportSubsystem, feederSubsystem,
+        intakeSubsystem, controlPanel.button(11));
+
+    controlPanel.button(1)
+        .whileTrue(Commands.either(useAimAssistCmd,
+            notAimAssistCmd,
+            controlPanel.button(10)));
+
+    controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
+
     // transport
-    controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
+    controlPanel.button(8).whileTrue(transportSubsystem.transportInCmd()
         .alongWith(feederSubsystem.feedInCmd())
         .alongWith(intakeSubsystem.intakeCmd()));
-    // intake
-    controlPanel.button(8).whileTrue(
-        Commands.either(intakeSubsystem.intakeCmd().alongWith(transportSubsystem.transportInCmd()),
-            intakeSubsystem.reverseIntakeCmd(),
-            controlPanel.button(11)));
 
-    controlPanel.button(7).whileTrue(intakeSubsystem.syncRetractIntakeCmd());
-    controlPanel.button(6).whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    // intake
+
+    controlPanel.button(7).whileTrue(intakeSubsystem.reverseIntakeCmd());
+    controlPanel.button(6).whileTrue(intakeSubsystem.intakeCmd());
 
     mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
+    mainController.y().onTrue(intakeSubsystem.retractIntakeCmd());
+    mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
 
     // climber
-    controlPanel.button(5).whileTrue(climberSubsystem.climbUpCmd());
-    controlPanel.button(4).whileTrue(climberSubsystem.climbDownCmd());
+    mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
+    mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
 
     // Servo
-    controlPanel.button(12).onChange(
-        Commands.either(drsSubsystem.upDrsCmd(),
-            drsSubsystem.downDrsCmd(),
-            controlPanel.button(12)));
+
+    controlPanel.button(5)
+        .whileTrue(Commands.either(Commands.none(), drsSubsystem.upDrsCmd(), () -> shouldAutoDrs.get()));
+
+    controlPanel.button(4)
+        .whileTrue(Commands.either(Commands.none(), drsSubsystem.downDrsCmd(), () -> shouldAutoDrs.get()));
 
   }
 
