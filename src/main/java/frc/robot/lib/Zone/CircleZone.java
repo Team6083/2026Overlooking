@@ -18,9 +18,7 @@ public class CircleZone implements Zone {
   }
 
   @Override
-  public boolean contains(Pose2d pose) {
-    double dx = pose.getX() - center.getX();
-    double dy = pose.getY() - center.getY();
-    return dx * dx + dy * dy <= radius * radius;
+  public boolean contains(Translation2d translation) {
+    return translation.getDistance(center) <= radius;
   }
 }
