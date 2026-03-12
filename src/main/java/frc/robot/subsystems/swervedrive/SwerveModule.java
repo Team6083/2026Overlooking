@@ -21,6 +21,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstant;
@@ -35,6 +37,9 @@ public class SwerveModule extends SubsystemBase {
 
   private double turningMotorVoltage;
   private double driveMotorVoltage;
+
+  private final Alert activeFaultAlert = new Alert("rev active faults!", AlertType.kError);
+  private final Alert stickyFaultAlert = new Alert("rev sticky faults!", AlertType.kWarning);
 
   public SwerveModule(SwerveModuleConstant swerveModuleConstant) {
     turningMotor = new SparkMax(swerveModuleConstant.turningMotorId(), MotorType.kBrushless);
@@ -142,6 +147,22 @@ public class SwerveModule extends SubsystemBase {
     driveMotorVoltage = 0;
   }
 
+  private void setFaultAlerts() {
+    var driveFaults = driveMotor.getFaults().toString();
+    var turningFaults = turningMotor.getFaults().toString();
+
+    var driveStickyFaults = driveMotor.getStickyFaults().toString();
+    var turningStickyFaults = turningMotor.getStickyFaults().toString();
+
+    activeFaultAlert.set(driveMotor.hasActiveFault() || turningMotor.hasActiveFault());
+    activeFaultAlert.setText(this.getName() + "Drive" + driveFaults +
+        " Turning " + turningFaults);
+
+    stickyFaultAlert.set(driveMotor.hasStickyFault() || turningMotor.hasStickyFault());
+    stickyFaultAlert.setText(this.getName() + "Drive" + driveStickyFaults +
+        " Turning " + turningStickyFaults);
+  }
+
   @Override
   public void periodic() {
     String prefix = "drive/" + this.getName() + "/";
@@ -151,12 +172,14 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(prefix + "driveRateMps", getDriveRate().in(MetersPerSecond));
     SmartDashboard.putNumber(prefix + "driveDistanceM", getDriveDistance().in(Meters));
     SmartDashboard.putNumber(prefix + "driveMotorVoltage", driveMotorVoltage);
-    SmartDashboard.putNumber(prefix + "driveMotorAppliedVoltage", 
+    SmartDashboard.putNumber(prefix + "driveMotorAppliedVoltage",
         driveMotor.getAppliedOutput() * driveMotor.getBusVoltage());
     SmartDashboard.putNumber(prefix + "driveMotorCurrentAmps", driveMotor.getOutputCurrent());
     SmartDashboard.putNumber(prefix + "turningMotorVoltage", turningMotorVoltage);
-    SmartDashboard.putNumber(prefix + "turningMotorAppliedVoltage", 
+    SmartDashboard.putNumber(prefix + "turningMotorAppliedVoltage",
         turningMotor.getAppliedOutput() * turningMotor.getBusVoltage());
     SmartDashboard.putNumber(prefix + "turningMotorCurrentAmps", turningMotor.getOutputCurrent());
+
+    setFaultAlerts();
   }
 }
