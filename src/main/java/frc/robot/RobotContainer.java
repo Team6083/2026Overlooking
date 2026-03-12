@@ -51,7 +51,6 @@ public class RobotContainer {
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
   private Supplier<Boolean> shouldAutoDrs;
-  private final CommandGenericHID controlPanel = new CommandGenericHID(1);
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -66,7 +65,7 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
-    drsSubsystem = new DrsSubsystem();
+    drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
 
     Auto.configureAutoBuilder(swerveDrive);
 
