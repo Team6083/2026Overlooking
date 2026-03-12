@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrsConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-import java.util.function.Supplier;
 
 public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
@@ -20,19 +21,13 @@ public class DrsSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
   private boolean shouldDrsUp;
   private final Debouncer targetDebouncer;
+  private final Supplier<Boolean> isAutoDrs;
 
-  public DrsSubsystem(SwerveDrive swerveDrive) {
+  public DrsSubsystem(SwerveDrive swerveDrive, Supplier<Boolean> isAutoDrs) {
     drs = new Servo(DrsConstants.servoMotorChannel);
     this.swerveDrive = swerveDrive;
+    this.isAutoDrs = isAutoDrs;
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
-  }
-
-  public void downDrs() {
-    drs.setPosition(DrsConstants.downPosition);
-  }
-
-  public void upDrs() {
-    drs.setPosition(DrsConstants.upPosition);
   }
 
   public Boolean isUnderBlueLeftTrench() {
@@ -84,27 +79,27 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Command downDrsCmd() {
-    Command cmd = runOnce(this::downDrs);
+    Command cmd = runOnce(() -> setTargetPosition(false));
     cmd.setName("downDrsCmd");
     return cmd;
   }
 
   public Command upDrsCmd() {
-    Command cmd = runOnce(this::upDrs);
+    Command cmd = runOnce(() -> setTargetPosition(true));
     cmd.setName("upDrsCmd");
     return cmd;
   }
 
   @Override
   public void periodic() {
-    if (isUnderRedLeftTrench() || isUnderRedRightTrench() ||
-        isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
-      downDrsCmd();
+    if (isAutoDrs.get() && (isUnderRedLeftTrench() || isUnderRedRightTrench() ||
+        isUnderBlueLeftTrench() || isUnderBlueRightTrench())) {
+      drs.setPosition(DrsConstants.downPosition);
     } else {
       if (shouldDrsUp) {
-        upDrsCmd();
+        drs.setPosition(DrsConstants.upPosition);
       } else {
-        downDrsCmd();
+        drs.setPosition(DrsConstants.downPosition);
       }
     }
 
