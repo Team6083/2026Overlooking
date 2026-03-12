@@ -18,15 +18,12 @@ public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo drs;
   private final SwerveDrive swerveDrive;
-  private final Supplier<Boolean> isAutoDrs;
-  private Boolean isDrsUp = true;
-  private Boolean wasUnderTrench = false;
+  private boolean shouldDrsUp;
   private final Debouncer targetDebouncer;
 
-  public DrsSubsystem(SwerveDrive swerveDrive, Supplier<Boolean> isAutoDrs) {
+  public DrsSubsystem(SwerveDrive swerveDrive) {
     drs = new Servo(DrsConstants.servoMotorChannel);
     this.swerveDrive = swerveDrive;
-    this.isAutoDrs = isAutoDrs;
     this.targetDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kFalling);
   }
 
@@ -82,6 +79,10 @@ public class DrsSubsystem extends SubsystemBase {
             && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
   }
 
+  public void setTargetPosition(boolean shouldDrsUp) {
+    this.shouldDrsUp = shouldDrsUp;
+  }
+
   public Command downDrsCmd() {
     Command cmd = runOnce(this::downDrs);
     cmd.setName("downDrsCmd");
@@ -96,25 +97,15 @@ public class DrsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (isAutoDrs.get()) {
-      boolean isUnderTrench = isUnderRedLeftTrench() || isUnderRedRightTrench() ||
-          isUnderBlueLeftTrench() || isUnderBlueRightTrench();
-
-      if (isUnderTrench) {
-        downDrs();
+    if (isUnderRedLeftTrench() || isUnderRedRightTrench() ||
+        isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
+      downDrsCmd();
+    } else {
+      if (shouldDrsUp) {
+        upDrsCmd();
       } else {
-        if (!wasUnderTrench) {
-          isDrsUp = (drs.get() == 1);
-        }
-
-        if (isDrsUp) {
-          upDrs();
-        } else {
-          downDrs();
-        }
+        downDrsCmd();
       }
-
-      wasUnderTrench = isUnderTrench;
     }
 
     SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
