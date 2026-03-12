@@ -143,7 +143,6 @@ public class RobotContainer {
         .alongWith(intakeSubsystem.intakeCmd()));
 
     // intake
-
     controlPanel.button(7).whileTrue(intakeSubsystem.reverseIntakeCmd());
     controlPanel.button(6).whileTrue(intakeSubsystem.intakeCmd());
 
@@ -157,12 +156,8 @@ public class RobotContainer {
     mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
 
     // Servo
-
-    controlPanel.button(5)
-        .whileTrue(Commands.either(Commands.none(), drsSubsystem.upDrsCmd(), () -> shouldAutoDrs.get()));
-
-    controlPanel.button(4)
-        .whileTrue(Commands.either(Commands.none(), drsSubsystem.downDrsCmd(), () -> shouldAutoDrs.get()));
+    controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
+    controlPanel.button(4).onTrue(drsSubsystem.downDrsCmd());
 
   }
 
