@@ -155,9 +155,9 @@ public class Constants {
   }
   
   public static class FieldConstants {
-    public static final double blueHubX = 4.6256;
-    public static final double blueHubY = 4.0346;
-    public static final double redHubX = 11.9155;
-    public static final double redHubY = 4.0346;
+    public static final double blueHubX = 4.611624;
+    public static final double blueHubY = 4.021328;
+    public static final double redHubX = 11.901424;
+    public static final double redHubY = 4.021328;
   }
 }
