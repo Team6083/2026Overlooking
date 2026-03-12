@@ -17,8 +17,12 @@ public class CompositeZone implements Zone {
 
   @Override
   public boolean contains(Translation2d translation) {
-    for(Zone){
+    for (Zone zone : zones) {
+      if (zone.contains(translation)) {
+        return true;
+      }
 
     }
-  }     
+    return false;
+  }
 }
