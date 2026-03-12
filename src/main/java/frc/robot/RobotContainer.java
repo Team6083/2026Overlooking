@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
+import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -116,8 +117,8 @@ public class RobotContainer {
     // shooter
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new ShooterComboCmd(
-                shooterSubsystem, transportSubsystem, feederSubsystem)));
+            .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)
+                .alongWith(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive))));
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
