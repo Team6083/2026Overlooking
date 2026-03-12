@@ -10,17 +10,20 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransportSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ShooterComboCmd extends ParallelCommandGroup {
-  /** Creates a new shootercomboCmd. */
-  public ShooterComboCmd(
+public class PrepShooterCmd extends ParallelCommandGroup {
+  /** Creates a new PrepShooterCmd. */
+  public PrepShooterCmd(
+      SwerveDrive swerveDrive,
       ShooterSubsystem shooterSubsystem,
       TransportSubsystem transportSubsystem,
       FeederSubsystem feederSubsystem,
       IntakeSubsystem intakeSubsystem) {
+
     addCommands(
-        shooterSubsystem.shootCmd(),
+        new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive),
         Commands.idle().until(shooterSubsystem::isShooterAtSpeed)
             .andThen(transportSubsystem.transportInCmd()
                 .alongWith(feederSubsystem.feedInCmd())
