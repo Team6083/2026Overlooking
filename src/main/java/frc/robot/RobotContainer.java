@@ -112,27 +112,28 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
+
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
-    // shooter
-    var useAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-        .alongWith(new ShooterComboCmd(
-            swerveDrive, shooterSubsystem,
-            transportSubsystem, feederSubsystem,
-            intakeSubsystem, controlPanel.button(11)));
 
-    var notAimAssistCmd = new ShooterComboCmd(
+    // shooter
+    var shooterComboCmd = new ShooterComboCmd(
         swerveDrive, shooterSubsystem,
         transportSubsystem, feederSubsystem,
         intakeSubsystem, controlPanel.button(11));
 
+    var shooterComboWithAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
+        .alongWith(shooterComboCmd);
+    shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
+
     controlPanel.button(1)
-        .whileTrue(Commands.either(useAimAssistCmd,
-            notAimAssistCmd,
+        .whileTrue(Commands.either(
+            shooterComboWithAimAssistCmd,
+            shooterComboCmd,
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
@@ -155,10 +156,9 @@ public class RobotContainer {
     mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
     mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
 
-    // Servo
+    // DRS
     controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
     controlPanel.button(4).onTrue(drsSubsystem.downDrsCmd());
-
   }
 
   public Command getAutonomousCommand() {
