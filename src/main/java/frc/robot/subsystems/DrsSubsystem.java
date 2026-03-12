@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrsConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 
 public class DrsSubsystem extends SubsystemBase {
@@ -20,7 +21,6 @@ public class DrsSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
   private final Supplier<Boolean> isAutoDrs;
   private final Debouncer targetDebouncer;
-  private boolean isManual = false;
 
   public DrsSubsystem(SwerveDrive swerveDrive, Supplier<Boolean> isAutoDrs) {
     drs = new Servo(DrsConstants.servoMotorChannel);
@@ -38,10 +38,10 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Boolean isUnderBlueLeftTrench() {
-    double trenchMinX = 3.9;
-    double trenchMaxX = 5.4;
-    double trenchMinY = 6.5;
-    double trenchMaxY = 8.0;
+    double trenchMinX = FieldConstants.blueTrenchMinX;
+    double trenchMaxX = FieldConstants.blueTrenchMaxX;
+    double trenchMinY = FieldConstants.blueLeftTrenchMinY;
+    double trenchMaxY = FieldConstants.blueLeftTrenchMaxY;
 
     return targetDebouncer
         .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
@@ -49,10 +49,10 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Boolean isUnderBlueRightTrench() {
-    double trenchMinX = 3.9;
-    double trenchMaxX = 5.4;
-    double trenchMinY = 0;
-    double trenchMaxY = 1.5;
+    double trenchMinX = FieldConstants.redTrenchMinX;
+    double trenchMaxX = FieldConstants.redTrenchMaxX;
+    double trenchMinY = FieldConstants.blueRightTrenchMinY;
+    double trenchMaxY = FieldConstants.blueRightTrenchMaxY;
 
     return targetDebouncer
         .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
@@ -60,10 +60,10 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Boolean isUnderRedLeftTrench() {
-    double trenchMinX = 11.2;
-    double trenchMaxX = 12.7;
-    double trenchMinY = 0;
-    double trenchMaxY = 1.5;
+    double trenchMinX = FieldConstants.redTrenchMinX;
+    double trenchMaxX = FieldConstants.redTrenchMaxX;
+    double trenchMinY = FieldConstants.blueRightTrenchMinY;
+    double trenchMaxY = FieldConstants.blueRightTrenchMaxY;
 
     return targetDebouncer
         .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
@@ -71,10 +71,10 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Boolean isUnderRedRightTrench() {
-    double trenchMinX = 11.4;
-    double trenchMaxX = 12.7;
-    double trenchMinY = 6.5;
-    double trenchMaxY = 8;
+    double trenchMinX = FieldConstants.redTrenchMinX;
+    double trenchMaxX = FieldConstants.redTrenchMaxX;
+    double trenchMinY = FieldConstants.blueLeftTrenchMinY;
+    double trenchMaxY = FieldConstants.blueLeftTrenchMaxY;
 
     return targetDebouncer
         .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
@@ -82,19 +82,13 @@ public class DrsSubsystem extends SubsystemBase {
   }
 
   public Command downDrsCmd() {
-    Command cmd = runOnce(() -> {
-      isManual = true;
-      downDrs();
-    });
+    Command cmd = runOnce(this::downDrs);
     cmd.setName("downDrsCmd");
     return cmd;
   }
 
   public Command upDrsCmd() {
-    Command cmd = runOnce(() -> {
-      isManual = true;
-      upDrs();
-    });
+    Command cmd = runOnce(this::upDrs);
     cmd.setName("upDrsCmd");
     return cmd;
   }
@@ -103,15 +97,11 @@ public class DrsSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (isAutoDrs.get()) {
-      if (!isManual) {
-        if (isUnderRedLeftTrench() || isUnderRedRightTrench() || isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
-          downDrs();
-        } else {
-          upDrs();
-        }
+      if (isUnderRedLeftTrench() || isUnderRedRightTrench() || isUnderBlueLeftTrench() || isUnderBlueRightTrench()) {
+        downDrs();
+      } else {
+        upDrs();
       }
-    } else {
-      isManual = false;
     }
     SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
     SmartDashboard.putNumber("drs/drsPosition", drs.get());

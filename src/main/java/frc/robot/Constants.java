@@ -153,11 +153,22 @@ public class Constants {
     public static final double upPosition = 1;
     public static final double downPosition = 0.25;
   }
-  
+
   public static class FieldConstants {
     public static final double blueHubX = 4.6256;
     public static final double blueHubY = 4.0346;
     public static final double redHubX = 11.9155;
     public static final double redHubY = 4.0346;
+
+    public static final double blueTrenchMinX = 3.9;
+    public static final double blueTrenchMaxX = 5.4;
+    public static final double redTrenchMinX = 11.2;
+    public static final double redTrenchMaxX = 12.7;
+
+    public static final double blueLeftTrenchMinY = 6.5;
+    public static final double blueLeftTrenchMaxY = 8;
+    public static final double blueRightTrenchMinY = 0;
+    public static final double blueRightTrenchMaxY = 1.5;
+
   }
 }
