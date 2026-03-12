@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
-import frc.robot.commands.CalculateSpeedShooterCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -102,7 +101,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
     NamedCommands.registerCommand("previousShoot", shooterSubsystem.shootCmd());
     NamedCommands.registerCommand("shoot",
-        new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem).withTimeout(4));
+        new ShooterComboCmd(
+            swerveDrive, shooterSubsystem,
+            transportSubsystem, feederSubsystem, intakeSubsystem,
+            () -> false)
+            .withTimeout(4));
   }
 
   private void configureBindings() {
@@ -117,7 +120,11 @@ public class RobotContainer {
     // shooter
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)));
+            .alongWith(new ShooterComboCmd(
+                swerveDrive, shooterSubsystem,
+                transportSubsystem, feederSubsystem,
+                intakeSubsystem, controlPanel.button(10))));
+
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
@@ -129,15 +136,11 @@ public class RobotContainer {
             intakeSubsystem.reverseIntakeCmd(),
             controlPanel.button(11)));
 
-    controlPanel.button(7).whileTrue(
-        Commands.either(intakeSubsystem.syncRetractIntakeCmd(),
-            intakeSubsystem.manualRetractCmd(),
-            controlPanel.button(10)));
+    controlPanel.button(7).whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+    controlPanel.button(6).whileTrue(intakeSubsystem.syncDeployIntakeCmd());
 
-    controlPanel.button(6).whileTrue(
-        Commands.either(intakeSubsystem.syncDeployIntakeCmd(),
-            intakeSubsystem.manualDeployCmd(),
-            controlPanel.button(10)));
+    mainController.povUp().whileTrue(intakeSubsystem.manualRetractCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
 
     // climber
     controlPanel.button(5).whileTrue(climberSubsystem.climbUpCmd());
