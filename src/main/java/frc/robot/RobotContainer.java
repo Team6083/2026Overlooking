@@ -36,6 +36,7 @@ public class RobotContainer {
   private final TagTracking backTracker;
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
+  private final CommandXboxController coController = new CommandXboxController(1);
   private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
@@ -106,8 +107,11 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    controlPanel.button(2).whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
+    controlPanel.button(2).whileTrue(new AimAssistCmd(swerveDrive,
+    mainController, shouldSprint));
     controlPanel.button(1).whileTrue(positioningCmd);
+    positioningCmd.schedule();
+    coController.a().whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint));
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
     mainController.start().onTrue(Commands.runOnce(() -> {
@@ -117,20 +121,22 @@ public class RobotContainer {
     // shooter
     mainController.rightBumper().whileTrue(new ShooterComboCmd(
         shooterSubsystem, transportSubsystem, feederSubsystem));
-    // mainController.x().toggleOnTrue(shooterSubsystem.shootCmd());
-    // transport
-    // mainController.a().whileTrue(feederSubsystem.feedInCmd());
+
+    // coController.x().whileTrue(shooterSubsystem.shootCmd());
+    // coController.b().whileTrue(feederSubsystem.feedInCmd().alongWith(transportSubsystem.transportInCmd()));
     mainController.a().whileTrue(drsSubsystem.upDrsCmd());
     mainController.x().whileTrue(drsSubsystem.downDrsCmd());
     // intake
-    mainController.povUp().whileTrue(intakeSubsystem.manualDeployCmd());
-    mainController.povDown().whileTrue(intakeSubsystem.manualRetractCmd());
+    mainController.povUp().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    mainController.povDown().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
     mainController.rightTrigger().whileTrue(
         intakeSubsystem.intakeCmd()
             .alongWith(transportSubsystem.transportInCmd()));
     mainController.leftTrigger().whileTrue(intakeSubsystem.reverseIntakeCmd());
-    // mainController.b().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
-    // mainController.y().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+
+    coController.rightBumper().whileTrue(intakeSubsystem.syncDeployIntakeCmd());
+    coController.leftBumper().whileTrue(intakeSubsystem.syncRetractIntakeCmd());
+
     mainController.b().whileTrue(climberSubsystem.climbUpCmd());
     mainController.y().whileTrue(climberSubsystem.climbDownCmd());
   }
