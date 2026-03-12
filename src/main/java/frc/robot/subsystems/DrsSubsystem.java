@@ -36,9 +36,8 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = FieldConstants.blueLeftTrenchMinY;
     double trenchMaxY = FieldConstants.blueLeftTrenchMaxY;
 
-    return targetDebouncer
-        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
+    return swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY;
   }
 
   public Boolean isUnderBlueRightTrench() {
@@ -47,9 +46,8 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = FieldConstants.blueRightTrenchMinY;
     double trenchMaxY = FieldConstants.blueRightTrenchMaxY;
 
-    return targetDebouncer
-        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
+    return swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY;
   }
 
   public Boolean isUnderRedLeftTrench() {
@@ -58,9 +56,8 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = FieldConstants.blueRightTrenchMinY;
     double trenchMaxY = FieldConstants.blueRightTrenchMaxY;
 
-    return targetDebouncer
-        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
+    return swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY;
   }
 
   public Boolean isUnderRedRightTrench() {
@@ -69,9 +66,14 @@ public class DrsSubsystem extends SubsystemBase {
     double trenchMinY = FieldConstants.blueLeftTrenchMinY;
     double trenchMaxY = FieldConstants.blueLeftTrenchMaxY;
 
-    return targetDebouncer
-        .calculate(swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
-            && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY);
+    return swerveDrive.getPose2d().getX() > trenchMinX && swerveDrive.getPose2d().getX() < trenchMaxX
+        && swerveDrive.getPose2d().getY() > trenchMinY && swerveDrive.getPose2d().getY() < trenchMaxY;
+  }
+
+  public Boolean isUnderTrench() {
+    return targetDebouncer.calculate(
+        isUnderRedLeftTrench() || isUnderRedRightTrench()
+            || isUnderBlueLeftTrench() || isUnderBlueRightTrench());
   }
 
   public void setTargetPosition(boolean shouldDrsUp) {
@@ -92,8 +94,8 @@ public class DrsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (isAutoDrs.get() && (isUnderRedLeftTrench() || isUnderRedRightTrench() ||
-        isUnderBlueLeftTrench() || isUnderBlueRightTrench())) {
+
+    if (isAutoDrs.get() && isUnderTrench()) {
       drs.setPosition(DrsConstants.downPosition);
     } else {
       if (shouldDrsUp) {
