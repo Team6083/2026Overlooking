@@ -109,7 +109,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // position tracking
-    controlPanel.button(2).whileTrue(new AimAssistCmd(swerveDrive,
+    mainController.b().whileTrue(new AimAssistCmd(swerveDrive,
         mainController, shouldSprint));
     CommandScheduler.getInstance().schedule(positioningCmd);
     positioningCmd.schedule();
@@ -125,7 +125,7 @@ public class RobotContainer {
         shooterSubsystem, transportSubsystem, feederSubsystem));
 
     mainController.y().whileTrue(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive));
-    mainController.b().whileTrue(feederSubsystem.feedInCmd().alongWith(transportSubsystem.transportInCmd()));
+    //mainController.b().whileTrue(feederSubsystem.feedInCmd().alongWith(transportSubsystem.transportInCmd()));
     mainController.a().whileTrue(drsSubsystem.upDrsCmd());
     mainController.x().whileTrue(drsSubsystem.downDrsCmd());
     // intake
