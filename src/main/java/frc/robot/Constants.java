@@ -77,8 +77,8 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = 40;
-    public static final double pivotRightExpectedZero = -95;
+    public static final double pivotLeftExpectedZero = -306;
+    public static final double pivotRightExpectedZero = 141;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 130;
@@ -86,8 +86,8 @@ public class Constants {
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.6;
-    public static final double reverseIntakeSpeed = -0.6;
+    public static final double intakeSpeed = 0.5;
+    public static final double reverseIntakeSpeed = -0.5;
 
     public static final double deployPivotSpeed = 0.8;
     public static final double retractPivotSpeed = -1;
@@ -127,15 +127,15 @@ public class Constants {
 
   public static final class FeederConstants {
     public static final int feederMotorID = 32;
-    public static final double feederMotorIn = 0.2;
-    public static final double feederMotorOut = -0.2;
-    public static final boolean feederMotorInverted = true;
+    public static final double feederMotorIn = 0.5;
+    public static final double feederMotorOut = -0.5;
+    public static final boolean feederMotorInverted = false;
   }
 
   public static final class TransportConstants {
     public static final int transportMotorLowerID = 36;
-    public static final double transportMotorIn = 0.2;
-    public static final double transportMotorOut = -0.2;
+    public static final double transportMotorIn = 0.5;
+    public static final double transportMotorOut = -0.5;
     public static final boolean transportMotorInverted = true;
   }
 
@@ -155,10 +155,10 @@ public class Constants {
   }
 
   public static class FieldConstants {
-    public static final double blueHubX = 4.6256;
-    public static final double blueHubY = 4.0346;
-    public static final double redHubX = 11.9155;
-    public static final double redHubY = 4.0346;
+    public static final double blueHubX = 4.611624;
+    public static final double blueHubY = 4.021328;
+    public static final double redHubX = 11.901424;
+    public static final double redHubY = 4.021328;
 
     public static final double blueTrenchMinX = 3.9;
     public static final double blueTrenchMaxX = 5.4;
@@ -169,6 +169,5 @@ public class Constants {
     public static final double blueLeftTrenchMaxY = 8;
     public static final double blueRightTrenchMinY = 0;
     public static final double blueRightTrenchMaxY = 1.5;
-
   }
 }

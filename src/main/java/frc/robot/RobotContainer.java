@@ -118,15 +118,15 @@ public class RobotContainer {
     // shooter
     controlPanel.button(1)
         .whileTrue(new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-            .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)
-                .alongWith(new CalculateSpeedShooterCmd(shooterSubsystem, swerveDrive))));
+            .alongWith(new ShooterComboCmd(shooterSubsystem, transportSubsystem, feederSubsystem)));
     controlPanel.button(2).toggleOnTrue(shooterSubsystem.shootCmd());
     // transport
     controlPanel.button(3).whileTrue(transportSubsystem.transportInCmd()
-        .alongWith(feederSubsystem.feedInCmd()));
+        .alongWith(feederSubsystem.feedInCmd())
+        .alongWith(intakeSubsystem.intakeCmd()));
     // intake
     controlPanel.button(8).whileTrue(
-        Commands.either(intakeSubsystem.intakeCmd().alongWith(feederSubsystem.feedInCmd()),
+        Commands.either(intakeSubsystem.intakeCmd().alongWith(transportSubsystem.transportInCmd()),
             intakeSubsystem.reverseIntakeCmd(),
             controlPanel.button(11)));
 
