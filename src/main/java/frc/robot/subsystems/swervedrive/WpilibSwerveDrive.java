@@ -173,11 +173,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     });
     currentPosePublisher.set(getPose2d());
 
-    SmartDashboard.putBoolean("isNearTrench",
-        FieldZones.trench.contains(
-            getPose2d().getTranslation().getX(),
-            getPose2d().getTranslation().getY()));
-
     SmartDashboard.putNumber("ZoneX", getPose2d().getTranslation().getX());
     SmartDashboard.putNumber("ZoneY", getPose2d().getTranslation().getY());
   }

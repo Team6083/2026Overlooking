@@ -5,8 +5,12 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.units.measure.Distance;
+import frc.robot.lib.Zone.RectZone;
+import frc.robot.lib.Zone.Zone;
 
 /** Add your docs here. */
 public class Constants {
@@ -169,5 +173,35 @@ public class Constants {
     public static final double blueLeftTrenchMaxY = 8;
     public static final double blueRightTrenchMinY = 0;
     public static final double blueRightTrenchMaxY = 1.5;
+
+    public static final Distance fieldWidth = Inches.of(317.69);
+    public static final Distance fieldLength = Inches.of(651.22);
+
+    public static final Distance trenchToWall = Inches.of(182.11);
+    public static final Distance trenchWidth = Inches.of(50.35);
+
+    public static final Distance trenchZoneLength = Meters.of(4);
+  }
+
+  public static class FieldZones {
+    public static final double blueTrenchZoneMinX = FieldConstants.trenchToWall
+        .minus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+    public static final double blueTrenchZoneMaxX = FieldConstants.trenchToWall
+        .plus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+
+    public static final double redTrenchZoneMinX = FieldConstants.fieldLength
+        .minus(FieldConstants.trenchToWall)
+        .minus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+    public static final double redTrenchZoneMaxX = FieldConstants.fieldLength
+        .minus(FieldConstants.trenchToWall)
+        .plus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+
+    public static final double leftTrenchZoneMinY = FieldConstants.fieldWidth.minus();
+
+    public static final Zone blueLeftZone = new RectZone(
+        , 6.7, 6.5, 8.1);
+    public static final Zone blueRightZOne = new RectZone(2.5, 6.7, 0, 1.5);
+    public static final Zone redLeftZone = new RectZone(10.8, 14.5, 6.5, 8.1);
+    public static final Zone redRightZone = new RectZone(10.8, 14.5, 0, 1.5);
   }
 }
