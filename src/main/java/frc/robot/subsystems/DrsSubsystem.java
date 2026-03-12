@@ -118,7 +118,7 @@ public class DrsSubsystem extends SubsystemBase {
     } else {
       isManual = false;
     }
-    SmartDashboard.putNumber("servoMotorAngle", drs.getAngle());
-    SmartDashboard.putNumber("servoMotorPosition", drs.get());
+    SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
+    SmartDashboard.putNumber("drs/drsPosition", drs.get());
   }
 }

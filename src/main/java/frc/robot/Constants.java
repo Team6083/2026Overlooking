@@ -52,6 +52,17 @@ public class Constants {
     public static final Distance kWheelRadius = Inches.of(2);
   }
 
+  public static final class ClimberConstants {
+    public static final int climbMotorId = 40;
+    public static final boolean climbMotorInverted = true;
+
+    public static final double climbUpSpeed = 0.4;
+    public static final double climbDownSpeed = -0.4;
+
+    public static final int climbEncoderIdA = 4;
+    public static final int climbEncoderIdB = 5;
+  }
+
   public static final class SwerveControlConstants {
     public static final double kFastMagnification = 0.6;
     public static final double kSlowMagnification = 0.3;
@@ -96,25 +107,36 @@ public class Constants {
   public static final class ShooterConstants {
     public static final int shooterMotorID = 35;
     public static final double shooterMotorSpeed = 0.6;
-    public static final double feedforwardKs = 0.2;
-    public static final double feedforwardKv = 0.002;
-    public static final double feedforwardKa = 0;
+
     public static final int encoderChannelA = 0;
     public static final int encoderChannelB = 1;
-    public static final double targetVelocity = 5700;
+
+    public static final double targetVelocity = 3000;
     // Tunable ball launch speed (m/s)
     public static final double ballSpeed = 2.0;
+
+    public static final double maxShooterVelocity = 5700;
+
+    public static final double feedforwardKs = 0.01;
+    public static final double feedforwardKv = 0.00207;
+    public static final double feedforwardKa = 0;
+
+    public static final double shooterDistanceMultiplier = 2207.31;
+    public static final double shooterDistanceExponent = 0.0017;
   }
 
-  public static class TransportConstants {
-    public static final int transportMotorUpperID = 32;
+  public static final class FeederConstants {
+    public static final int feederMotorID = 32;
+    public static final double feederMotorIn = 0.2;
+    public static final double feederMotorOut = -0.2;
+    public static final boolean feederMotorInverted = true;
+  }
+
+  public static final class TransportConstants {
     public static final int transportMotorLowerID = 36;
-    public static final double transportUpperMotorIn = 0.2;
-    public static final double transportLowerMotorIn = 0.2;
-    public static final double transportUpperMotorOut = -0.2;
-    public static final double transportLowerMotorOut = -0.2;
-    public static final boolean transportUpperMotorInverted = true;
-    public static final boolean transportLowerMotorInverted = true;
+    public static final double transportMotorIn = 0.2;
+    public static final double transportMotorOut = -0.2;
+    public static final boolean transportMotorInverted = true;
   }
 
   public static class AutoConstants {
@@ -133,9 +155,9 @@ public class Constants {
   }
   
   public static class FieldConstants {
-    public static final double blueHubX = 4.6256; 
-    public static final double blueHubY = 4.0346; 
-    public static final double redHubX = 11.9155; 
+    public static final double blueHubX = 4.6256;
+    public static final double blueHubY = 4.0346;
+    public static final double redHubX = 11.9155;
     public static final double redHubY = 4.0346;
   }
 }
