@@ -167,7 +167,7 @@ public class SwerveModule extends SubsystemBase {
   public void periodic() {
     String prefix = "drive/" + this.getName() + "/";
     SmartDashboard.putData(prefix + "anglePID", rotPIDController);
-    SmartDashboard.putNumber(prefix + "motorOutput", turningMotor.get());
+    SmartDashboard.putNumber(prefix + "turningMotorOutput", turningMotor.get());
     SmartDashboard.putNumber(prefix + "angleRadians", getAngleRadians());
     SmartDashboard.putNumber(prefix + "driveRateMps", getDriveRate().in(MetersPerSecond));
     SmartDashboard.putNumber(prefix + "driveDistanceM", getDriveDistance().in(Meters));
