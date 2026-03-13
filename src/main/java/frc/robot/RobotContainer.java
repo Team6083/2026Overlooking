@@ -121,19 +121,20 @@ public class RobotContainer {
     }));
 
     // shooter
-    var shooterComboCmd = new ShooterComboCmd(
-        swerveDrive, shooterSubsystem,
-        transportSubsystem, feederSubsystem,
-        intakeSubsystem, controlPanel.button(11));
-
     var shooterComboWithAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-        .alongWith(shooterComboCmd);
+        .alongWith(new ShooterComboCmd(
+            swerveDrive, shooterSubsystem,
+            transportSubsystem, feederSubsystem,
+            intakeSubsystem, controlPanel.button(11)));
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     controlPanel.button(1)
         .whileTrue(Commands.either(
             shooterComboWithAimAssistCmd,
-            shooterComboCmd,
+            new ShooterComboCmd(
+                swerveDrive, shooterSubsystem,
+                transportSubsystem, feederSubsystem,
+                intakeSubsystem, controlPanel.button(11)),
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
