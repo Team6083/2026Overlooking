@@ -37,7 +37,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator poseEstimator;
 
-  private SwerveModuleState[] swerveModuleStates = new SwerveModuleState[4];
+  private SwerveModuleState[] desiredSwerveModuleStates = new SwerveModuleState[4];
   private final StructArrayPublisher<SwerveModuleState> swerveDesiredStatePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("DesiredStates", SwerveModuleState.struct).publish();
   private final StructArrayPublisher<SwerveModuleState> swerveCurrentStatePublisher = NetworkTableInstance
@@ -46,8 +46,11 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
 
+  private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
   private final StructPublisher<ChassisSpeeds> currentChassisSpeedsPublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentChassisSpeeds", ChassisSpeeds.struct).publish();
+  private final StructPublisher<ChassisSpeeds> desiredChassisSpeedsPublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("desiredChassisSpeeds", ChassisSpeeds.struct).publish();
 
   public WpilibSwerveDrive(DriveBaseConstant driveBaseConstant) {
     frontLeft = new SwerveModule(driveBaseConstant.frontLeft());
@@ -70,10 +73,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         getSwerveModulePosition(),
         new Pose2d());
 
-    swerveModuleStates[0] = new SwerveModuleState();
-    swerveModuleStates[1] = new SwerveModuleState();
-    swerveModuleStates[2] = new SwerveModuleState();
-    swerveModuleStates[3] = new SwerveModuleState();
+    desiredSwerveModuleStates[0] = new SwerveModuleState();
+    desiredSwerveModuleStates[1] = new SwerveModuleState();
+    desiredSwerveModuleStates[2] = new SwerveModuleState();
+    desiredSwerveModuleStates[3] = new SwerveModuleState();
   }
 
   @Override
@@ -103,25 +106,26 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
       inverted = -1;
     }
 
-    ChassisSpeeds speeds = fieldRelative
+    desiredChassisSpeeds = fieldRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(
             new ChassisSpeeds(vx * inverted, vy * inverted, omega),
             gyro.getRotation2d())
         : new ChassisSpeeds(vx, vy, omega);
 
-    drive(speeds);
+    drive(desiredChassisSpeeds);
   }
 
   @Override
   public void drive(ChassisSpeeds speeds) {
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    desiredChassisSpeeds = speeds;
+    desiredSwerveModuleStates = kinematics.toSwerveModuleStates(desiredChassisSpeeds);
 
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 4.0);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredSwerveModuleStates, 4.0);
 
-    frontLeft.setDesiredState(states[0]);
-    frontRight.setDesiredState(states[1]);
-    backLeft.setDesiredState(states[2]);
-    backRight.setDesiredState(states[3]);
+    frontLeft.setDesiredState(desiredSwerveModuleStates[0]);
+    frontRight.setDesiredState(desiredSwerveModuleStates[1]);
+    backLeft.setDesiredState(desiredSwerveModuleStates[2]);
+    backRight.setDesiredState(desiredSwerveModuleStates[3]);
   }
 
   @Override
@@ -166,7 +170,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
     SmartDashboard.putNumber("drive/gyroHeadingDeg", gyro.getRotation2d().getDegrees());
     SmartDashboard.putBoolean("drive/gyroConnected", gyro.isConnected());
-    swerveDesiredStatePublisher.set(swerveModuleStates);
+    swerveDesiredStatePublisher.set(desiredSwerveModuleStates);
     swerveCurrentStatePublisher.set(new SwerveModuleState[] {
         frontLeft.getState(),
         frontRight.getState(),
@@ -176,5 +180,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     currentPosePublisher.set(getPose2d());
 
     currentChassisSpeedsPublisher.set(getRobotRelativeSpeeds());
+    desiredChassisSpeedsPublisher.set(desiredChassisSpeeds);
   }
 }
