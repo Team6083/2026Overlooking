@@ -105,5 +105,8 @@ public class DrsSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
     SmartDashboard.putNumber("drs/drsPosition", drs.get());
+    SmartDashboard.putBoolean("drs/isUnderTrench", isUnderTrench());
+    SmartDashboard.putBoolean("drs/shouldDrsUp", shouldDrsUp);
+    SmartDashboard.putBoolean("drs/isAutoDrs", isAutoDrs.get());
   }
 }
