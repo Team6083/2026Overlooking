@@ -153,7 +153,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public Rotation2d getGyroRotation2d() {
-    return gyro.getRotation2d(); 
+    return gyro.getRotation2d();
   }
 
   @Override
@@ -171,5 +171,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         backRight.getState()
     });
     currentPosePublisher.set(getPose2d());
+
+    SmartDashboard.putData("Drive/subsystem", this);
   }
 }
