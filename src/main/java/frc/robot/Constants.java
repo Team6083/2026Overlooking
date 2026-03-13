@@ -5,10 +5,10 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.units.measure.Distance;
+import frc.robot.lib.Zone.CompositeZone;
 import frc.robot.lib.Zone.RectZone;
 import frc.robot.lib.Zone.Zone;
 
@@ -211,5 +211,8 @@ public class Constants {
         redTrenchZoneMinX, redTrenchZoneMaxX, leftTrenchZoneMinY, leftTrenchZoneMaxY);
     public static final Zone redRightZone = new RectZone(
         redTrenchZoneMinX, redTrenchZoneMaxX, rightTrenchZoneMinY, rightTrenchZoneMaxY);
+
+    public static final CompositeZone trenchZone = new CompositeZone(
+        blueLeftZone, blueRightZOne, redLeftZone, redRightZone);
   }
 }

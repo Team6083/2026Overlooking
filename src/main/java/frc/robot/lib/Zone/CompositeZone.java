@@ -5,13 +5,12 @@
 package frc.robot.lib.Zone;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import java.util.List;
 
 /** Add your docs here. */
 public class CompositeZone implements Zone {
-  private final List<Zone> zones;
+  private final Zone[] zones;
 
-  public CompositeZone(List<Zone> zones) {
+  public CompositeZone(Zone... zones) {
     this.zones = zones;
   }
 
