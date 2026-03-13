@@ -181,5 +181,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
     currentChassisSpeedsPublisher.set(getRobotRelativeSpeeds());
     desiredChassisSpeedsPublisher.set(desiredChassisSpeeds);
+
+    SmartDashboard.putData("drive/subsystem", this);
   }
 }

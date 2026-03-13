@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.200205128205129,
-        "y": 0.06978205128205106
+        "x": 7.700217948717951,
+        "y": 0.3953717948717963
       },
       "isLocked": false,
       "linkedName": "right_neutralZone_B"
     },
     {
       "anchor": {
-        "x": 3.6120827389443653,
-        "y": 0.4315834522111266
+        "x": 3.8163974358974375,
+        "y": 0.5000256410256418
       },
       "prevControl": {
-        "x": 3.905643191540406,
-        "y": 0.41469979494312836
+        "x": 4.109957888493478,
+        "y": 0.4831419837576436
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,8 +35,8 @@
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 4.5,
-    "maxAngularVelocity": 273.107,
-    "maxAngularAcceleration": 1885.796,
+    "maxAngularVelocity": 273.0,
+    "maxAngularAcceleration": 1885.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -47,7 +47,7 @@
   "reversed": false,
   "folder": "neutralZone to trench",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

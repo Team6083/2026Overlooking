@@ -66,6 +66,8 @@ public class RobotContainer {
     feederSubsystem = new FeederSubsystem();
     drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
 
+    SmartDashboard.putData("PositioningCmd", positioningCmd);
+
     Auto.configureAutoBuilder(swerveDrive);
 
     registerCommand();

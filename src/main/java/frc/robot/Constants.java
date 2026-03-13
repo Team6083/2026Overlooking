@@ -5,8 +5,12 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.units.measure.Distance;
+import frc.robot.lib.zone.CompositeZone;
+import frc.robot.lib.zone.RectZone;
+import frc.robot.lib.zone.Zone;
 
 /** Add your docs here. */
 public class Constants {
@@ -77,17 +81,17 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = -306;
-    public static final double pivotRightExpectedZero = 141;
+    public static final double pivotLeftExpectedZero = -33;
+    public static final double pivotRightExpectedZero = 48;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 130;
-    public static final double pivotRetractStopPosition = 17;
+    public static final double pivotDeployStopPosition = 95;
+    public static final double pivotRetractStopPosition = 3;
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.5;
-    public static final double reverseIntakeSpeed = -0.5;
+    public static final double intakeSpeed = 0.4;
+    public static final double reverseIntakeSpeed = -0.4;
 
     public static final double deployPivotSpeed = 0.8;
     public static final double retractPivotSpeed = -1;
@@ -160,14 +164,55 @@ public class Constants {
     public static final double redHubX = 11.901424;
     public static final double redHubY = 4.021328;
 
-    public static final double blueTrenchMinX = 3.9;
-    public static final double blueTrenchMaxX = 5.4;
-    public static final double redTrenchMinX = 11.2;
-    public static final double redTrenchMaxX = 12.7;
+    public static final double blueTrenchMinX = 3.65;
+    public static final double blueTrenchMaxX = 5.65;
+    public static final double redTrenchMinX = 10.95;
+    public static final double redTrenchMaxX = 12.95;
 
-    public static final double blueLeftTrenchMinY = 6.5;
-    public static final double blueLeftTrenchMaxY = 8;
-    public static final double blueRightTrenchMinY = 0;
-    public static final double blueRightTrenchMaxY = 1.5;
+    public static final double blueLeftTrenchMinY = 6.25;
+    public static final double blueLeftTrenchMaxY = 8.25;
+    public static final double blueRightTrenchMinY = -0.25;
+    public static final double blueRightTrenchMaxY = 1.75;
+
+    public static final Distance fieldWidth = Inches.of(317.69);
+    public static final Distance fieldLength = Inches.of(651.22);
+
+    public static final Distance trenchToWall = Inches.of(182.11);
+    public static final Distance trenchWidth = Inches.of(50.35);
+
+    public static final Distance trenchZoneLength = Meters.of(4);
+  }
+
+  public static class FieldZones {
+    public static final double blueTrenchZoneMinX = FieldConstants.trenchToWall
+        .minus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+    public static final double blueTrenchZoneMaxX = FieldConstants.trenchToWall
+        .plus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+
+    public static final double redTrenchZoneMinX = FieldConstants.fieldLength
+        .minus(FieldConstants.trenchToWall)
+        .minus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+    public static final double redTrenchZoneMaxX = FieldConstants.fieldLength
+        .minus(FieldConstants.trenchToWall)
+        .plus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
+
+    public static final double leftTrenchZoneMinY = FieldConstants.fieldWidth
+        .minus(FieldConstants.trenchWidth).in(Meters);
+    public static final double leftTrenchZoneMaxY = FieldConstants.fieldWidth.in(Meters);
+
+    public static final double rightTrenchZoneMinY = 0;
+    public static final double rightTrenchZoneMaxY = FieldConstants.trenchWidth.in(Meters);
+
+    public static final Zone blueLeftZone = new RectZone(
+        blueTrenchZoneMinX, blueTrenchZoneMaxX, leftTrenchZoneMinY, leftTrenchZoneMaxY);
+    public static final Zone blueRightZOne = new RectZone(
+        blueTrenchZoneMinX, blueTrenchZoneMaxX, rightTrenchZoneMinY, rightTrenchZoneMaxY);
+    public static final Zone redLeftZone = new RectZone(
+        redTrenchZoneMinX, redTrenchZoneMaxX, leftTrenchZoneMinY, leftTrenchZoneMaxY);
+    public static final Zone redRightZone = new RectZone(
+        redTrenchZoneMinX, redTrenchZoneMaxX, rightTrenchZoneMinY, rightTrenchZoneMaxY);
+
+    public static final CompositeZone trenchZone = new CompositeZone(
+        blueLeftZone, blueRightZOne, redLeftZone, redRightZone);
   }
 }
