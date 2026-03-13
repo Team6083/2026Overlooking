@@ -8,9 +8,9 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.units.measure.Distance;
-import frc.robot.lib.Zone.CompositeZone;
-import frc.robot.lib.Zone.RectZone;
-import frc.robot.lib.Zone.Zone;
+import frc.robot.lib.zone.CompositeZone;
+import frc.robot.lib.zone.RectZone;
+import frc.robot.lib.zone.Zone;
 
 /** Add your docs here. */
 public class Constants {
