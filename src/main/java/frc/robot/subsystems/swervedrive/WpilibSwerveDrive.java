@@ -106,13 +106,13 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
       inverted = -1;
     }
 
-    desiredChassisSpeeds = fieldRelative
+    ChassisSpeeds speeds = fieldRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(
             new ChassisSpeeds(vx * inverted, vy * inverted, omega),
             gyro.getRotation2d())
         : new ChassisSpeeds(vx, vy, omega);
 
-    drive(desiredChassisSpeeds);
+    drive(speeds);
   }
 
   @Override
