@@ -174,5 +174,9 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
         backRight.getState()
     });
     currentPosePublisher.set(getPose2d());
+
+    currentChassisSpeedsPublisher.set(getRobotRelativeSpeeds());
+
+    
   }
 }
