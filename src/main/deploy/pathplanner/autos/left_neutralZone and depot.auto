@@ -15,7 +15,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 5.0
+                        "waitTime": 0.3
                       }
                     },
                     {
@@ -62,9 +62,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "left_trench to left_shoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "left_trench to left_shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "previousShoot"
+                }
+              }
+            ]
           }
         },
         {

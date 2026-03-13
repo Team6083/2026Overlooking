@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.450599839057756,
-        "y": 7.5593082592633225
+        "x": 6.142752976190476,
+        "y": 7.578236607142857
       },
       "isLocked": false,
       "linkedName": "left_trench"
@@ -28,7 +28,16 @@
       "linkedName": "left_neutralZone_A"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2947189097103919,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 0.6396933560477002,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,7 +50,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 1.5,
     "rotation": -90.0
   },
   "reversed": false,
