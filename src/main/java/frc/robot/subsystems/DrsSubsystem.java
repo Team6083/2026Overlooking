@@ -18,7 +18,7 @@ public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo drs;
   private final SwerveDrive swerveDrive;
-  private boolean shouldDrsUp;
+  private boolean shouldDrsUp = true;
   private final Debouncer targetDebouncer;
   private final Supplier<Boolean> isAutoDrs;
 
@@ -63,5 +63,8 @@ public class DrsSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("drs/drsAngle", drs.getAngle());
     SmartDashboard.putNumber("drs/drsPosition", drs.get());
+    SmartDashboard.putBoolean("drs/isUnderTrench", isUnderTrench());
+    SmartDashboard.putBoolean("drs/shouldDrsUp", shouldDrsUp);
+    SmartDashboard.putBoolean("drs/isAutoDrs", isAutoDrs.get());
   }
 }
