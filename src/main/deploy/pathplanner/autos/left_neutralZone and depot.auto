@@ -15,7 +15,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.3
+                        "waitTime": 0.2
                       }
                     },
                     {
@@ -106,9 +106,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "depot to left_shoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "depot to left_shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "previousShoot"
+                }
+              }
+            ]
           }
         },
         {
