@@ -109,6 +109,15 @@ public class RobotContainer {
             .withTimeout(4));
   }
 
+  private Command shooterComboCmd() {
+    Command cmd = new ShooterComboCmd(
+        swerveDrive, shooterSubsystem,
+        transportSubsystem, feederSubsystem,
+        intakeSubsystem, controlPanel.button(11));
+    cmd.setName("shooterComboCmd");
+    return cmd;
+  }
+
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
@@ -122,19 +131,13 @@ public class RobotContainer {
 
     // shooter
     var shooterComboWithAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
-        .alongWith(new ShooterComboCmd(
-            swerveDrive, shooterSubsystem,
-            transportSubsystem, feederSubsystem,
-            intakeSubsystem, controlPanel.button(11)));
+        .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     controlPanel.button(1)
         .whileTrue(Commands.either(
             shooterComboWithAimAssistCmd,
-            new ShooterComboCmd(
-                swerveDrive, shooterSubsystem,
-                transportSubsystem, feederSubsystem,
-                intakeSubsystem, controlPanel.button(11)),
+            shooterComboCmd(),
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
