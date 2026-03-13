@@ -77,17 +77,17 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = -37;
-    public static final double pivotRightExpectedZero = 51;
+    public static final double pivotLeftExpectedZero = -33;
+    public static final double pivotRightExpectedZero = 48;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 130;
-    public static final double pivotRetractStopPosition = 17;
+    public static final double pivotDeployStopPosition = 95;
+    public static final double pivotRetractStopPosition = 3;
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.5;
-    public static final double reverseIntakeSpeed = -0.5;
+    public static final double intakeSpeed = 0.4;
+    public static final double reverseIntakeSpeed = -0.4;
 
     public static final double deployPivotSpeed = 0.8;
     public static final double retractPivotSpeed = -1;
