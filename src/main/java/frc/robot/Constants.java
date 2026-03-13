@@ -77,8 +77,8 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = -306;
-    public static final double pivotRightExpectedZero = 141;
+    public static final double pivotLeftExpectedZero = -37;
+    public static final double pivotRightExpectedZero = 51;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 130;
