@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.427218259629101,
-        "y": 7.418807692307692
+        "x": 3.7815128205128214,
+        "y": 7.546717948717948
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.096305278174036,
-        "y": 7.431398002853067
+        "x": 5.450599839057756,
+        "y": 7.5593082592633225
       },
       "isLocked": false,
       "linkedName": "left_trench"
@@ -41,7 +41,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 4.0,
+    "velocity": 2.0,
     "rotation": -90.0
   },
   "reversed": false,

@@ -16,19 +16,24 @@
     },
     {
       "anchor": {
-        "x": 4.427218259629101,
-        "y": 7.418807692307692
+        "x": 3.7815128205128214,
+        "y": 7.546717948717948
       },
       "prevControl": {
-        "x": 6.199814550641939,
-        "y": 7.53490727532097
+        "x": 5.554109111525659,
+        "y": 7.662817531731226
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "left_trench"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5235772357723563,
+      "rotationDegrees": 175.94282046147862
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
