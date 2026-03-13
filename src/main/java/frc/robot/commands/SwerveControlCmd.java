@@ -68,6 +68,7 @@ public class SwerveControlCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    swerveDrive.drive(0, 0, 0, true);
   }
 
   // Returns true when the command should end.
