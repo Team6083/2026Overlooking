@@ -196,12 +196,20 @@ public class Constants {
         .minus(FieldConstants.trenchToWall)
         .plus(FieldConstants.trenchZoneLength.div(2)).in(Meters);
 
-    public static final double leftTrenchZoneMinY = FieldConstants.fieldWidth.minus();
+    public static final double leftTrenchZoneMinY = FieldConstants.fieldWidth
+        .minus(FieldConstants.trenchWidth).in(Meters);
+    public static final double leftTrenchZoneMaxY = FieldConstants.fieldWidth.in(Meters);
+
+    public static final double rightTrenchZoneMinY = 0;
+    public static final double rightTrenchZoneMaxY = FieldConstants.trenchWidth.in(Meters);
 
     public static final Zone blueLeftZone = new RectZone(
-        , 6.7, 6.5, 8.1);
-    public static final Zone blueRightZOne = new RectZone(2.5, 6.7, 0, 1.5);
-    public static final Zone redLeftZone = new RectZone(10.8, 14.5, 6.5, 8.1);
-    public static final Zone redRightZone = new RectZone(10.8, 14.5, 0, 1.5);
+        blueTrenchZoneMinX, blueTrenchZoneMaxX, leftTrenchZoneMinY, leftTrenchZoneMaxY);
+    public static final Zone blueRightZOne = new RectZone(
+        blueTrenchZoneMinX, blueTrenchZoneMaxX, rightTrenchZoneMinY, rightTrenchZoneMaxY);
+    public static final Zone redLeftZone = new RectZone(
+        redTrenchZoneMinX, redTrenchZoneMaxX, leftTrenchZoneMinY, leftTrenchZoneMaxY);
+    public static final Zone redRightZone = new RectZone(
+        redTrenchZoneMinX, redTrenchZoneMaxX, rightTrenchZoneMinY, rightTrenchZoneMaxY);
   }
 }
