@@ -8,21 +8,21 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
 public class RectZone implements Zone {
-  private final double xMin;
-  private final double xMax;
-  private final double yMin;
-  private final double yMax;
+  private final double minX;
+  private final double maxX;
+  private final double minY;
+  private final double maxY;
 
-  public RectZone(double xMin, double xMax, double yMin, double yMax) {
-    this.xMin = xMin;
-    this.xMax = xMax;
-    this.yMin = yMin;
-    this.yMax = yMax;
+  public RectZone(double minX, double maxX, double minY, double maxY) {
+    this.minX = minX;
+    this.maxX = maxX;
+    this.minY = minY;
+    this.maxY = maxY;
   }
 
   @Override
   public boolean contains(Translation2d translation) {
-    return translation.getX() >= xMin && translation.getX() <= xMax
-        && translation.getY() >= yMin && translation.getY() <= yMax;
+    return translation.getX() >= minX && translation.getX() <= maxX
+        && translation.getY() >= minY && translation.getY() <= maxY;
   }
 }
