@@ -170,8 +170,8 @@ public class Constants {
     public static final double redTrenchMaxX = 12.95;
 
     public static final double blueLeftTrenchMinY = 6.25;
-    public static final double blueLeftTrenchMaxY = 8;
-    public static final double blueRightTrenchMinY = 0;
+    public static final double blueLeftTrenchMaxY = 8.25;
+    public static final double blueRightTrenchMinY = -0.25;
     public static final double blueRightTrenchMaxY = 1.75;
 
     public static final Distance fieldWidth = Inches.of(317.69);
