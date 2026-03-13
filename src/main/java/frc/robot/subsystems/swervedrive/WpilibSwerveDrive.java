@@ -46,6 +46,9 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
   private final StructPublisher<Pose2d> currentPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("currentPose", Pose2d.struct).publish();
 
+  private final StructPublisher<ChassisSpeeds> currentChassisSpeedsPublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("currentChassisSpeeds", ChassisSpeeds.struct).publish();
+
   public WpilibSwerveDrive(DriveBaseConstant driveBaseConstant) {
     frontLeft = new SwerveModule(driveBaseConstant.frontLeft());
     frontRight = new SwerveModule(driveBaseConstant.frontRight());
@@ -153,7 +156,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public Rotation2d getGyroRotation2d() {
-    return gyro.getRotation2d(); 
+    return gyro.getRotation2d();
   }
 
   @Override
