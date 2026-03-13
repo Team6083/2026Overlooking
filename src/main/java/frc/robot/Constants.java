@@ -160,14 +160,14 @@ public class Constants {
     public static final double redHubX = 11.901424;
     public static final double redHubY = 4.021328;
 
-    public static final double blueTrenchMinX = 3.9;
-    public static final double blueTrenchMaxX = 5.4;
-    public static final double redTrenchMinX = 11.2;
-    public static final double redTrenchMaxX = 12.7;
+    public static final double blueTrenchMinX = 3.65;
+    public static final double blueTrenchMaxX = 5.65;
+    public static final double redTrenchMinX = 10.95;
+    public static final double redTrenchMaxX = 12.95;
 
-    public static final double blueLeftTrenchMinY = 6.5;
+    public static final double blueLeftTrenchMinY = 6.25;
     public static final double blueLeftTrenchMaxY = 8;
     public static final double blueRightTrenchMinY = 0;
-    public static final double blueRightTrenchMaxY = 1.5;
+    public static final double blueRightTrenchMaxY = 1.75;
   }
 }
