@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public class RobotContainer {
   private final TagTracking shooterTracker;
   private final TagTracking backTracker;
-  private final SwerveDrive swerveDrive;
+  SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
   private final ClimberSubsystem climberSubsystem;

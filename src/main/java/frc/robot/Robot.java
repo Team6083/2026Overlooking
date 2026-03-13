@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,6 +25,8 @@ public class Robot extends TimedRobot {
   private final NetworkTableInstance ntInstance = NetworkTableInstance.getDefault();
 
   private Timer gcTimer = new Timer();
+
+  private final Field2d field = new Field2d();
 
   public Robot() {
     if (!savelog) {
@@ -40,6 +43,8 @@ public class Robot extends TimedRobot {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
     }
+
+    field.setRobotPose(m_robotContainer.swerveDrive.getPose2d());
 
     SignalLogger.enableAutoLogging(savelog);
 
@@ -62,6 +67,7 @@ public class Robot extends TimedRobot {
         BuildConstants.DIRTY == 1 ? "Dirty" : "Clean"));
     SmartDashboard.putString("Metadata/BuildDate", BuildConstants.BUILD_DATE);
 
+    SmartDashboard.putData(field);
   }
 
   @Override
