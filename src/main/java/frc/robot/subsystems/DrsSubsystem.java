@@ -18,7 +18,7 @@ public class DrsSubsystem extends SubsystemBase {
   /** Creates a new servoMotorSubsystem. */
   private final Servo drs;
   private final SwerveDrive swerveDrive;
-  private boolean shouldDrsUp;
+  private boolean shouldDrsUp = true;
   private final Debouncer targetDebouncer;
   private final Supplier<Boolean> isAutoDrs;
 
