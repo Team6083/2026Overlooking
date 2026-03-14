@@ -37,8 +37,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    m_robotContainer.putRobotPoseOnDashboard();
-
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
@@ -73,6 +71,9 @@ public class Robot extends TimedRobot {
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
+
+    m_robotContainer.putRobotPoseOnDashboard();
+
   }
 
   @Override
