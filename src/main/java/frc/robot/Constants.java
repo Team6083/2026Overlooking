@@ -6,8 +6,11 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.lib.zone.CompositeZone;
 import frc.robot.lib.zone.RectZone;
 import frc.robot.lib.zone.Zone;
@@ -54,6 +57,7 @@ public class Constants {
   public static final class ModuleConstant {
     // define the radius of the wheel in meters
     public static final Distance kWheelRadius = Inches.of(2);
+    public static final LinearVelocity kMaxModuleSpeed = MetersPerSecond.of(4);
   }
 
   public static final class ClimberConstants {
