@@ -18,21 +18,28 @@ import java.util.function.Supplier;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
   protected final SwerveDrive swerveDrive;
+
   protected final CommandXboxController mainController;
+
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
+
   private Supplier<Boolean> shouldSprint;
+  private Supplier<Boolean> shouldLock;
 
   /** Creates a new SwerveControlCmd. */
   public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
-      Supplier<Boolean> shouldSprint) {
+      Supplier<Boolean> shouldSprint, Supplier<Boolean> shouldLock) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
+
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
+
     this.shouldSprint = shouldSprint;
+    this.shouldLock = shouldLock;
     addRequirements(swerveDrive);
   }
 
@@ -44,24 +51,27 @@ public class SwerveControlCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Boolean isSprint = shouldSprint.get();
-    swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
+    if (shouldLock.get() && isJoystickQuiet()) {
+      swerveDrive.lockPose();
+    } else {
+      swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
+    }
   }
 
   private double getMagnification() {
-    return mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
+    return shouldSprint.get() ? 0.6 : 0.3;
   }
 
   private double getRotMagnification() {
-    return mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
+    return shouldSprint.get() ? 0.8 : 0.4;
   }
 
-  private double calcSpeedX() {
+  protected double calcSpeedX() {
     return -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1))
         * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
   }
 
-  private double calcSpeedY() {
+  protected double calcSpeedY() {
     return -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1))
         * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
   }
@@ -69,6 +79,12 @@ public class SwerveControlCmd extends Command {
   protected double calcRotSpeed() {
     return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getRotMagnification();
+  }
+
+  protected boolean isJoystickQuiet() {
+    return calcSpeedX() < 0.1
+        && calcSpeedY() < 0.1
+        && calcRotSpeed() < 0.1;
   }
 
   // Called once the command ends or is interrupted.

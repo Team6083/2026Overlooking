@@ -22,6 +22,8 @@ public interface SwerveDrive extends Subsystem {
 
   void drive(ChassisSpeeds speeds);
 
+  void lockPose();
+  
   void zeroGyro();
 
   Command zeroGyroCommand();
