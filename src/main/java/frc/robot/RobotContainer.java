@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AimAssistCmd;
-import frc.robot.commands.LockPoseCmd;
 import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
@@ -137,18 +136,21 @@ public class RobotContainer {
     shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
-    swerveDrive.setDefaultCommand(new LockPoseCmd(swerveDrive, mainController, shouldSprint));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(
+        swerveDrive, mainController, shouldSprint, () -> false));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
 
     // shooter
-    var shooterComboWithAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
+    var shooterComboWithAimAssistCmd = new AimAssistCmd(
+        swerveDrive, mainController, shouldSprint, () -> false)
         .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
-    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
+    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
+        swerveDrive, mainController, shouldSprint, () -> false)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
