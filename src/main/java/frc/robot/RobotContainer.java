@@ -144,10 +144,13 @@ public class RobotContainer {
         .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
+    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
+        .alongWith(shooterComboCmd());
+
     controlPanel.button(1)
         .whileTrue(Commands.either(
             shooterComboWithAimAssistCmd,
-            shooterComboCmd(),
+            shooterComboWithSwerveControlCmd,
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
