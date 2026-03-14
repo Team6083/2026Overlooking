@@ -165,10 +165,19 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
 
   @Override
   public void lockPose() {
-    frontLeft.setAngle(kinematics.getModules()[0].getAngle());
-    frontRight.setAngle(kinematics.getModules()[1].getAngle());
-    backLeft.setAngle(kinematics.getModules()[2].getAngle());
-    backRight.setAngle(kinematics.getModules()[3].getAngle());
+    // frontLeft.setAngle(kinematics.getModules()[0].getAngle());
+    // frontRight.setAngle(kinematics.getModules()[1].getAngle());
+    // backLeft.setAngle(kinematics.getModules()[2].getAngle());
+    // backRight.setAngle(kinematics.getModules()[3].getAngle());
+
+    frontLeft.setDesiredState(new SwerveModuleState(0,
+        kinematics.getModules()[0].getAngle()));
+    frontRight.setDesiredState(new SwerveModuleState(0,
+        kinematics.getModules()[1].getAngle()));
+    backLeft.setDesiredState(new SwerveModuleState(0,
+        kinematics.getModules()[2].getAngle()));
+    backRight.setDesiredState(new SwerveModuleState(0,
+        kinematics.getModules()[3].getAngle()));
   }
 
   @Override
