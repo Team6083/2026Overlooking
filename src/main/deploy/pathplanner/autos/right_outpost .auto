@@ -53,18 +53,6 @@
           "data": {
             "name": "shoot"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "right_shoot to right_trench"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "right_trench_B to right_neutrolZone_A"
-          }
         }
       ]
     }
