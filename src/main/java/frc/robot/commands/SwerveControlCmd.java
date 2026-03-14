@@ -35,6 +35,7 @@ public class SwerveControlCmd extends Command {
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
     this.shouldSprint = shouldSprint;
+    this.shouldLock = shouldLock;
     addRequirements(swerveDrive);
   }
 
