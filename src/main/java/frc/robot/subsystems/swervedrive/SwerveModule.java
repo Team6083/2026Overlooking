@@ -122,7 +122,8 @@ public class SwerveModule extends SubsystemBase {
     turnOutput = MathUtil.clamp(turnOutput, -1.0, 1.0);
     turningMotor.set(turnOutput);
 
-    double driveOutput = optimized.speedMetersPerSecond / 4;
+    double driveOutput = optimized.speedMetersPerSecond
+        / ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond);
     driveMotor.set(driveOutput);
 
     driveMotorVoltage = driveOutput * driveMotor.getBusVoltage();

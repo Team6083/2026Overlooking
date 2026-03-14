@@ -131,6 +131,7 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
@@ -144,10 +145,13 @@ public class RobotContainer {
         .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
+    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
+        .alongWith(shooterComboCmd());
+
     controlPanel.button(1)
         .whileTrue(Commands.either(
             shooterComboWithAimAssistCmd,
-            shooterComboCmd(),
+            shooterComboWithSwerveControlCmd,
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());
