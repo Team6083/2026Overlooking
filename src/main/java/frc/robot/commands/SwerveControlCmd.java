@@ -22,11 +22,13 @@ public class SwerveControlCmd extends Command {
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
+
   private Supplier<Boolean> shouldSprint;
+  private Supplier<Boolean> shouldLock;
 
   /** Creates a new SwerveControlCmd. */
   public SwerveControlCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
-      Supplier<Boolean> shouldSprint) {
+      Supplier<Boolean> shouldSprint, Supplier<Boolean> shouldLock) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
     this.limiterX = new SlewRateLimiter(4);
@@ -45,7 +47,12 @@ public class SwerveControlCmd extends Command {
   @Override
   public void execute() {
     Boolean isSprint = shouldSprint.get();
-    swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
+
+    if (shouldLock.get() && isJoystickQuiet()) {
+      swerveDrive.lockPose();
+    } else {
+      swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
+    }
   }
 
   private double getMagnification() {
@@ -69,6 +76,12 @@ public class SwerveControlCmd extends Command {
   protected double calcRotSpeed() {
     return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getRotMagnification();
+  }
+
+  protected boolean isJoystickQuiet() {
+    return calcSpeedX() < 0.1
+        && calcSpeedY() < 0.1
+        && calcRotSpeed() < 0.1;
   }
 
   // Called once the command ends or is interrupted.

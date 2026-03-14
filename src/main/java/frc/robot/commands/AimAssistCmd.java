@@ -20,8 +20,8 @@ public class AimAssistCmd extends SwerveControlCmd {
   private final PIDController yawPID;
 
   public AimAssistCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
-      Supplier<Boolean> shouldSprint) {
-    super(swerveDrive, mainController, shouldSprint);
+      Supplier<Boolean> shouldSprint, Supplier<Boolean> shouldLock) {
+    super(swerveDrive, mainController, shouldSprint, shouldLock);
     this.yawPID = new PIDController(0.07, 0.002, 0);
     this.yawPID.setTolerance(0.5);
     this.yawPID.enableContinuousInput(-180, 180);
