@@ -163,6 +163,7 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     return gyro.getRotation2d();
   }
 
+  @Override
   public void lockPose() {
     frontLeft.setAngle(kinematics.getModules()[0].getAngle());
     frontRight.setAngle(kinematics.getModules()[1].getAngle());
