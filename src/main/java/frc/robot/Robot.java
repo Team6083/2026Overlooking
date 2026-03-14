@@ -72,7 +72,10 @@ public class Robot extends TimedRobot {
       System.gc();
     }
 
-    m_robotContainer.putRobotPoseOnDashboard();
+    // Throttle pose updates to once per second
+    if (Timer.getFPGATimestamp() % 1 < 0.02) {
+      m_robotContainer.putRobotPoseOnDashboard();
+    }
 
   }
 
