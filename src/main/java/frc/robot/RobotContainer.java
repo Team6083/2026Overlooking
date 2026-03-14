@@ -115,7 +115,7 @@ public class RobotContainer {
         new ShooterComboCmd(
             swerveDrive, shooterSubsystem,
             transportSubsystem, feederSubsystem, intakeSubsystem,
-            () -> false)
+            () -> true)
             .withTimeout(4));
   }
 

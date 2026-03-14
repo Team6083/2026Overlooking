@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.014051282051283,
-        "y": 1.8372692307692309
+        "x": 2.621423487544485,
+        "y": 1.9423368920521953
       },
       "isLocked": false,
       "linkedName": "right_shoot"
     },
     {
       "anchor": {
-        "x": 3.8163974358974375,
-        "y": 0.5000256410256418
+        "x": 3.735000000000001,
+        "y": 0.8023589743589741
       },
       "prevControl": {
-        "x": 2.9974300815684582,
-        "y": 1.1963909067632346
+        "x": 2.481553973902729,
+        "y": 1.2860260972716482
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "right_trench"
+      "linkedName": "right_trenchB"
     }
   ],
   "rotationTargets": [],
