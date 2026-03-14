@@ -81,6 +81,11 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
   }
 
   @Override
+  public void lockPose() {
+    swerveDrive.lockPose();
+  }
+
+  @Override
   public void zeroGyro() {
     swerveDrive.zeroGyro();
   }
@@ -123,12 +128,6 @@ public class YagslSwerve extends SubsystemBase implements frc.robot.subsystems.s
     Command cmd = runOnce(() -> Arrays.asList(swerveDrive.getModules())
         .forEach(it -> it.setAngle(0.0)));
     cmd.setName("centerModulesCmd");
-    return cmd;
-  }
-
-  public Command lockPoseCmd() {
-    Command cmd = run(() -> swerveDrive.lockPose());
-    cmd.setName("lockPoseCmd");
     return cmd;
   }
 

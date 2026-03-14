@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.pathfinding.LocalADStar;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -134,18 +136,21 @@ public class RobotContainer {
     shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
-    swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
+    swerveDrive.setDefaultCommand(new SwerveControlCmd(
+        swerveDrive, mainController, shouldSprint, () -> true));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
 
     // shooter
-    var shooterComboWithAimAssistCmd = new AimAssistCmd(swerveDrive, mainController, shouldSprint)
+    var shooterComboWithAimAssistCmd = new AimAssistCmd(
+        swerveDrive, mainController, shouldSprint, () -> false)
         .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
-    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
+    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
+        swerveDrive, mainController, shouldSprint, () -> true)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
