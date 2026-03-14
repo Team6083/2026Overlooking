@@ -5,6 +5,8 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.studica.frc.AHRS;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -169,7 +171,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
     SmartDashboard.putNumber("drive/gyroHeadingDeg", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("drive/gyroHeedingNonContinuous",
+        Math.toDegrees(MathUtil.angleModulus(gyro.getRotation2d().getRadians())));
     SmartDashboard.putBoolean("drive/gyroConnected", gyro.isConnected());
+
     swerveDesiredStatePublisher.set(desiredSwerveModuleStates);
     swerveCurrentStatePublisher.set(new SwerveModuleState[] {
         frontLeft.getState(),
