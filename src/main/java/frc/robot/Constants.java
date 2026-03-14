@@ -198,9 +198,9 @@ public class Constants {
 
     public static final double leftTrenchZoneMinY = FieldConstants.fieldWidth
         .minus(FieldConstants.trenchWidth).in(Meters);
-    public static final double leftTrenchZoneMaxY = FieldConstants.fieldWidth.in(Meters);
+    public static final double leftTrenchZoneMaxY = FieldConstants.fieldWidth.in(Meters) + 2;
 
-    public static final double rightTrenchZoneMinY = 0;
+    public static final double rightTrenchZoneMinY = -2;
     public static final double rightTrenchZoneMaxY = FieldConstants.trenchWidth.in(Meters);
 
     public static final Zone blueLeftZone = new RectZone(

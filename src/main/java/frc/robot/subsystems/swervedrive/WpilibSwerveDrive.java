@@ -61,7 +61,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     backRight = new SwerveModule(driveBaseConstant.backRight());
 
     gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    gyro.reset();
 
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
