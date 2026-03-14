@@ -10,10 +10,10 @@
     "trench to shoot"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.9,
-  "defaultMaxAccel": 4.5,
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 7.4,
   "defaultMaxAngVel": 273.107,
-  "defaultMaxAngAccel": 1885.796,
+  "defaultMaxAngAccel": 475.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 74.088,
   "robotMOI": 10.2916,

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6417319098457894,
-        "y": 5.977034400948992
+        "x": 0.5605000000000013,
+        "y": 5.976910256410256
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.644604798768035,
-        "y": 5.654165771864571
+        "x": 0.5633728889222469,
+        "y": 5.654041627325835
       },
       "isLocked": false,
       "linkedName": "depot"
@@ -33,10 +33,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.9,
-    "maxAcceleration": 4.5,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 7.4,
     "maxAngularVelocity": 273.107,
-    "maxAngularAcceleration": 1885.796,
+    "maxAngularAcceleration": 475.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

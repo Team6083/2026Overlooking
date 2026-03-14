@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -61,7 +62,6 @@ public class Robot extends TimedRobot {
         BuildConstants.GIT_BRANCH,
         BuildConstants.DIRTY == 1 ? "Dirty" : "Clean"));
     SmartDashboard.putString("Metadata/BuildDate", BuildConstants.BUILD_DATE);
-
   }
 
   @Override
@@ -71,6 +71,8 @@ public class Robot extends TimedRobot {
     if (gcTimer.advanceIfElapsed(5)) {
       System.gc();
     }
+
+    m_robotContainer.putRobotPoseOnDashboard();
   }
 
   @Override
