@@ -27,8 +27,8 @@ public class LockPoseCmd extends SwerveControlCmd {
   }
 
   public boolean shouldLock() {
-    return Math.abs(mainController.getLeftY()) < 0.1 &&
-        Math.abs(mainController.getLeftX()) < 0.1 &&
-        Math.abs(mainController.getRightX()) < 0.1;
+    return calcSpeedX() < 0.1 &&
+        calcSpeedY() < 0.1 &&
+        calcRotSpeed() < 0.1;
   }
 }
