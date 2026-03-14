@@ -26,8 +26,6 @@ public class Robot extends TimedRobot {
 
   private Timer gcTimer = new Timer();
 
-  private final Field2d field = new Field2d();
-
   public Robot() {
     if (!savelog) {
       StatusLogger.disableAutoLogging();
@@ -39,12 +37,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    m_robotContainer.putRobotPoseOnDashboard();
+
     if (savelog) {
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog());
     }
-
-    field.setRobotPose(m_robotContainer.swerveDrive.getPose2d());
 
     SignalLogger.enableAutoLogging(savelog);
 
@@ -66,8 +64,6 @@ public class Robot extends TimedRobot {
         BuildConstants.GIT_BRANCH,
         BuildConstants.DIRTY == 1 ? "Dirty" : "Clean"));
     SmartDashboard.putString("Metadata/BuildDate", BuildConstants.BUILD_DATE);
-
-    SmartDashboard.putData(field);
   }
 
   @Override

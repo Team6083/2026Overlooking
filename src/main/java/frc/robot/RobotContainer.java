@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,7 +35,7 @@ import java.util.function.Supplier;
 public class RobotContainer {
   private final TagTracking shooterTracker;
   private final TagTracking backTracker;
-  SwerveDrive swerveDrive;
+  private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
   private final ClimberSubsystem climberSubsystem;
@@ -97,6 +98,13 @@ public class RobotContainer {
       }
     }
     visionPosePublisher.set(visionPoses);
+  }
+
+  private final Field2d field = new Field2d();
+
+  public void putRobotPoseOnDashboard() {
+    field.setRobotPose(swerveDrive.getPose2d());
+    SmartDashboard.putData("Robot Pose", field);
   }
 
   private void registerCommand() {
