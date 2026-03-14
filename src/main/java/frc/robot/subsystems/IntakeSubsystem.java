@@ -110,13 +110,13 @@ public class IntakeSubsystem extends SubsystemBase {
   // intake
   public Command intakeCmd() {
     Command cmd = runEnd(this::intake, this::stopIntake);
-    cmd.setName("startIntakeCmd");
+    cmd.setName("intakeCmd");
     return cmd;
   }
 
   public Command reverseIntakeCmd() {
     Command cmd = runEnd(this::reverseIntake, this::stopIntake);
-    cmd.setName("startReverseIntakeCmd");
+    cmd.setName("reverseIntakeCmd");
     return cmd;
   }
 

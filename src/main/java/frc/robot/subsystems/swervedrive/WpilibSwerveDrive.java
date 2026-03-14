@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import com.studica.frc.AHRS;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveBaseConstant;
+import frc.robot.Constants.ModuleConstant;
 
 public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsystems.swervedrive.SwerveDrive {
   /** Creates a new SwerveDrive. */
@@ -59,7 +63,6 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     backRight = new SwerveModule(driveBaseConstant.backRight());
 
     gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    gyro.reset();
 
     kinematics = new SwerveDriveKinematics(
         new Translation2d(+0.27, +0.27),
@@ -120,7 +123,8 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     desiredChassisSpeeds = speeds;
     desiredSwerveModuleStates = kinematics.toSwerveModuleStates(desiredChassisSpeeds);
 
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredSwerveModuleStates, 4.0);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredSwerveModuleStates,
+        ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond));
 
     frontLeft.setDesiredState(desiredSwerveModuleStates[0]);
     frontRight.setDesiredState(desiredSwerveModuleStates[1]);
@@ -186,7 +190,10 @@ public class WpilibSwerveDrive extends SubsystemBase implements frc.robot.subsys
     poseEstimator.update(gyro.getRotation2d(), getSwerveModulePosition());
 
     SmartDashboard.putNumber("drive/gyroHeadingDeg", gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("drive/gyroHeedingNonContinuous",
+        Math.toDegrees(MathUtil.angleModulus(gyro.getRotation2d().getRadians())));
     SmartDashboard.putBoolean("drive/gyroConnected", gyro.isConnected());
+
     swerveDesiredStatePublisher.set(desiredSwerveModuleStates);
     swerveCurrentStatePublisher.set(new SwerveModuleState[] {
         frontLeft.getState(),

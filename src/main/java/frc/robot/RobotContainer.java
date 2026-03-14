@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -102,6 +103,13 @@ public class RobotContainer {
     visionPosePublisher.set(visionPoses);
   }
 
+  private final Field2d field = new Field2d();
+
+  public void putRobotPoseOnDashboard() {
+    field.setRobotPose(swerveDrive.getPose2d());
+    SmartDashboard.putData("Robot Pose", field);
+  }
+
   private void registerCommand() {
     NamedCommands.registerCommand("deployIntake", intakeSubsystem.deployIntakeCmd());
     NamedCommands.registerCommand("intake", intakeSubsystem.intakeCmd());
@@ -126,6 +134,7 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
     swerveDrive.setDefaultCommand(new LockPoseCmd(swerveDrive, mainController, shouldSprint));
@@ -139,10 +148,13 @@ public class RobotContainer {
         .alongWith(shooterComboCmd());
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
+    var shooterComboWithSwerveControlCmd = new SwerveControlCmd(swerveDrive, mainController, shouldSprint)
+        .alongWith(shooterComboCmd());
+
     controlPanel.button(1)
         .whileTrue(Commands.either(
             shooterComboWithAimAssistCmd,
-            shooterComboCmd(),
+            shooterComboWithSwerveControlCmd,
             controlPanel.button(10)));
 
     controlPanel.button(3).whileTrue(shooterSubsystem.shootCmd());

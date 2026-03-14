@@ -51,7 +51,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public Command shootCmd() {
     Command cmd = runEnd(() -> shoot(ShooterConstants.defaultTargetVelocity), this::stopShooter);
-    cmd.setName("shootCmd");
+    cmd.setName("shoot3000Cmd");
+    return cmd;
+  }
+
+  public Command shootCmd(double targetVelocity) {
+    Command cmd = runEnd(() -> shoot(targetVelocity), this::stopShooter);
+    cmd.setName("shoot+" + targetVelocity + "Cmd");
     return cmd;
   }
 

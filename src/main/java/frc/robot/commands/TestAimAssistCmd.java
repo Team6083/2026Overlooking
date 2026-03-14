@@ -16,10 +16,10 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
 import java.util.function.Supplier;
 
-public class AimAssistCmd extends SwerveControlCmd {
+public class TestAimAssistCmd extends SwerveControlCmd {
   private final PIDController yawPID;
 
-  public AimAssistCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
+  public TestAimAssistCmd(SwerveDrive swerveDrive, CommandXboxController mainController,
       Supplier<Boolean> shouldSprint) {
     super(swerveDrive, mainController, shouldSprint);
     this.yawPID = new PIDController(0.07, 0.002, 0);
@@ -37,10 +37,11 @@ public class AimAssistCmd extends SwerveControlCmd {
   @Override
   protected double calcRotSpeed() {
     Pose2d robotPose = swerveDrive.getPose2d();
-    double[] hub = getHubPosition();
-    double dx = hub[0] - robotPose.getX();
-    double dy = hub[1] - robotPose.getY();
-    double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
+    // double[] hub = getHubPosition();
+    // double dx = hub[0] - robotPose.getX();
+    // double dy = hub[1] - robotPose.getY();
+    // double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
+    double targetAngle = 45;
     final ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
 
     double currentAngle = robotPose.getRotation().getDegrees();
@@ -59,9 +60,6 @@ public class AimAssistCmd extends SwerveControlCmd {
     SmartDashboard.putNumber("AimAssist/error", error);
     SmartDashboard.putNumber("AimAssistCmd/output", actualOutput);
     SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
-    SmartDashboard.putNumber("AimAssistCmd/targetAngle", targetAngle);
-    SmartDashboard.putNumber("AimAssistCmd/currentAngle", currentAngle);
-    SmartDashboard.putNumber("AimAssistCmd/effectiveBallSpeed", effectiveBallSpeed);
     return actualOutput;
   }
 
