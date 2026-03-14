@@ -59,6 +59,9 @@ public class AimAssistCmd extends SwerveControlCmd {
     SmartDashboard.putNumber("AimAssist/error", error);
     SmartDashboard.putNumber("AimAssistCmd/output", actualOutput);
     SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
+    SmartDashboard.putNumber("AimAssistCmd/targetAngle", targetAngle);
+    SmartDashboard.putNumber("AimAssistCmd/currentAngle", currentAngle);
+    SmartDashboard.putNumber("AimAssistCmd/effectiveBallSpeed", effectiveBallSpeed);
     return actualOutput;
   }
 
