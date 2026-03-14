@@ -18,10 +18,13 @@ import java.util.function.Supplier;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveControlCmd extends Command {
   protected final SwerveDrive swerveDrive;
+
   protected final CommandXboxController mainController;
+
   private final SlewRateLimiter limiterX;
   private final SlewRateLimiter limiterY;
   private final SlewRateLimiter rotLimiter;
+
   private Supplier<Boolean> shouldSprint;
 
   /** Creates a new SwerveControlCmd. */
@@ -29,9 +32,11 @@ public class SwerveControlCmd extends Command {
       Supplier<Boolean> shouldSprint) {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
+
     this.limiterX = new SlewRateLimiter(4);
     this.limiterY = new SlewRateLimiter(4);
     this.rotLimiter = new SlewRateLimiter(5);
+
     this.shouldSprint = shouldSprint;
     addRequirements(swerveDrive);
   }
@@ -44,16 +49,15 @@ public class SwerveControlCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Boolean isSprint = shouldSprint.get();
     swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
   }
 
   private double getMagnification() {
-    return mainController.leftBumper().getAsBoolean() ? 0.6 : 0.3;
+    return shouldSprint.get() ? 0.6 : 0.3;
   }
 
   private double getRotMagnification() {
-    return mainController.leftBumper().getAsBoolean() ? 0.8 : 0.4;
+    return shouldSprint.get() ? 0.8 : 0.4;
   }
 
   private double calcSpeedX() {
