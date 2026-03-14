@@ -131,8 +131,7 @@ public class RobotContainer {
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
-    shooterSubsystem.setDefaultCommand(shooterSubsystem.runEnd(
-      () -> shooterSubsystem.shoot(1500), shooterSubsystem::stopShooter));
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(swerveDrive, mainController, shouldSprint));
