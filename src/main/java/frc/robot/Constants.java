@@ -94,7 +94,7 @@ public class Constants {
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.7;
+    public static final double intakeSpeed = 0.65;
     public static final double reverseIntakeSpeed = -0.65;
 
     public static final double deployPivotSpeed = 0.8;
