@@ -5,14 +5,14 @@
 
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ModuleConstant;
 import frc.robot.subsystems.swervedrive.SwerveDrive;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import java.util.function.Supplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -57,18 +57,18 @@ public class SwerveControlCmd extends Command {
   }
 
   private double calcSpeedX() {
-    return -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1)) *
-        ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
+    return -limiterX.calculate(MathUtil.applyDeadband(mainController.getLeftY(), 0.1))
+        * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
   }
 
   private double calcSpeedY() {
-    return -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1)) *
-        ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
+    return -limiterY.calculate(MathUtil.applyDeadband(mainController.getLeftX(), 0.1))
+        * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getMagnification();
   }
 
   protected double calcRotSpeed() {
-    return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1)) *
-        ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getRotMagnification();
+    return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
+        * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getRotMagnification();
   }
 
   // Called once the command ends or is interrupted.
