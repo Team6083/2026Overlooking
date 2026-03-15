@@ -117,6 +117,11 @@ public class RobotContainer {
             transportSubsystem, feederSubsystem, intakeSubsystem,
             () -> true)
             .withTimeout(4));
+
+    NamedCommands.registerCommand("aimAssist",
+        new AimAssistCmd(swerveDrive, mainController, shouldSprint, shouldLockPose));
+    NamedCommands.registerCommand("stopDrive",
+        swerveDrive.runOnce(() -> swerveDrive.drive(0, 0, 0, false)));
   }
 
   private Command shooterComboCmd() {
