@@ -85,12 +85,12 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = -154;
-    public static final double pivotRightExpectedZero = 49;
+    public static final double pivotLeftExpectedZero = -143;
+    public static final double pivotRightExpectedZero = 37;
 
     public static final double pivotEncoderFullRange = 360;
     public static final double pivotDeployStopPosition = 93;
-    public static final double pivotRetractStopPosition = 3;
+    public static final double pivotRetractStopPosition = 11;
 
     public static final boolean intakeInverted = true;
 

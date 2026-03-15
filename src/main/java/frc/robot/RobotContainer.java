@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.pathfinding.LocalADStar;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -40,7 +38,7 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
-  private final ClimberSubsystem climberSubsystem;
+  // private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -52,7 +50,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
-  private Supplier<Boolean> shouldAutoDrs = () -> controlPanel.button(12).getAsBoolean();
+  private Supplier<Boolean> shouldLockPose = () -> controlPanel.button(12).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -62,12 +60,12 @@ public class RobotContainer {
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
-    climberSubsystem = new ClimberSubsystem();
+    // climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
-    drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
+    drsSubsystem = new DrsSubsystem(swerveDrive, () -> false);
 
     SmartDashboard.putData("PositioningCmd", positioningCmd);
 
@@ -137,7 +135,7 @@ public class RobotContainer {
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true));
+        swerveDrive, mainController, shouldSprint, shouldLockPose));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
@@ -150,7 +148,7 @@ public class RobotContainer {
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true)
+        swerveDrive, mainController, shouldSprint, shouldLockPose)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
@@ -176,8 +174,8 @@ public class RobotContainer {
     mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
 
     // climber
-    mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
-    mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
+    // mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
+    // mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
 
     // DRS
     controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
