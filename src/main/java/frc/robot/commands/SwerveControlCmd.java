@@ -51,10 +51,17 @@ public class SwerveControlCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shouldLock.get() && isJoystickQuiet()) {
+    double speedX = calcSpeedX();
+    double speedY = calcSpeedY();
+    double rotSpeed = calcRotSpeed();
+
+    boolean isJoystickQuiet = Math.abs(speedX) < 0.1
+        && Math.abs(speedY) < 0.1 && Math.abs(rotSpeed) < 0.1;
+
+    if (shouldLock.get() && isJoystickQuiet) {
       swerveDrive.lockPose();
     } else {
-      swerveDrive.drive(calcSpeedX(), calcSpeedY(), calcRotSpeed(), true);
+      swerveDrive.drive(speedX, speedY, rotSpeed, true);
     }
   }
 
@@ -79,12 +86,6 @@ public class SwerveControlCmd extends Command {
   protected double calcRotSpeed() {
     return -rotLimiter.calculate(MathUtil.applyDeadband(mainController.getRightX(), 0.1))
         * ModuleConstant.kMaxModuleSpeed.in(MetersPerSecond) * getRotMagnification();
-  }
-
-  protected boolean isJoystickQuiet() {
-    return calcSpeedX() < 0.1
-        && calcSpeedY() < 0.1
-        && calcRotSpeed() < 0.1;
   }
 
   // Called once the command ends or is interrupted.
