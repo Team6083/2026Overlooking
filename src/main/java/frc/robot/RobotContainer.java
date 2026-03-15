@@ -40,7 +40,7 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
-  private final ClimberSubsystem climberSubsystem;
+  // private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -62,7 +62,7 @@ public class RobotContainer {
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
-    climberSubsystem = new ClimberSubsystem();
+    // climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
@@ -176,8 +176,8 @@ public class RobotContainer {
     mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
 
     // climber
-    mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
-    mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
+    // mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
+    // mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
 
     // DRS
     controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
