@@ -137,7 +137,7 @@ public class RobotContainer {
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true));
+        swerveDrive, mainController, shouldSprint, () -> false));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
@@ -150,7 +150,7 @@ public class RobotContainer {
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true)
+        swerveDrive, mainController, shouldSprint, () -> false)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
