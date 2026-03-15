@@ -84,9 +84,9 @@ public class SwerveControlCmd extends Command {
   }
 
   protected boolean isJoystickQuiet() {
-    return calcSpeedX() < 0.1
-        && calcSpeedY() < 0.1
-        && calcRotSpeed() < 0.1;
+    return calcSpeedX() < 0.01
+        && calcSpeedY() < 0.01
+        && calcRotSpeed() < 0.01;
   }
 
   // Called once the command ends or is interrupted.
