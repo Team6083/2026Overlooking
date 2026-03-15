@@ -50,7 +50,7 @@ public class RobotContainer {
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
-  private Supplier<Boolean> shouldAutoDrs = () -> controlPanel.button(12).getAsBoolean();
+  private Supplier<Boolean> shouldLockPose = () -> controlPanel.button(12).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -65,7 +65,7 @@ public class RobotContainer {
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
-    drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
+    drsSubsystem = new DrsSubsystem(swerveDrive, () -> false);
 
     SmartDashboard.putData("PositioningCmd", positioningCmd);
 
@@ -135,7 +135,7 @@ public class RobotContainer {
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true));
+        swerveDrive, mainController, shouldSprint, shouldLockPose));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
@@ -148,7 +148,7 @@ public class RobotContainer {
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true)
+        swerveDrive, mainController, shouldSprint, shouldLockPose)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
