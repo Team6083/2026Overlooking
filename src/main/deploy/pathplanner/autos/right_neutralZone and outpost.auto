@@ -36,6 +36,12 @@
                       "data": {
                         "name": "deployIntake"
                       }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "intake"
+                      }
                     }
                   ]
                 }
@@ -88,9 +94,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "aimAssist"
+                }
+              }
+            ]
           }
         },
         {
@@ -125,9 +144,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "aimAssist"
+                }
+              }
+            ]
           }
         }
       ]

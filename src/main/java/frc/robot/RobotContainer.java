@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.pathfinding.LocalADStar;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -24,8 +22,6 @@ import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -40,19 +36,17 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
-  private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
   private final SendableChooser<Command> autoChooser;
-  private final DrsSubsystem drsSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
 
   private Supplier<Boolean> shouldSprint = () -> mainController.leftBumper().getAsBoolean();
-  private Supplier<Boolean> shouldAutoDrs = () -> controlPanel.button(12).getAsBoolean();
+  private Supplier<Boolean> shouldLockPose = () -> controlPanel.button(12).getAsBoolean();
 
   public RobotContainer() {
     shooterTracker = new TagTracking("limelight-shooter");
@@ -62,12 +56,10 @@ public class RobotContainer {
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
-    climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
-    drsSubsystem = new DrsSubsystem(swerveDrive, shouldAutoDrs);
 
     SmartDashboard.putData("PositioningCmd", positioningCmd);
 
@@ -117,8 +109,13 @@ public class RobotContainer {
         new ShooterComboCmd(
             swerveDrive, shooterSubsystem,
             transportSubsystem, feederSubsystem, intakeSubsystem,
-            () -> false)
+            () -> true)
             .withTimeout(4));
+
+    NamedCommands.registerCommand("aimAssist",
+        new AimAssistCmd(swerveDrive, mainController, shouldSprint, shouldLockPose));
+    NamedCommands.registerCommand("stopDrive",
+        swerveDrive.runOnce(() -> swerveDrive.drive(0, 0, 0, false)));
   }
 
   private Command shooterComboCmd() {
@@ -137,7 +134,7 @@ public class RobotContainer {
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true));
+        swerveDrive, mainController, shouldSprint, shouldLockPose));
     mainController.start().onTrue(Commands.runOnce(() -> {
       swerveDrive.zeroGyro();
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
@@ -150,7 +147,7 @@ public class RobotContainer {
     shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
-        swerveDrive, mainController, shouldSprint, () -> true)
+        swerveDrive, mainController, shouldSprint, shouldLockPose)
         .alongWith(shooterComboCmd());
 
     controlPanel.button(1)
@@ -174,14 +171,6 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.y().onTrue(intakeSubsystem.retractIntakeCmd());
     mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
-
-    // climber
-    mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
-    mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
-
-    // DRS
-    controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
-    controlPanel.button(4).onTrue(drsSubsystem.downDrsCmd());
   }
 
   public Command getAutonomousCommand() {

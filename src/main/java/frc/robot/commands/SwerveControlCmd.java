@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ModuleConstant;
@@ -63,10 +64,11 @@ public class SwerveControlCmd extends Command {
     } else {
       swerveDrive.drive(speedX, speedY, rotSpeed, true);
     }
+    SmartDashboard.putBoolean("isJoystickQuiet", isJoystickQuiet);
   }
 
   private double getMagnification() {
-    return shouldSprint.get() ? 0.6 : 0.3;
+    return shouldSprint.get() ? 0.75 : 0.3;
   }
 
   private double getRotMagnification() {

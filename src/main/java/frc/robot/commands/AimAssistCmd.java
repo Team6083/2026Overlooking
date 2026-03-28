@@ -43,7 +43,7 @@ public class AimAssistCmd extends SwerveControlCmd {
     double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
     final ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
 
-    double currentAngle = robotPose.getRotation().getDegrees();
+    double currentAngle = swerveDrive.getGyroRotation2d().getDegrees();
     double error = targetAngle - currentAngle;
     if (error > 180) {
       error -= 360;

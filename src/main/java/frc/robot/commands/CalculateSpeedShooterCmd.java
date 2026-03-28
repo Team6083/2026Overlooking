@@ -42,7 +42,7 @@ public class CalculateSpeedShooterCmd extends Command {
         * Math.exp(ShooterConstants.shooterDistanceExponent * dis.in(Centimeters)),
         0.0, ShooterConstants.maxShooterVelocity); // 2207.31e^0.0017x
 
-    shooterSubsystem.shoot(targetVelocity);
+    shooterSubsystem.shoot(targetVelocity + 100);
 
     SmartDashboard.putNumber("shooterDistance", dis.in(Centimeters));
   }

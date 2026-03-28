@@ -7,7 +7,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -60,17 +59,6 @@ public class Constants {
     public static final LinearVelocity kMaxModuleSpeed = MetersPerSecond.of(4);
   }
 
-  public static final class ClimberConstants {
-    public static final int climbMotorId = 40;
-    public static final boolean climbMotorInverted = true;
-
-    public static final double climbUpSpeed = 0.4;
-    public static final double climbDownSpeed = -0.4;
-
-    public static final int climbEncoderIdA = 4;
-    public static final int climbEncoderIdB = 5;
-  }
-
   public static final class SwerveControlConstants {
     public static final double kFastMagnification = 0.6;
     public static final double kSlowMagnification = 0.3;
@@ -85,16 +73,16 @@ public class Constants {
     public static final int pivotLeftEncoderId = 3;
     public static final int pivotRightEncoderId = 2;
 
-    public static final double pivotLeftExpectedZero = -33;
-    public static final double pivotRightExpectedZero = 48;
+    public static final double pivotLeftExpectedZero = -143;
+    public static final double pivotRightExpectedZero = 37;
 
     public static final double pivotEncoderFullRange = 360;
-    public static final double pivotDeployStopPosition = 95;
-    public static final double pivotRetractStopPosition = 3;
+    public static final double pivotDeployStopPosition = 93;
+    public static final double pivotRetractStopPosition = 11;
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.7;
+    public static final double intakeSpeed = 0.65;
     public static final double reverseIntakeSpeed = -0.65;
 
     public static final double deployPivotSpeed = 0.8;
@@ -135,7 +123,7 @@ public class Constants {
 
   public static final class FeederConstants {
     public static final int feederMotorID = 32;
-    public static final double feederMotorIn = 0.5;
+    public static final double feederMotorIn = 0.6;
     public static final double feederMotorOut = -0.5;
     public static final boolean feederMotorInverted = false;
   }
