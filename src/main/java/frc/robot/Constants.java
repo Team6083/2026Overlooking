@@ -7,7 +7,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -58,17 +57,6 @@ public class Constants {
     // define the radius of the wheel in meters
     public static final Distance kWheelRadius = Inches.of(2);
     public static final LinearVelocity kMaxModuleSpeed = MetersPerSecond.of(4);
-  }
-
-  public static final class ClimberConstants {
-    public static final int climbMotorId = 40;
-    public static final boolean climbMotorInverted = true;
-
-    public static final double climbUpSpeed = 0.4;
-    public static final double climbDownSpeed = -0.4;
-
-    public static final int climbEncoderIdA = 4;
-    public static final int climbEncoderIdB = 5;
   }
 
   public static final class SwerveControlConstants {

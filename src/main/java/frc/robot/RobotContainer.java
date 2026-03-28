@@ -22,8 +22,6 @@ import frc.robot.commands.PositioningCmd;
 import frc.robot.commands.ShooterComboCmd;
 import frc.robot.commands.SwerveControlCmd;
 import frc.robot.lib.TagTracking;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.DrsSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -38,13 +36,11 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final CommandXboxController mainController = new CommandXboxController(0);
   private final CommandGenericHID controlPanel = new CommandGenericHID(1);
-  // private final ClimberSubsystem climberSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TransportSubsystem transportSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
   private final SendableChooser<Command> autoChooser;
-  private final DrsSubsystem drsSubsystem;
   private final PositioningCmd positioningCmd;
   private final StructArrayPublisher<Pose2d> visionPosePublisher = NetworkTableInstance
       .getDefault().getStructArrayTopic("visionPoses", Pose2d.struct).publish();
@@ -60,12 +56,10 @@ public class RobotContainer {
         SwerveDriveFactory.RobotVariant.COMPETITION);
     positioningCmd = new PositioningCmd(swerveDrive, shooterTracker, backTracker);
 
-    // climberSubsystem = new ClimberSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     transportSubsystem = new TransportSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     feederSubsystem = new FeederSubsystem();
-    drsSubsystem = new DrsSubsystem(swerveDrive, () -> false);
 
     SmartDashboard.putData("PositioningCmd", positioningCmd);
 
@@ -177,14 +171,6 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.y().onTrue(intakeSubsystem.retractIntakeCmd());
     mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
-
-    // climber
-    // mainController.rightTrigger().whileTrue(climberSubsystem.climbUpCmd());
-    // mainController.leftTrigger().whileTrue(climberSubsystem.climbDownCmd());
-
-    // DRS
-    controlPanel.button(5).onTrue(drsSubsystem.upDrsCmd());
-    controlPanel.button(4).onTrue(drsSubsystem.downDrsCmd());
   }
 
   public Command getAutonomousCommand() {
