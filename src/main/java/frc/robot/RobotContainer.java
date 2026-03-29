@@ -126,11 +126,20 @@ public class RobotContainer {
     cmd.setName("shooterComboCmd");
     return cmd;
   }
+  
+  private Command shooterComboWithAimAssistCmd() {
+    Command cmd = new AimAssistCmd(
+        swerveDrive, mainController, shouldSprint, () -> false)
+        .alongWith(shooterComboCmd());
+    cmd.setName("shooterComboWithAimAssistCmd");
+    return cmd;
+  }
+
 
   private void configureBindings() {
     // position tracking
     controlPanel.button(9).whileTrue(positioningCmd);
-    shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.shootCmd(2000));
 
     // swerve drive
     swerveDrive.setDefaultCommand(new SwerveControlCmd(
@@ -140,11 +149,11 @@ public class RobotContainer {
       swerveDrive.resetPose(new Pose2d(swerveDrive.getPose2d().getTranslation(), Rotation2d.fromDegrees(0)));
     }));
 
-    // shooter
-    var shooterComboWithAimAssistCmd = new AimAssistCmd(
-        swerveDrive, mainController, shouldSprint, () -> false)
-        .alongWith(shooterComboCmd());
-    shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
+    // // shooter
+    // var shooterComboWithAimAssistCmd = new AimAssistCmd(
+    //     swerveDrive, mainController, shouldSprint, () -> false)
+    //     .alongWith(shooterComboCmd());
+    // shooterComboWithAimAssistCmd.setName("shooterComboWithAimAssistCmd");
 
     var shooterComboWithSwerveControlCmd = new SwerveControlCmd(
         swerveDrive, mainController, shouldSprint, shouldLockPose)
@@ -152,7 +161,7 @@ public class RobotContainer {
 
     controlPanel.button(1)
         .whileTrue(Commands.either(
-            shooterComboWithAimAssistCmd,
+            shooterComboWithAimAssistCmd(),
             shooterComboWithSwerveControlCmd,
             controlPanel.button(10)));
 
@@ -171,6 +180,11 @@ public class RobotContainer {
     mainController.povDown().whileTrue(intakeSubsystem.manualDeployCmd());
     mainController.y().onTrue(intakeSubsystem.retractIntakeCmd());
     mainController.a().onTrue(intakeSubsystem.deployIntakeCmd());
+    mainController.rightBumper().whileTrue(intakeSubsystem.intakeCmd()
+        .alongWith(transportSubsystem.transportInCmd()));
+    //shooter
+    mainController.rightTrigger().whileTrue(shooterComboCmd());
+
   }
 
   public Command getAutonomousCommand() {
