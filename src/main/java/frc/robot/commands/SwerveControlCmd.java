@@ -35,9 +35,9 @@ public class SwerveControlCmd extends Command {
     this.swerveDrive = swerveDrive;
     this.mainController = mainController;
 
-    this.limiterX = new SlewRateLimiter(4);
-    this.limiterY = new SlewRateLimiter(4);
-    this.rotLimiter = new SlewRateLimiter(5);
+    this.limiterX = new SlewRateLimiter(5.5);
+    this.limiterY = new SlewRateLimiter(5.5);
+    this.rotLimiter = new SlewRateLimiter(6);
 
     this.shouldSprint = shouldSprint;
     this.shouldLock = shouldLock;
@@ -68,11 +68,11 @@ public class SwerveControlCmd extends Command {
   }
 
   private double getMagnification() {
-    return shouldSprint.get() ? 0.75 : 0.3;
+    return shouldSprint.get() ? 0.15 : 0.15;
   }
 
   private double getRotMagnification() {
-    return shouldSprint.get() ? 0.8 : 0.4;
+    return shouldSprint.get() ? 0.2 : 0.2;
   }
 
   protected double calcSpeedX() {
