@@ -174,16 +174,16 @@ public class IntakeSubsystem extends SubsystemBase {
   // sync limit
   public Command deployIntakeCmd() {
     Command cmd = syncDeployIntakeCmd()
-        .until(() -> getRightPos() >= IntakeConstants.pivotDeployStopPosition
-            && getLeftPos() >= IntakeConstants.pivotDeployStopPosition);
+        .until(() -> Math.abs(getLeftPos() - IntakeConstants.pivotDeployStopPosition) < 20
+            && Math.abs(getRightPos() - IntakeConstants.pivotDeployStopPosition) < 20);
     cmd.setName("deployIntakeCmd");
     return cmd;
   }
 
   public Command retractIntakeCmd() {
     Command cmd = syncRetractIntakeCmd()
-        .until(() -> getLeftPos() <= IntakeConstants.pivotRetractStopPosition
-            && getRightPos() <= IntakeConstants.pivotRetractStopPosition);
+        .until(() -> Math.abs(getLeftPos() - IntakeConstants.pivotRetractStopPosition) < 20
+            && Math.abs(getRightPos() - IntakeConstants.pivotRetractStopPosition) < 20);
     cmd.setName("retractIntakeCmd");
     return cmd;
   }
