@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,33 +37,23 @@ public class AimAssistCmd extends SwerveControlCmd {
 
   @Override
   protected double calcRotSpeed() {
-    Pose2d robotPose = swerveDrive.getPose2d();
-    double[] hub = getHubPosition();
-    double dx = hub[0] - robotPose.getX();
-    double dy = hub[1] - robotPose.getY();
-    double targetAngle = Math.toDegrees(Math.atan2(dy, dx)) + 180;
-    final ChassisSpeeds driveSpeeds = swerveDrive.getRobotRelativeSpeeds();
+    Translation2d robotTranslation = new Translation2d(
+        swerveDrive.getRobotRelativeSpeeds().vxMetersPerSecond,
+        swerveDrive.getRobotRelativeSpeeds().vyMetersPerSecond);
 
-    double currentAngle = swerveDrive.getGyroRotation2d().getDegrees();
-    double error = targetAngle - currentAngle;
-    if (error > 180) {
-      error -= 360;
-    }
-    if (error < -180) {
-      error += 360;
-    }
-    double effectiveBallSpeed = ShooterConstants.ballSpeed + driveSpeeds.vxMetersPerSecond;
-    double compensation = Math.toDegrees(Math.atan2(-driveSpeeds.vyMetersPerSecond, effectiveBallSpeed));
-    double output = MathUtil.clamp(-(yawPID.calculate(error, compensation)), -1.5, 1.5);
-    double actualOutput = isAlignedToHub() ? 0 : output;
-    SmartDashboard.putNumber("AimAssist/compensation", compensation);
-    SmartDashboard.putNumber("AimAssist/error", error);
-    SmartDashboard.putNumber("AimAssistCmd/output", actualOutput);
-    SmartDashboard.putData("AimAssistCmd/yawPID", yawPID);
-    SmartDashboard.putNumber("AimAssistCmd/targetAngle", targetAngle);
-    SmartDashboard.putNumber("AimAssistCmd/currentAngle", currentAngle);
-    SmartDashboard.putNumber("AimAssistCmd/effectiveBallSpeed", effectiveBallSpeed);
-    return actualOutput;
+    Translation2d robotToHubTranslation = new Translation2d(
+        getHubPosition()[0] - swerveDrive.getPose2d().getX(),
+        getHubPosition()[1] - swerveDrive.getPose2d().getY());
+
+    Translation2d effectiveHubTranslation = robotToHubTranslation.plus(robotTranslation.times(0.5));
+
+    double targetAngle = effectiveHubTranslation.getAngle().getDegrees() + 180;
+
+    return yawPID.calculate(swerveDrive.getPose2d().getRotation().getDegrees(), targetAngle);
+    // robotTranslation 是機器人速度 邊走邊射會需要加上他
+    // robotToHubTranslation 是機器人到 hub 的向量
+
+    // 下次：算一下方向對不對
   }
 
   public boolean isAlignedToHub() {
@@ -72,8 +63,8 @@ public class AimAssistCmd extends SwerveControlCmd {
   private double[] getHubPosition() {
     if (DriverStation.getAlliance().isPresent()
         && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      return new double[]{FieldConstants.redHubX, FieldConstants.redHubY};
+      return new double[] { FieldConstants.redHubX, FieldConstants.redHubY };
     }
-    return new double[]{FieldConstants.blueHubX, FieldConstants.blueHubY};
+    return new double[] { FieldConstants.blueHubX, FieldConstants.blueHubY };
   }
 }
