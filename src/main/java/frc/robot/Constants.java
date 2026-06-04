@@ -82,8 +82,8 @@ public class Constants {
 
     public static final boolean intakeInverted = true;
 
-    public static final double intakeSpeed = 0.65;
-    public static final double reverseIntakeSpeed = -0.65;
+    public static final double intakeSpeed = 0.5;
+    public static final double reverseIntakeSpeed = -0.5;
 
     public static final double deployPivotSpeed = 0.8;
     public static final double retractPivotSpeed = -1;
@@ -123,15 +123,15 @@ public class Constants {
 
   public static final class FeederConstants {
     public static final int feederMotorID = 32;
-    public static final double feederMotorIn = 0.6;
-    public static final double feederMotorOut = -0.5;
+    public static final double feederMotorIn = 0.7;
+    public static final double feederMotorOut = -0.7;
     public static final boolean feederMotorInverted = false;
   }
 
   public static final class TransportConstants {
     public static final int transportMotorLowerID = 36;
-    public static final double transportMotorIn = 0.5;
-    public static final double transportMotorOut = -0.5;
+    public static final double transportMotorIn = 0.7;
+    public static final double transportMotorOut = -0.7;
     public static final boolean transportMotorInverted = true;
   }
 
